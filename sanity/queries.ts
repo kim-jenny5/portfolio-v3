@@ -29,7 +29,7 @@ export const projectPageQuery = groq`
       projectNumber,
       category,
       subtitle,
-      heroImage,
+      coverImage,
       overview { timeline, tools, deliverables, links },
       sections[] { title, body }
     }

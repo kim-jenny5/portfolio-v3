@@ -23,7 +23,7 @@ export const projectType = defineType({
 			name: 'description',
 			title: 'Short Description',
 			type: 'string',
-			validation: (rule) => rule.required().max(80)
+			validation: (rule) => rule.required().max(160)
 		}),
 		defineField({
 			name: 'tags',
@@ -56,13 +56,6 @@ export const projectType = defineType({
 			type: 'text',
 			rows: 3
 		}),
-		defineField({
-			name: 'heroImage',
-			title: 'Hero Image',
-			type: 'image',
-			options: { hotspot: true }
-		}),
-
 		// ── Overview bar ───────────────────────────────────────────────────────
 		defineField({
 			name: 'overview',
