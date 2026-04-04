@@ -1,12 +1,14 @@
 export function Footer() {
+	const year = new Date().getFullYear();
+
 	return (
-		<footer className='flex justify-end px-8 py-6 border-t border-neutral-200'>
-			<div className='flex items-center gap-2 text-blue-900'>
-				<span className='font-manrope font-bold text-xs tracking-[-0.023em] lowercase'>
+		<footer className='border-t border-neutral-200'>
+			<div className='max-w-content mx-auto px-16 max-md:px-8 max-sm:px-6 py-6 flex justify-between items-center'>
+				<span className='font-manrope font-bold text-xs lowercase tracking-[-0.023em] text-blue-900'>
 					jennykim.
 				</span>
-				<span className='font-manrope font-bold text-xs tracking-[-0.023em] uppercase'>
-					©2026
+				<span className='font-manrope font-bold text-xs uppercase tracking-[-0.023em] text-blue-900'>
+					©{year}
 				</span>
 			</div>
 		</footer>

@@ -54,8 +54,18 @@
 	--text-contact--font-weight: 700;
 
 	/* Fonts */
-	--font-manrope: var(--font-manrope);
-	--font-inter: var(--font-inter);
+	--font-manrope: var(--font-manrope), sans-serif;
+	--font-inter: var(--font-inter), sans-serif;
+
+	/* Letter spacing */
+	--letter-spacing-tightest: -3.6px;
+	--letter-spacing-tighter: -2.4px;
+	--letter-spacing-tight: -1.2px;
+	--letter-spacing-snug: -0.5px;
+	--letter-spacing-wide: 1px;
+
+	/* Max widths */
+	--max-width-content: 1280px;
 
 	/* shadcn semantic color references */
 	--color-background: var(--background);
@@ -182,4 +192,27 @@
 	.divider {
 		@apply w-full h-px bg-neutral-200;
 	}
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	20% {
+		transform: translateX(-8px);
+	}
+	40% {
+		transform: translateX(8px);
+	}
+	60% {
+		transform: translateX(-6px);
+	}
+	80% {
+		transform: translateX(6px);
+	}
+}
+
+.animate-shake {
+	animation: shake 0.4s ease-in-out;
 }

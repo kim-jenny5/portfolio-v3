@@ -40,3 +40,29 @@ export const projectSlugQuery = groq`
       "slug": slug.current
     }
   `;
+
+export const SELECTED_PROJECTS_QUERY = groq`
+  *[_type == "selectedProject"] | order(order asc) {
+    _id,
+    title,
+    slug,
+    subtitle,
+    tags,
+    "image": image.asset->url,
+    "imageAlt": image.alt,
+    url,
+    order
+  }
+`;
+
+export const SIDE_PROJECTS_QUERY = groq`
+  *[_type == "sideProject"] | order(order asc) {
+    _id,
+    name,
+    description,
+    tags,
+    "thumbnail": thumbnail.asset->url,
+    "thumbnailAlt": thumbnail.alt,
+    url
+  }
+`;

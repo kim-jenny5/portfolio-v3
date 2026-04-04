@@ -3,17 +3,16 @@ import { NavLinks } from './NavLinks';
 
 export function Header() {
 	return (
-		<header>
-			<div className='flex items-center justify-between px-8 h-[68px]'>
+		<header className='fixed top-0 left-0 right-0 z-50 h-[68px] bg-[#f8f8fb]/90 backdrop-blur-sm border-b border-neutral-200'>
+			<div className='max-w-content mx-auto px-16 max-md:px-8 max-sm:px-6 h-full flex items-center justify-between'>
 				<Link
 					href='/'
-					className='font-manrope text-logo font-[800] text-blue-900 lowercase tracking-[var(--text-logo--letter-spacing)]'
+					className='font-manrope text-logo font-[800] text-blue-900 lowercase tracking-[-1.2px] hover:text-blue-500 transition-colors duration-200'
 				>
 					jennykim.
 				</Link>
 				<NavLinks />
 			</div>
-			<div className='divider' />
 		</header>
 	);
 }

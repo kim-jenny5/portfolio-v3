@@ -10,13 +10,15 @@ import { Sidebar } from '@/components/Sidebar';
 import { Footer } from '@/components/Footer';
 
 const manrope = Manrope({
-	variable: '--font-manrope',
-	subsets: ['latin']
+	subsets: ['latin'],
+	weight: ['700', '800'],
+	variable: '--font-manrope'
 });
 
 const inter = Inter({
-	variable: '--font-inter',
-	subsets: ['latin']
+	subsets: ['latin'],
+	weight: ['400', '700'],
+	variable: '--font-inter'
 });
 
 export const metadata: Metadata = {
@@ -36,12 +38,10 @@ export default async function RootLayout({
 			lang='en'
 			className={cn('h-full', 'antialiased', manrope.variable, inter.variable)}
 		>
-			<body className='min-h-full flex flex-col'>
+			<body className='min-h-full flex flex-col bg-neutral-50'>
 				<Header />
-				<div className='flex flex-1'>
-					<main className='flex-1'>{children}</main>
-					<Sidebar />
-				</div>
+				<Sidebar />
+				<main className='pt-[68px] flex-1'>{children}</main>
 				<Footer />
 				<SanityLive />
 				{isEnabled && <VisualEditing />}
