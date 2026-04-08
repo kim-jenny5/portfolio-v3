@@ -35,10 +35,10 @@ export const aboutPageType = defineType({
 		}),
 		defineField({
 			name: 'story',
-			title: 'Story Paragraphs',
-			description: 'Each item is one paragraph in the "The story so far" section.',
-			type: 'array',
-			of: [{ type: 'text', rows: 4 }]
+			title: 'Story',
+			description: 'Leave a blank line between paragraphs.',
+			type: 'text',
+			rows: 10
 		}),
 		defineField({
 			name: 'skills',
@@ -51,8 +51,17 @@ export const aboutPageType = defineType({
 					fields: [
 						defineField({
 							name: 'name',
-							title: 'Category Name',
+							title: 'Category',
 							type: 'string',
+							options: {
+								list: [
+									{ title: 'Frontend', value: 'Frontend' },
+									{ title: 'Design', value: 'Design' },
+									{ title: 'Backend', value: 'Backend' },
+									{ title: 'Tools', value: 'Tools' }
+								],
+								layout: 'dropdown'
+							},
 							validation: (rule) => rule.required()
 						}),
 						defineField({

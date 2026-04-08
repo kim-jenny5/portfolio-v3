@@ -13,9 +13,18 @@ const FALLBACK_STORY = [
 ];
 
 const FALLBACK_SKILLS = [
-	{ name: 'Frontend', tags: ['React', 'TypeScript', 'Next.js', 'Tailwind', 'shadcn/ui'] },
-	{ name: 'Design', tags: ['Figma', 'Framer', 'Design Systems', 'Prototyping'] },
-	{ name: 'Tooling', tags: ['Node.js', 'Vercel', 'Git', 'Storybook', 'Vitest'] },
+	{
+		name: 'Frontend',
+		tags: ['React', 'TypeScript', 'Next.js', 'Tailwind', 'shadcn/ui']
+	},
+	{
+		name: 'Design',
+		tags: ['Figma', 'Framer', 'Design Systems', 'Prototyping']
+	},
+	{
+		name: 'Tooling',
+		tags: ['Node.js', 'Vercel', 'Git', 'Storybook', 'Vitest']
+	},
 	{ name: 'Blockchain', tags: ['Solidity', 'Web3.js', 'Hardhat', 'IPFS'] }
 ];
 
@@ -24,13 +33,17 @@ export default async function AboutPage() {
 	const { data } = await sanityFetch({ query: ABOUT_PAGE_QUERY });
 
 	const headline =
-		data?.hero?.headline ?? "I'm Jenny. Engineer by craft, designer by instinct.";
+		data?.hero?.headline ??
+		"I'm Jenny. Engineer by craft, designer by instinct.";
 	const subline =
 		data?.hero?.subline ??
 		"I'm a product-focused frontend engineer based in NYC with 5+ years building performant, accessible interfaces at the intersection of design systems and complex data. I care about the craft of UI — the typography, the spacing, the micro-interactions — as much as the architecture underneath.";
 	const stats: string[] = data?.hero?.stats ?? FALLBACK_STATS;
-	const story: string[] = data?.story ?? FALLBACK_STORY;
-	const skills: { name: string; tags: string[] }[] = data?.skills ?? FALLBACK_SKILLS;
+	const story: string[] = data?.story
+		? data.story.split(/\n\n+/).filter(Boolean)
+		: FALLBACK_STORY;
+	const skills: { name: string; tags: string[] }[] =
+		data?.skills ?? FALLBACK_SKILLS;
 
 	return (
 		<>
@@ -144,7 +157,6 @@ export default async function AboutPage() {
 					</div>
 				</div>
 			</section>
-
 		</>
 	);
 }

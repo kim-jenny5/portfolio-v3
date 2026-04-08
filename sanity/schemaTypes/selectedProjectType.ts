@@ -15,6 +15,7 @@ export const selectedProjectType = defineType({
 			name: 'slug',
 			title: 'Slug',
 			type: 'slug',
+			description: 'The URL path for this project on the portfolio (e.g. /work/my-project)',
 			options: { source: 'title' },
 			validation: (rule) => rule.required()
 		}),
@@ -47,22 +48,12 @@ export const selectedProjectType = defineType({
 			validation: (rule) => rule.required()
 		}),
 		defineField({
-			name: 'url',
-			title: 'URL',
-			type: 'url'
-		}),
-		defineField({
 			name: 'order',
 			title: 'Order',
 			type: 'number',
 			description:
 				'1 = large (8 cols), 2 = small right (4 cols), 3 = small left (5 cols), 4 = medium right (7 cols)',
 			validation: (rule) => rule.required().min(1).max(4)
-		}),
-		defineField({
-			name: 'publishedAt',
-			title: 'Published At',
-			type: 'datetime'
 		})
 	],
 	preview: {

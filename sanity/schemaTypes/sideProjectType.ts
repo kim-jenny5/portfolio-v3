@@ -45,16 +45,16 @@ export const sideProjectType = defineType({
 			validation: (rule) => rule.required()
 		}),
 		defineField({
-			name: 'order',
-			title: 'Order',
-			type: 'number',
+			name: 'publishedAt',
+			title: 'Published Date',
+			type: 'date',
 			validation: (rule) => rule.required()
 		})
 	],
 	preview: {
 		select: {
 			title: 'name',
-			subtitle: 'description',
+			subtitle: 'publishedAt',
 			media: 'thumbnail'
 		}
 	}

@@ -11,18 +11,21 @@ export const homePageType = defineType({
 			type: 'object',
 			fields: [
 				defineField({
-					name: 'headlinePrefix',
-					title: 'Headline — before highlight',
-					description: 'Press Enter to create a line break.',
-					type: 'text',
-					rows: 2,
-					validation: (rule) => rule.required()
-				}),
-				defineField({
-					name: 'headlineHighlight',
-					title: 'Headline — highlighted portion',
-					description: 'This text is rendered with the lavender highlight.',
-					type: 'string',
+					name: 'headline',
+					title: 'Headline',
+					description: 'Select any text and click "Highlight" to apply the lavender mark.',
+					type: 'array',
+					of: [
+						{
+							type: 'block',
+							styles: [{ title: 'Normal', value: 'normal' }],
+							lists: [],
+							marks: {
+								decorators: [{ title: 'Highlight', value: 'highlight' }],
+								annotations: []
+							}
+						}
+					],
 					validation: (rule) => rule.required()
 				}),
 				defineField({

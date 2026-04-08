@@ -2,7 +2,20 @@ import { groq } from 'next-sanity';
 
 export const HOME_HERO_QUERY = groq`
   *[_type == "homePage" && _id == "homePage"][0] {
-    hero { headlinePrefix, headlineHighlight, subline }
+    hero { headline, subline }
+  }
+`;
+
+export const WORK_PROJECT_QUERY = groq`
+  *[_type == "selectedProject" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    subtitle,
+    tags,
+    "image": image.asset->url,
+    "imageAlt": image.alt,
+    order
   }
 `;
 
@@ -59,18 +72,17 @@ export const SELECTED_PROJECTS_QUERY = groq`
   *[_type == "selectedProject"] | order(order asc) {
     _id,
     title,
-    slug,
+    "slug": slug.current,
     subtitle,
     tags,
     "image": image.asset->url,
     "imageAlt": image.alt,
-    url,
     order
   }
 `;
 
 export const SIDE_PROJECTS_QUERY = groq`
-  *[_type == "sideProject"] | order(order asc) {
+  *[_type == "sideProject"] | order(publishedAt desc) {
     _id,
     name,
     description,

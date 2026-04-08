@@ -3,7 +3,11 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 import { sanityFetch } from '@/sanity/lib/live';
-import { HOME_HERO_QUERY, SELECTED_PROJECTS_QUERY, SIDE_PROJECTS_QUERY } from '@/sanity/queries';
+import {
+	HOME_HERO_QUERY,
+	SELECTED_PROJECTS_QUERY,
+	SIDE_PROJECTS_QUERY
+} from '@/sanity/queries';
 import { ProjectCard, type SelectedProject } from '@/components/ProjectCard';
 import { TechBadge } from '@/components/TechBadge';
 
@@ -24,36 +28,52 @@ const GRID_CONFIG: Record<number, string> = {
 	4: 'lg:col-span-7 lg:row-start-2'
 };
 
+// ── Portable Text headline renderer ────────────────────────────────────────
+
+type PTSpan = { _key: string; _type: 'span'; text: string; marks: string[] };
+type PTBlock = { _key: string; _type: 'block'; children: PTSpan[] };
+
+const HIGHLIGHT_CLASS =
+	'[background:linear-gradient(transparent_0.2em,var(--color-lavender-50)_0.2em)] [box-decoration-break:clone]';
+
+function renderHeadlineBlocks(blocks: PTBlock[]) {
+	return blocks.map((block, bi) => (
+		<Fragment key={block._key ?? bi}>
+			{bi > 0 && <br />}
+			{block.children.map((span, si) => {
+				const parts = span.text.split('\n');
+				const content = parts.map((part, pi) => (
+					<Fragment key={pi}>
+						{pi > 0 && <br />}
+						{part}
+					</Fragment>
+				));
+				return span.marks.includes('highlight') ? (
+					<span key={span._key ?? si} className={HIGHLIGHT_CLASS}>
+						{content}
+					</span>
+				) : (
+					<Fragment key={span._key ?? si}>{content}</Fragment>
+				);
+			})}
+		</Fragment>
+	));
+}
+
 // ── Hero ───────────────────────────────────────────────────────────────────
 
 async function HeroSection() {
 	const { data } = await sanityFetch({ query: HOME_HERO_QUERY });
 
-	const prefix =
-		data?.hero?.headlinePrefix ??
-		"Hi, I'm Jenny.\nI design and build interfaces that";
-	const highlight =
-		data?.hero?.headlineHighlight ?? 'make things easier to understand.';
-	const subline =
-		data?.hero?.subline ??
-		'Building thoughtful, high-fidelity interfaces shaped by usability, structure, and collaboration.';
-
-	const prefixLines = prefix.split('\n');
+	const headline: PTBlock[] = data?.hero?.headline;
+	const subline = data?.hero?.subline;
 
 	return (
 		<section className='w-full bg-neutral-50'>
 			<div className='max-w-content mx-auto px-6 md:px-8 pt-20 max-md:pt-14 max-sm:pt-10'>
 				<div className='max-w-[916px] relative'>
 					<h1 className='relative font-manrope font-[800] text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] tracking-[-2px] lg:tracking-[-3.6px] text-blue-900'>
-						{prefixLines.map((line, i) => (
-							<Fragment key={i}>
-								{i > 0 && <br />}
-								{line}
-							</Fragment>
-						))}{' '}
-						<span className='[background:linear-gradient(transparent_0.2em,var(--color-lavender-50)_0.2em)] [box-decoration-break:clone]'>
-							{highlight}
-						</span>
+						{renderHeadlineBlocks(headline)}
 					</h1>
 				</div>
 
@@ -115,16 +135,17 @@ function SideProjectRow({ project }: { project: SideProject }) {
 				className='group flex items-center gap-8 py-7 max-md:gap-6 max-md:py-6 max-sm:gap-4 max-sm:py-5'
 			>
 				{/* Thumbnail */}
-				<div className='shrink-0 w-40 h-[110px] md:w-40 lg:w-40 max-md:w-[120px] max-md:h-20 max-sm:w-[88px] max-sm:h-[60px] bg-neutral-200 overflow-hidden'>
+				<div className='relative shrink-0 w-40 h-[110px] md:w-40 lg:w-40 max-md:w-[120px] max-md:h-20 max-sm:w-[88px] max-sm:h-[60px] bg-neutral-200 overflow-hidden'>
 					{project.thumbnail ? (
 						<Image
 							src={project.thumbnail}
 							alt={project.thumbnailAlt || project.name}
 							width={160}
 							height={110}
-							className='w-full h-full object-cover grayscale'
+							className='w-full h-full object-cover grayscale group-hover:scale-105'
 						/>
 					) : null}
+					<div className='absolute inset-0 bg-blue-900 opacity-0 group-hover:opacity-20 transition-opacity duration-300' />
 				</div>
 
 				{/* Details */}

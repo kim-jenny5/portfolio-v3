@@ -6,12 +6,11 @@ import { TechBadge } from '@/components/TechBadge';
 export type SelectedProject = {
 	_id: string;
 	title: string;
-	slug: { current: string };
+	slug: string;
 	subtitle: string;
 	tags: string[];
 	image: string;
 	imageAlt?: string;
-	url?: string;
 	order: number;
 };
 
@@ -27,29 +26,26 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project }: ProjectCardProps) {
-	const href = project.url ?? `/work/${project.slug.current}`;
-	const isExternal = !!project.url;
+	const href = `/work/${project.slug}`;
 	const aspectClass = ASPECT_RATIO[project.order] ?? 'aspect-[4/3]';
 
 	return (
-		<Link
-			href={href}
-			{...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-			className='group flex flex-col gap-6 w-full'
-		>
+		<Link href={href} className='group flex flex-col gap-6 w-full'>
 			{/* Image */}
-			<div className={`relative w-full overflow-hidden bg-neutral-200 ${aspectClass}`}>
+			<div
+				className={`relative w-full overflow-hidden bg-neutral-200 ${aspectClass}`}
+			>
 				{project.image ? (
 					<>
 						<Image
 							src={project.image}
 							alt={project.imageAlt || project.title}
 							fill
-							className='object-cover grayscale'
+							className='object-cover group-hover:scale-105'
 							sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw'
 						/>
 						{/* Hover overlay */}
-						<div className='absolute inset-0 bg-blue-900 opacity-0 group-hover:opacity-10 transition-opacity duration-300' />
+						<div className='absolute inset-0 bg-blue-900 opacity-0 group-hover:opacity-20 transition-opacity duration-300' />
 					</>
 				) : (
 					<div className='w-full h-full bg-neutral-200' />
@@ -62,7 +58,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
 					<h3 className='font-manrope font-bold text-[18px] uppercase tracking-[-0.5px] text-blue-900 group-hover:text-blue-500 transition-colors duration-200'>
 						{project.title}
 					</h3>
-					<p className='font-inter text-base text-blue-800'>{project.subtitle}</p>
+					<p className='font-inter text-base text-blue-800'>
+						{project.subtitle}
+					</p>
 					{project.tags && project.tags.length > 0 && (
 						<div className='flex flex-wrap gap-2 pt-2'>
 							{project.tags.map((tag) => (
