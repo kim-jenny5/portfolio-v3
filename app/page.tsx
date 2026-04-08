@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Fragment } from 'react';
 import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 import { sanityFetch } from '@/sanity/lib/live';
-import { SELECTED_PROJECTS_QUERY, SIDE_PROJECTS_QUERY } from '@/sanity/queries';
+import { HOME_HERO_QUERY, SELECTED_PROJECTS_QUERY, SIDE_PROJECTS_QUERY } from '@/sanity/queries';
 import { ProjectCard, type SelectedProject } from '@/components/ProjectCard';
 import { TechBadge } from '@/components/TechBadge';
 
@@ -25,24 +26,39 @@ const GRID_CONFIG: Record<number, string> = {
 
 // ── Hero ───────────────────────────────────────────────────────────────────
 
-function HeroSection() {
+async function HeroSection() {
+	const { data } = await sanityFetch({ query: HOME_HERO_QUERY });
+
+	const prefix =
+		data?.hero?.headlinePrefix ??
+		"Hi, I'm Jenny.\nI design and build interfaces that";
+	const highlight =
+		data?.hero?.headlineHighlight ?? 'make things easier to understand.';
+	const subline =
+		data?.hero?.subline ??
+		'Building thoughtful, high-fidelity interfaces shaped by usability, structure, and collaboration.';
+
+	const prefixLines = prefix.split('\n');
+
 	return (
 		<section className='w-full bg-neutral-50'>
-			{/* <div className='max-w-content mx-auto px-6 md:px-8 2xl:px-0 pt-20 max-md:pt-14 max-sm:pt-10'> */}
-			<div className='max-w-content mx-auto px-6 md:px-8 pt-20 max-md:pt-14 max-sm:pt-10 text-red-500'>
+			<div className='max-w-content mx-auto px-6 md:px-8 pt-20 max-md:pt-14 max-sm:pt-10'>
 				<div className='max-w-[916px] relative'>
 					<h1 className='relative font-manrope font-[800] text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] tracking-[-2px] lg:tracking-[-3.6px] text-blue-900'>
-						Hi, I&apos;m Jenny.
-						<br />I design and build interfaces that{' '}
+						{prefixLines.map((line, i) => (
+							<Fragment key={i}>
+								{i > 0 && <br />}
+								{line}
+							</Fragment>
+						))}{' '}
 						<span className='[background:linear-gradient(transparent_0.2em,var(--color-lavender-50)_0.2em)] [box-decoration-break:clone]'>
-							make things easier to understand.
+							{highlight}
 						</span>
 					</h1>
 				</div>
 
 				<p className='mt-[30px] pb-20 max-md:pb-16 max-sm:pb-12 font-inter text-base leading-[1.6] text-blue-800 max-w-[768px]'>
-					Building thoughtful, high-fidelity interfaces shaped by usability,
-					structure, and collaboration.
+					{subline}
 				</p>
 			</div>
 		</section>

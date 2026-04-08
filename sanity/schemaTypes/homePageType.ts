@@ -11,8 +11,16 @@ export const homePageType = defineType({
 			type: 'object',
 			fields: [
 				defineField({
-					name: 'headline',
-					title: 'Headline',
+					name: 'headlinePrefix',
+					title: 'Headline — before highlight',
+					description: 'Use \\n to create a line break (e.g. "Hi, I\'m Jenny.\\nI design and build interfaces that")',
+					type: 'string',
+					validation: (rule) => rule.required()
+				}),
+				defineField({
+					name: 'headlineHighlight',
+					title: 'Headline — highlighted portion',
+					description: 'This text is rendered with the lavender highlight.',
 					type: 'string',
 					validation: (rule) => rule.required()
 				}),
@@ -22,27 +30,6 @@ export const homePageType = defineType({
 					type: 'text',
 					rows: 2,
 					validation: (rule) => rule.required()
-				})
-			]
-		}),
-		defineField({
-			name: 'selectedProjects',
-			title: 'Selected Projects',
-			type: 'object',
-			fields: [
-				defineField({
-					name: 'sectionTitle',
-					title: 'Section Title',
-					type: 'string',
-					initialValue: 'Selected Projects',
-					validation: (rule) => rule.required()
-				}),
-				defineField({
-					name: 'projects',
-					title: 'Projects',
-					type: 'array',
-					of: [{ type: 'reference', to: [{ type: 'project' }] }],
-					validation: (rule) => rule.max(6)
 				})
 			]
 		})
