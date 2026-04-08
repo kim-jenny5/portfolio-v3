@@ -3,7 +3,7 @@ import {
 	EnvelopeSimpleIcon,
 	LinkedinLogoIcon,
 	GithubLogoIcon,
-	FileTextIcon
+	FileTextIcon,
 } from '@phosphor-icons/react/dist/ssr';
 
 // Set your social links via environment variables:
@@ -15,43 +15,43 @@ const contactLinks = [
 			: 'mailto:hello@jennykim.design',
 		label: 'Email',
 		Icon: EnvelopeSimpleIcon,
-		external: false
+		external: false,
 	},
 	{
 		href: process.env.NEXT_PUBLIC_LINKEDIN_URL,
 		label: 'LinkedIn',
 		Icon: LinkedinLogoIcon,
-		external: true
+		external: true,
 	},
 	{
 		href: process.env.NEXT_PUBLIC_GITHUB_URL,
 		label: 'GitHub',
 		Icon: GithubLogoIcon,
-		external: true
+		external: true,
 	},
 	{
 		href: '/resume',
 		label: 'Resume',
 		Icon: FileTextIcon,
-		external: false
-	}
+		external: false,
+	},
 ];
 
 export function Sidebar() {
 	return (
-		<aside className='hidden lg:flex fixed left-0 top-0 h-screen w-16 z-40 bg-neutral-50 border-r border-neutral-200 flex-col items-center justify-center gap-8'>
+		<aside className="fixed top-0 left-0 z-40 hidden h-screen w-16 flex-col items-center justify-center gap-8 border-r border-neutral-200 bg-neutral-50 lg:flex">
 			{contactLinks.map(({ href, label, Icon, external }, i) => (
 				<Fragment key={label}>
-					{(i === 1 || i === 3) && <div className='w-px h-12 bg-neutral-200' />}
+					{(i === 1 || i === 3) && <div className="h-12 w-px bg-neutral-200" />}
 					<a
 						href={href}
-						className='social-link'
+						className="social-link"
 						{...(external
 							? { target: '_blank', rel: 'noopener noreferrer' }
 							: {})}
 					>
 						{label}
-						<Icon size={14} weight='bold' className='rotate-180' />
+						<Icon size={14} weight="bold" className="rotate-180" />
 					</a>
 				</Fragment>
 			))}

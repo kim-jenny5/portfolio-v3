@@ -2,12 +2,12 @@ export function Footer() {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer className='border-t border-neutral-200 lg:ml-16'>
-			<div className='max-w-content mx-auto px-6 md:px-8 py-6 flex justify-between items-center'>
-				<span className='font-manrope font-bold text-xs lowercase tracking-[-0.023em] text-blue-900'>
+		<footer className="border-t border-neutral-200 lg:ml-16">
+			<div className="mx-auto flex max-w-content items-center justify-between px-6 py-6 md:px-8">
+				<span className="font-manrope text-xs font-bold tracking-[-0.023em] text-blue-900 lowercase">
 					jennykim.
 				</span>
-				<span className='font-manrope font-bold text-xs uppercase tracking-[-0.023em] text-blue-900'>
+				<span className="font-manrope text-xs font-bold tracking-[-0.023em] text-blue-900 uppercase">
 					©{year}
 				</span>
 			</div>

@@ -18,7 +18,7 @@ const ASPECT_RATIO: Record<number, string> = {
 	1: 'aspect-[16/9]',
 	2: 'aspect-square',
 	3: 'aspect-[4/3]',
-	4: 'aspect-[16/9]'
+	4: 'aspect-[16/9]',
 };
 
 type ProjectCardProps = {
@@ -30,7 +30,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 	const aspectClass = ASPECT_RATIO[project.order] ?? 'aspect-[4/3]';
 
 	return (
-		<Link href={href} className='group flex flex-col gap-6 w-full'>
+		<Link href={href} className="group flex w-full flex-col gap-6">
 			{/* Image */}
 			<div className={`img-zoom relative w-full bg-neutral-200 ${aspectClass}`}>
 				{project.image ? (
@@ -39,28 +39,28 @@ export function ProjectCard({ project }: ProjectCardProps) {
 							src={project.image}
 							alt={project.imageAlt || project.title}
 							fill
-							className='object-cover'
-							sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw'
+							className="object-cover"
+							sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw"
 						/>
 						{/* Hover overlay */}
-						<div className='absolute inset-0 bg-blue-900 opacity-0 group-hover:opacity-20 transition-opacity duration-300' />
+						<div className="absolute inset-0 bg-blue-900 opacity-0 transition-opacity duration-300 group-hover:opacity-20" />
 					</>
 				) : (
-					<div className='w-full h-full bg-neutral-200' />
+					<div className="h-full w-full bg-neutral-200" />
 				)}
 			</div>
 
 			{/* Details */}
-			<div className='flex justify-between items-start'>
-				<div className='flex flex-col gap-1'>
-					<h3 className='font-manrope font-bold text-[18px] uppercase tracking-[-0.5px] text-blue-900 group-hover:text-blue-500 transition-colors duration-200'>
+			<div className="flex items-start justify-between">
+				<div className="flex flex-col gap-1">
+					<h3 className="font-manrope text-[18px] font-bold tracking-[-0.5px] text-blue-900 uppercase transition-colors duration-200 group-hover:text-blue-500">
 						{project.title}
 					</h3>
-					<p className='font-inter text-base text-blue-800'>
+					<p className="font-inter text-base text-blue-800">
 						{project.subtitle}
 					</p>
 					{project.tags && project.tags.length > 0 && (
-						<div className='flex flex-wrap gap-2 pt-2'>
+						<div className="flex flex-wrap gap-2 pt-2">
 							{project.tags.map((tag) => (
 								<TechBadge key={tag} label={tag} />
 							))}
@@ -69,7 +69,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 				</div>
 				<ArrowUpRightIcon
 					size={16}
-					className='text-blue-900 flex-shrink-0 mt-1 opacity-50 group-hover:opacity-100 transition-opacity duration-200'
+					className="mt-1 flex-shrink-0 text-blue-900 opacity-50 transition-opacity duration-200 group-hover:opacity-100"
 				/>
 			</div>
 		</Link>

@@ -6,8 +6,8 @@ export async function GET() {
 
 	const res = await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`
-		}
+			Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+		},
 	});
 
 	if (!res.ok) return new NextResponse(null, { status: 502 });
@@ -18,7 +18,7 @@ export async function GET() {
 	return new NextResponse(buffer, {
 		headers: {
 			'Content-Type': contentType,
-			'Cache-Control': 'public, max-age=86400'
-		}
+			'Cache-Control': 'public, max-age=86400',
+		},
 	});
 }

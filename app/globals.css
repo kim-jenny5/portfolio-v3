@@ -145,7 +145,7 @@
 	/* ── Tag ─────────────────────────────────────────────────────────────
 	   Tech stack label. bg: lavender-50, text: blue-700, UPPER tracking. */
 	.tag {
-		@apply inline-flex items-center bg-lavender-50 text-blue-700 text-badge uppercase;
+		@apply inline-flex items-center bg-lavender-50 text-badge text-blue-700 uppercase;
 		padding: 6px 8px;
 	}
 
@@ -153,18 +153,18 @@
 	   Header navigation item. Active state: blue-500 text + 2px bottom
 	   border. Inactive: blue-900 text, no border. */
 	.nav-link {
-		@apply text-blue-900 text-nav capitalize transition-colors duration-200 hover:text-blue-500;
+		@apply text-nav text-blue-900 capitalize transition-colors duration-200 hover:text-blue-500;
 	}
 	.nav-link[aria-current='page'],
 	.nav-link.active {
-		@apply text-blue-500 border-b-2 border-blue-500;
+		@apply border-b-2 border-blue-500 text-blue-500;
 	}
 
 	/* ── Social link ─────────────────────────────────────────────────────
 	   Vertical sidebar contact item (Email, LinkedIn, GitHub). Text runs
 	   bottom-to-top via writing-mode + rotation. */
 	.social-link {
-		@apply flex items-center gap-2 text-blue-900 text-contact uppercase transition-colors duration-200 hover:text-blue-500;
+		@apply flex items-center gap-2 text-contact text-blue-900 uppercase transition-colors duration-200 hover:text-blue-500;
 		writing-mode: vertical-rl;
 		transform: rotate(180deg);
 	}
@@ -173,13 +173,13 @@
 	   Column card: image → details row → badge row. Use child classes for
 	   each region. */
 	.project-card {
-		@apply flex flex-col gap-6 w-full;
+		@apply flex w-full flex-col gap-6;
 	}
 	.project-card-image {
-		@apply w-full bg-neutral-200 overflow-hidden;
+		@apply w-full overflow-hidden bg-neutral-200;
 	}
 	.project-card-details {
-		@apply flex flex-row justify-between items-start w-full;
+		@apply flex w-full flex-row items-start justify-between;
 	}
 	.project-card-meta {
 		@apply flex flex-col gap-1;
@@ -191,7 +191,7 @@
 	/* ── Divider ─────────────────────────────────────────────────────────
 	   1px horizontal rule in neutral-200. */
 	.divider {
-		@apply w-full h-px bg-neutral-200;
+		@apply h-px w-full bg-neutral-200;
 	}
 }
 

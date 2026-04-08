@@ -6,7 +6,7 @@ import { client } from '@/sanity/lib/client';
 export async function GET(request: Request) {
 	const { isValid, redirectTo = '/' } = await validatePreviewUrl(
 		client,
-		request.url
+		request.url,
 	);
 
 	if (!isValid) {

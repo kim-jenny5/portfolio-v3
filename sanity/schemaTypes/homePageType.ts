@@ -13,7 +13,8 @@ export const homePageType = defineType({
 				defineField({
 					name: 'headline',
 					title: 'Headline',
-					description: 'Select any text and click "Highlight" to apply the lavender mark.',
+					description:
+						'Select any text and click "Highlight" to apply the lavender mark.',
 					type: 'array',
 					of: [
 						{
@@ -22,20 +23,20 @@ export const homePageType = defineType({
 							lists: [],
 							marks: {
 								decorators: [{ title: 'Highlight', value: 'highlight' }],
-								annotations: []
-							}
-						}
+								annotations: [],
+							},
+						},
 					],
-					validation: (rule) => rule.required()
+					validation: (rule) => rule.required(),
 				}),
 				defineField({
 					name: 'subline',
 					title: 'Subline',
 					type: 'text',
 					rows: 2,
-					validation: (rule) => rule.required()
-				})
-			]
-		})
-	]
+					validation: (rule) => rule.required(),
+				}),
+			],
+		}),
+	],
 });

@@ -5,5 +5,5 @@ import { selectedProjectType } from './selectedProjectType';
 import { sideProjectType } from './sideProjectType';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-	types: [homePageType, aboutPageType, selectedProjectType, sideProjectType]
+	types: [homePageType, aboutPageType, selectedProjectType, sideProjectType],
 };

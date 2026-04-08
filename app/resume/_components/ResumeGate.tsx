@@ -17,7 +17,7 @@ export function ResumeGate() {
 			const res = await fetch('/api/resume/auth', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ pin })
+				body: JSON.stringify({ pin }),
 			});
 
 			if (res.ok) {
@@ -39,38 +39,33 @@ export function ResumeGate() {
 	}
 
 	return (
-		<div className='flex items-center justify-center min-h-[calc(100vh-68px)] bg-neutral-50'>
-			<div className='flex flex-col gap-6 w-full max-w-[240px] px-4'>
-				<span className='font-inter font-bold text-xs uppercase tracking-wide text-blue-500'>
+		<div className="flex min-h-[calc(100vh-68px)] items-center justify-center bg-neutral-50">
+			<div className="flex w-full max-w-[240px] flex-col gap-6 px-4">
+				<span className="font-inter text-xs font-bold tracking-wide text-blue-500 uppercase">
 					Enter access code
 				</span>
 
-				<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-					<div className='flex flex-col gap-1'>
+				<form onSubmit={handleSubmit} className="flex flex-col gap-4">
+					<div className="flex flex-col gap-1">
 						<input
-							type='password'
+							type="password"
 							value={pin}
 							onChange={(e) => setPin(e.target.value)}
-							placeholder='••••'
+							placeholder="••••"
 							autoFocus
-							className={`
-								bg-transparent border-b border-neutral-200 outline-none py-3
-								font-inter text-base text-blue-900 placeholder:text-neutral-200
-								focus:border-blue-500 transition-colors duration-200 w-full
-								${shaking ? 'animate-shake' : ''}
-							`}
+							className={`w-full border-b border-neutral-200 bg-transparent py-3 font-inter text-base text-blue-900 transition-colors duration-200 outline-none placeholder:text-neutral-200 focus:border-blue-500 ${shaking ? 'animate-shake' : ''} `}
 						/>
 						{error && (
-							<span className='font-inter text-sm text-[#e24b4a]'>
+							<span className="font-inter text-sm text-[#e24b4a]">
 								Incorrect code
 							</span>
 						)}
 					</div>
 
 					<button
-						type='submit'
+						type="submit"
 						disabled={loading || !pin}
-						className='font-inter font-bold text-sm text-neutral-50 bg-blue-900 px-6 py-3 transition-colors duration-200 hover:bg-blue-500 disabled:opacity-50'
+						className="cursor-pointer bg-blue-900 px-6 py-3 font-inter text-sm font-bold text-neutral-50 transition-colors duration-200 hover:bg-blue-500 disabled:opacity-50"
 					>
 						{loading ? 'Checking…' : 'Continue →'}
 					</button>

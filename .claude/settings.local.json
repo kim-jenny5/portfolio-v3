@@ -1,17 +1,19 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(node -e \"require\\(''./node_modules/next-sanity/dist/visual-editing/index.js''\\); console.log\\(''ok''\\)\")",
-      "mcp__figma-developer-mcp__get_figma_data",
-      "Bash(python3:*)",
-      "Bash(wait)",
-      "Bash(pnpm tsc:*)",
-      "Bash(pnpm build:*)",
-      "mcp__Sanity__list_projects",
-      "mcp__Sanity__get_project_studios",
-      "mcp__Sanity__list_datasets",
-      "mcp__Sanity__whoami",
-      "mcp__Sanity__add_cors_origin"
-    ]
-  }
+	"permissions": {
+		"allow": [
+			"Bash(node -e \"require\\(''./node_modules/next-sanity/dist/visual-editing/index.js''\\); console.log\\(''ok''\\)\")",
+			"mcp__figma-developer-mcp__get_figma_data",
+			"Bash(python3:*)",
+			"Bash(wait)",
+			"Bash(pnpm tsc:*)",
+			"Bash(pnpm build:*)",
+			"mcp__Sanity__list_projects",
+			"mcp__Sanity__get_project_studios",
+			"mcp__Sanity__list_datasets",
+			"mcp__Sanity__whoami",
+			"mcp__Sanity__add_cors_origin",
+			"Bash(pnpm add:*)",
+			"Bash(pnpm remove:*)"
+		]
+	}
 }

@@ -20,15 +20,16 @@ export default defineConfig({
 	plugins: [
 		structureTool({ structure }),
 		visionTool({
-			defaultApiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-03-26'
+			defaultApiVersion:
+				process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-03-26',
 		}),
 		presentationTool({
 			previewUrl: {
 				origin: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
 				previewMode: {
-					enable: '/api/draft-mode/enable'
-				}
-			}
-		})
-	]
+					enable: '/api/draft-mode/enable',
+				},
+			},
+		}),
+	],
 });

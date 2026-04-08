@@ -14,31 +14,32 @@ export const aboutPageType = defineType({
 					name: 'headline',
 					title: 'Headline',
 					type: 'string',
-					validation: (rule) => rule.required()
+					validation: (rule) => rule.required(),
 				}),
 				defineField({
 					name: 'subline',
 					title: 'Subline',
 					type: 'text',
 					rows: 3,
-					validation: (rule) => rule.required()
+					validation: (rule) => rule.required(),
 				}),
 				defineField({
 					name: 'stats',
 					title: 'Stats',
-					description: 'Short labels displayed below the subline (e.g. "5+ years experience")',
+					description:
+						'Short labels displayed below the subline (e.g. "5+ years experience")',
 					type: 'array',
 					of: [{ type: 'string' }],
-					options: { layout: 'tags' }
-				})
-			]
+					options: { layout: 'tags' },
+				}),
+			],
 		}),
 		defineField({
 			name: 'story',
 			title: 'Story',
 			description: 'Leave a blank line between paragraphs.',
 			type: 'text',
-			rows: 10
+			rows: 10,
 		}),
 		defineField({
 			name: 'skills',
@@ -58,23 +59,23 @@ export const aboutPageType = defineType({
 									{ title: 'Frontend', value: 'Frontend' },
 									{ title: 'Design', value: 'Design' },
 									{ title: 'Backend', value: 'Backend' },
-									{ title: 'Tools', value: 'Tools' }
+									{ title: 'Tools', value: 'Tools' },
 								],
-								layout: 'dropdown'
+								layout: 'dropdown',
 							},
-							validation: (rule) => rule.required()
+							validation: (rule) => rule.required(),
 						}),
 						defineField({
 							name: 'tags',
 							title: 'Tags',
 							type: 'array',
 							of: [{ type: 'string' }],
-							options: { layout: 'tags' }
-						})
+							options: { layout: 'tags' },
+						}),
 					],
-					preview: { select: { title: 'name' } }
-				}
-			]
-		})
-	]
+					preview: { select: { title: 'name' } },
+				},
+			],
+		}),
+	],
 });

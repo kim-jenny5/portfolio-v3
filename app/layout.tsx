@@ -12,22 +12,22 @@ import { Footer } from '@/components/Footer';
 const manrope = Manrope({
 	subsets: ['latin'],
 	weight: ['700', '800'],
-	variable: '--font-manrope'
+	variable: '--font-manrope',
 });
 
 const inter = Inter({
 	subsets: ['latin'],
 	weight: ['400', '700'],
-	variable: '--font-inter'
+	variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
 	title: 'Jenny // design engineer',
-	description: 'Welcome to my portfolio website!'
+	description: 'Welcome to my portfolio website!',
 };
 
 export default async function RootLayout({
-	children
+	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
@@ -35,13 +35,13 @@ export default async function RootLayout({
 
 	return (
 		<html
-			lang='en'
+			lang="en"
 			className={cn('h-full', 'antialiased', manrope.variable, inter.variable)}
 		>
-			<body className='min-h-full flex flex-col bg-neutral-50'>
+			<body className="flex min-h-full flex-col bg-neutral-50">
 				<Header />
 				<Sidebar />
-				<main className='pt-[68px] flex-1 lg:ml-16'>{children}</main>
+				<main className="flex-1 pt-[68px] lg:ml-16">{children}</main>
 				<Footer />
 				<SanityLive />
 				{isEnabled && <VisualEditing />}

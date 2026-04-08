@@ -10,51 +10,51 @@ export const projectType = defineType({
 			name: 'title',
 			title: 'Title',
 			type: 'string',
-			validation: (rule) => rule.required()
+			validation: (rule) => rule.required(),
 		}),
 		defineField({
 			name: 'slug',
 			title: 'Slug',
 			type: 'slug',
 			options: { source: 'title' },
-			validation: (rule) => rule.required()
+			validation: (rule) => rule.required(),
 		}),
 		defineField({
 			name: 'description',
 			title: 'Short Description',
 			type: 'string',
-			validation: (rule) => rule.required().max(160)
+			validation: (rule) => rule.required().max(160),
 		}),
 		defineField({
 			name: 'tags',
 			title: 'Tags',
 			type: 'array',
 			of: [{ type: 'string' }],
-			options: { layout: 'tags' }
+			options: { layout: 'tags' },
 		}),
 		defineField({
 			name: 'coverImage',
 			title: 'Cover Image',
 			type: 'image',
-			options: { hotspot: true }
+			options: { hotspot: true },
 		}),
 
 		// ── Project hero ───────────────────────────────────────────────────────
 		defineField({
 			name: 'projectNumber',
 			title: 'Project Number',
-			type: 'string'
+			type: 'string',
 		}),
 		defineField({
 			name: 'category',
 			title: 'Category',
-			type: 'string'
+			type: 'string',
 		}),
 		defineField({
 			name: 'subtitle',
 			title: 'Subtitle',
 			type: 'text',
-			rows: 3
+			rows: 3,
 		}),
 		// ── Overview bar ───────────────────────────────────────────────────────
 		defineField({
@@ -65,21 +65,21 @@ export const projectType = defineType({
 				defineField({
 					name: 'timeline',
 					title: 'Timeline',
-					type: 'string'
+					type: 'string',
 				}),
 				defineField({
 					name: 'tools',
 					title: 'Tools',
 					type: 'array',
 					of: [{ type: 'string' }],
-					options: { layout: 'tags' }
+					options: { layout: 'tags' },
 				}),
 				defineField({
 					name: 'deliverables',
 					title: 'Deliverables',
 					type: 'array',
 					of: [{ type: 'string' }],
-					options: { layout: 'tags' }
+					options: { layout: 'tags' },
 				}),
 				defineField({
 					name: 'links',
@@ -90,13 +90,13 @@ export const projectType = defineType({
 							type: 'object',
 							fields: [
 								defineField({ name: 'label', title: 'Label', type: 'string' }),
-								defineField({ name: 'url', title: 'URL', type: 'url' })
+								defineField({ name: 'url', title: 'URL', type: 'url' }),
 							],
-							preview: { select: { title: 'label', subtitle: 'url' } }
-						}
-					]
-				})
-			]
+							preview: { select: { title: 'label', subtitle: 'url' } },
+						},
+					],
+				}),
+			],
 		}),
 
 		// ── Case study body ────────────────────────────────────────────────────
@@ -114,25 +114,25 @@ export const projectType = defineType({
 							name: 'title',
 							title: 'Section Title',
 							type: 'string',
-							validation: (rule) => rule.required()
+							validation: (rule) => rule.required(),
 						}),
 						defineField({
 							name: 'body',
 							title: 'Body',
 							type: 'array',
-							of: [{ type: 'block' }]
-						})
+							of: [{ type: 'block' }],
+						}),
 					],
-					preview: { select: { title: 'title' } }
-				}
-			]
-		})
+					preview: { select: { title: 'title' } },
+				},
+			],
+		}),
 	],
 
 	preview: {
 		select: { title: 'title', subtitle: 'projectNumber', media: 'coverImage' },
 		prepare({ title, subtitle, media }) {
 			return { title, subtitle: subtitle ? `#${subtitle}` : undefined, media };
-		}
-	}
+		},
+	},
 });

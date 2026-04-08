@@ -26,8 +26,8 @@ export async function POST(request: NextRequest) {
 	// never needs to be exposed or accessed from the browser.
 	const pdfRes = await fetch(process.env.RESUME_PDF_URL!, {
 		headers: {
-			Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`
-		}
+			Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+		},
 	});
 
 	if (!pdfRes.ok) {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 	return new NextResponse(pdf, {
 		headers: {
 			'Content-Type': 'application/pdf',
-			'Content-Disposition': 'inline; filename="resume.pdf"'
-		}
+			'Content-Disposition': 'inline; filename="resume.pdf"',
+		},
 	});
 }

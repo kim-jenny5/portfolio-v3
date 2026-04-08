@@ -10,7 +10,7 @@ import { client } from './client';
 // }
 
 export const { sanityFetch, SanityLive } = defineLive({
-	client
+	client,
 	// serverToken: token,
 	// browserToken: token
 });
