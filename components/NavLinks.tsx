@@ -32,6 +32,11 @@ const socials = [
 		href: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/jennykim',
 		external: true,
 	},
+	{
+		label: 'Resume',
+		href: '/resume',
+		external: false,
+	},
 ];
 
 // ── Mobile menu ────────────────────────────────────────────────────────────
@@ -78,7 +83,7 @@ function MobileMenu({
 	const year = new Date().getFullYear();
 
 	return createPortal(
-		<div className="fixed inset-0 z-[60] md:hidden">
+		<div className="fixed inset-0 z-[60] lg:hidden">
 			{/* Backdrop */}
 			<div
 				className="absolute inset-0 transition-opacity duration-200 ease-in-out"
@@ -140,7 +145,7 @@ function MobileMenu({
 								onClick={handleNavClick}
 							>
 								<span
-									className={`font-manrope text-[40px] leading-[1.1] font-[800] tracking-tighter transition-colors duration-200 ${
+									className={`font-manrope text-4xl leading-[1.1] font-[800] tracking-tighter transition-colors duration-200 ${
 										isActive(href)
 											? 'text-blue-500'
 											: 'text-blue-900 group-hover:text-blue-500'
@@ -159,15 +164,15 @@ function MobileMenu({
 
 				{/* Zone 3 — Social / contact strip */}
 				<div className="px-6 pb-10">
-					<span className="mb-4 block font-inter text-xs font-bold tracking-wide text-blue-500 uppercase">
+					<span className="mb-5 block font-inter text-xl font-bold tracking-wide text-blue-500 uppercase">
 						Connect
 					</span>
-					<div className="flex items-center gap-6">
+					<div className="flex flex-wrap items-center gap-x-7 gap-y-3">
 						{socials.map((social, i) => (
-							<div key={social.label} className="flex items-center gap-6">
+							<div key={social.label} className="flex items-center gap-7">
 								<a
 									href={social.href}
-									className="font-inter text-xs font-bold tracking-wide text-blue-900 uppercase transition-colors duration-200 hover:text-blue-500"
+									className="font-inter text-2xl font-bold tracking-wide text-blue-900 uppercase transition-colors duration-200 hover:text-blue-500"
 									{...(social.external
 										? { target: '_blank', rel: 'noopener noreferrer' }
 										: {})}
@@ -175,12 +180,12 @@ function MobileMenu({
 									{social.label}
 								</a>
 								{i < socials.length - 1 && (
-									<div className="h-3 w-px bg-neutral-200" />
+									<div className="h-4 w-px bg-neutral-200" />
 								)}
 							</div>
 						))}
 					</div>
-					<span className="mt-4 block font-inter text-xs text-neutral-200">
+					<span className="mt-5 block font-inter text-xs text-neutral-200">
 						© {year} jennykim.
 					</span>
 				</div>
@@ -209,7 +214,7 @@ export function NavLinks() {
 	return (
 		<>
 			{/* Desktop nav */}
-			<nav className="hidden items-center gap-7 md:flex">
+			<nav className="hidden items-center gap-7 lg:flex">
 				{links.map(({ href, label }) => (
 					<Link
 						key={href}
@@ -223,7 +228,7 @@ export function NavLinks() {
 
 			{/* Mobile hamburger */}
 			<button
-				className="flex flex-col justify-center gap-[5px] p-1 md:hidden"
+				className="flex flex-col justify-center gap-[5px] p-1 lg:hidden"
 				onClick={() => setMenuOpen(true)}
 				aria-label="Open navigation menu"
 				aria-expanded={menuOpen}

@@ -65,7 +65,7 @@ export function ResumeGate() {
 					<button
 						type="submit"
 						disabled={loading || !pin}
-						className="cursor-pointer bg-blue-900 px-6 py-3 font-inter text-sm font-bold text-neutral-50 transition-colors duration-200 hover:bg-blue-500 disabled:opacity-50"
+						className="cursor-pointer bg-blue-900 px-6 py-3 font-inter text-sm font-bold text-neutral-50 transition-colors duration-200 hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-900"
 					>
 						{loading ? 'Checking…' : 'Continue →'}
 					</button>

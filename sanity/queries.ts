@@ -22,7 +22,9 @@ export const WORK_PROJECT_QUERY = groq`
 export const ABOUT_PAGE_QUERY = groq`
   *[_type == "aboutPage" && _id == "aboutPage"][0] {
     hero { headline, subline, stats },
+    storyHeading,
     story,
+    skillsHeading,
     skills[] { name, tags }
   }
 `;

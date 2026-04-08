@@ -22,10 +22,10 @@ type SideProject = {
 };
 
 const GRID_CONFIG: Record<number, string> = {
-	1: 'lg:col-span-8 lg:row-start-1',
-	2: 'lg:col-span-4 lg:row-start-1',
-	3: 'lg:col-span-5 lg:row-start-2',
-	4: 'lg:col-span-7 lg:row-start-2',
+	1: 'md:col-span-7 md:row-start-1 lg:col-span-8 lg:row-start-1',
+	2: 'md:col-span-5 md:row-start-1 lg:col-span-4 lg:row-start-1',
+	3: 'md:col-span-5 md:row-start-2 lg:col-span-5 lg:row-start-2',
+	4: 'md:col-span-7 md:row-start-2 lg:col-span-7 lg:row-start-2',
 };
 
 // ── Portable Text headline renderer ────────────────────────────────────────
@@ -110,7 +110,7 @@ function SelectedProjectsSection({
 				{/* Bento grid */}
 				<div
 					id="projects"
-					className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 lg:grid-cols-12 lg:gap-8"
+					className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8 lg:grid-cols-12 lg:gap-8"
 				>
 					{projects.map((project) => (
 						<div key={project._id} className={GRID_CONFIG[project.order] ?? ''}>

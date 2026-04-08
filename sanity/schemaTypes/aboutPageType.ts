@@ -35,11 +35,21 @@ export const aboutPageType = defineType({
 			],
 		}),
 		defineField({
+			name: 'storyHeading',
+			title: 'Story Heading',
+			type: 'string',
+		}),
+		defineField({
 			name: 'story',
 			title: 'Story',
 			description: 'Leave a blank line between paragraphs.',
 			type: 'text',
 			rows: 10,
+		}),
+		defineField({
+			name: 'skillsHeading',
+			title: 'Skills Heading',
+			type: 'string',
 		}),
 		defineField({
 			name: 'skills',
