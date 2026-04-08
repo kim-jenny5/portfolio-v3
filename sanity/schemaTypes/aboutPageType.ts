@@ -37,7 +37,18 @@ export const aboutPageType = defineType({
 		defineField({
 			name: 'storyHeading',
 			title: 'Story Heading',
-			type: 'string',
+			type: 'array',
+			of: [
+				{
+					type: 'block',
+					styles: [{ title: 'Normal', value: 'normal' }],
+					lists: [],
+					marks: {
+						decorators: [{ title: 'Code', value: 'code' }],
+						annotations: [],
+					},
+				},
+			],
 		}),
 		defineField({
 			name: 'story',
@@ -49,7 +60,18 @@ export const aboutPageType = defineType({
 		defineField({
 			name: 'skillsHeading',
 			title: 'Skills Heading',
-			type: 'string',
+			type: 'array',
+			of: [
+				{
+					type: 'block',
+					styles: [{ title: 'Normal', value: 'normal' }],
+					lists: [],
+					marks: {
+						decorators: [{ title: 'Code', value: 'code' }],
+						annotations: [],
+					},
+				},
+			],
 		}),
 		defineField({
 			name: 'skills',

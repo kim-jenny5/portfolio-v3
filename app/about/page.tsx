@@ -1,7 +1,36 @@
 import Image from 'next/image';
+import { Fragment } from 'react';
 import { sanityFetch } from '@/sanity/lib/live';
 import { ABOUT_PAGE_QUERY } from '@/sanity/queries';
 import { TechBadge } from '@/components/TechBadge';
+
+type PtBlock = {
+	_key?: string;
+	children?: { _key?: string; text?: string; marks?: string[] }[];
+};
+
+function renderHeadingBlocks(
+	blocks: PtBlock[] | undefined,
+	fallback?: string,
+): React.ReactNode {
+	if (!blocks?.length) return fallback;
+	return blocks.map((block, bi) =>
+		block.children?.map((span, si) => {
+			const content = span.text ?? '';
+			if (span.marks?.includes('code')) {
+				return (
+					<code
+						key={span._key ?? si}
+						className="rounded-lg bg-neutral-200 px-3 py-1.5 font-mono text-[0.85em] tracking-tight"
+					>
+						{content}
+					</code>
+				);
+			}
+			return <Fragment key={span._key ?? si}>{content}</Fragment>;
+		}),
+	);
+}
 
 export default async function AboutPage() {
 	const profilePicUrl = process.env.PROFILE_PIC_URL ? '/api/profile-pic' : null;
@@ -10,10 +39,13 @@ export default async function AboutPage() {
 	const headline = data?.hero?.headline;
 	const subline = data?.hero?.subline;
 	const stats: string[] = data?.hero?.stats;
-	const storyHeading: string = data?.storyHeading;
+	const storyHeading = renderHeadingBlocks(
+		data?.storyHeading,
+		'The story so far.',
+	);
 	const story: string[] =
 		data?.story && data.story.split(/\n\n+/).filter(Boolean);
-	const skillsHeading: string = data?.skillsHeading;
+	const skillsHeading = renderHeadingBlocks(data?.skillsHeading);
 	const skills: { name: string; tags: string[] }[] = data?.skills;
 
 	return (
