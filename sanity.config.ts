@@ -14,16 +14,13 @@ import { structure } from './sanity/structure';
 
 export default defineConfig({
 	basePath: '/studio',
-	projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-	dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-	// Add and edit the content schema in the './sanity/schemaTypes' folder
+	projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '8ed6gk5o',
+	dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
 	schema,
 	plugins: [
 		structureTool({ structure }),
-		// Vision is for querying with GROQ from inside the Studio
-		// https://www.sanity.io/docs/the-vision-plugin
 		visionTool({
-			defaultApiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION!
+			defaultApiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-03-26'
 		}),
 		presentationTool({
 			previewUrl: {

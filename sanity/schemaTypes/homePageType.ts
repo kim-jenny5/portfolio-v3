@@ -13,8 +13,9 @@ export const homePageType = defineType({
 				defineField({
 					name: 'headlinePrefix',
 					title: 'Headline — before highlight',
-					description: 'Use \\n to create a line break (e.g. "Hi, I\'m Jenny.\\nI design and build interfaces that")',
-					type: 'string',
+					description: 'Press Enter to create a line break.',
+					type: 'text',
+					rows: 2,
 					validation: (rule) => rule.required()
 				}),
 				defineField({

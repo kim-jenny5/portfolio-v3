@@ -9,7 +9,9 @@
       "Bash(pnpm build:*)",
       "mcp__Sanity__list_projects",
       "mcp__Sanity__get_project_studios",
-      "mcp__Sanity__list_datasets"
+      "mcp__Sanity__list_datasets",
+      "mcp__Sanity__whoami",
+      "mcp__Sanity__add_cors_origin"
     ]
   }
 }
