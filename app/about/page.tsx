@@ -89,13 +89,13 @@ export default async function AboutPage() {
 
 						{/* Right: profile photo */}
 						{profilePicUrl && (
-							<div className='shrink-0 mt-8 lg:mt-0 w-full md:max-w-sm lg:max-w-none lg:w-auto self-end lg:self-start'>
+							<div className='img-zoom shrink-0 mt-8 lg:mt-0 w-full md:max-w-sm lg:max-w-none lg:w-auto self-end lg:self-start'>
 								<Image
 									src={profilePicUrl}
 									alt='Jenny Kim'
 									width={276}
 									height={345}
-									className='object-cover w-full aspect-4/3 rounded-xs'
+									className='object-cover w-full aspect-4/3'
 									priority
 								/>
 							</div>

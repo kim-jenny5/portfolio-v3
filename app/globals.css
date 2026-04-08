@@ -201,12 +201,18 @@ img {
 	will-change: transform;
 }
 
-/* Inside links: zoom when hovering anywhere on the link */
-a:hover img {
+/* Image zoom container */
+.img-zoom {
+	overflow: hidden;
+	border-radius: var(--radius-xs);
+}
+.img-zoom img {
+	transition: transform 500ms ease;
+	will-change: transform;
+}
+.img-zoom:hover img {
 	transform: scale(1.05);
 }
-
-/* Standalone images: use .zoom-group on the container + group-hover:scale-105 on the img */
 
 @keyframes shake {
 	0%,

@@ -135,17 +135,16 @@ function SideProjectRow({ project }: { project: SideProject }) {
 				className='group flex items-center gap-8 py-7 max-md:gap-6 max-md:py-6 max-sm:gap-4 max-sm:py-5'
 			>
 				{/* Thumbnail */}
-				<div className='relative shrink-0 w-40 h-[110px] md:w-40 lg:w-40 max-md:w-[120px] max-md:h-20 max-sm:w-[88px] max-sm:h-[60px] bg-neutral-200 overflow-hidden'>
+				<div className='img-zoom shrink-0 w-40 h-[110px] md:w-40 lg:w-40 max-md:w-[120px] max-md:h-20 max-sm:w-[88px] max-sm:h-[60px] bg-neutral-200'>
 					{project.thumbnail ? (
 						<Image
 							src={project.thumbnail}
 							alt={project.thumbnailAlt || project.name}
 							width={160}
 							height={110}
-							className='w-full h-full object-cover grayscale group-hover:scale-105'
+							className='w-full h-full object-cover grayscale'
 						/>
 					) : null}
-					<div className='absolute inset-0 bg-blue-900 opacity-0 group-hover:opacity-20 transition-opacity duration-300' />
 				</div>
 
 				{/* Details */}

@@ -32,16 +32,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
 	return (
 		<Link href={href} className='group flex flex-col gap-6 w-full'>
 			{/* Image */}
-			<div
-				className={`relative w-full overflow-hidden bg-neutral-200 ${aspectClass}`}
-			>
+			<div className={`img-zoom relative w-full bg-neutral-200 ${aspectClass}`}>
 				{project.image ? (
 					<>
 						<Image
 							src={project.image}
 							alt={project.imageAlt || project.title}
 							fill
-							className='object-cover group-hover:scale-105'
+							className='object-cover'
 							sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw'
 						/>
 						{/* Hover overlay */}

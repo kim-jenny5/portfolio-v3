@@ -21,12 +21,12 @@ export default async function WorkPage({ params }: Props) {
 		<section className='w-full'>
 			<div className='max-w-content mx-auto px-6 md:px-8 pt-20 pb-24'>
 				{project.image && (
-					<div className='group relative w-full aspect-[16/9] bg-neutral-200 overflow-hidden mb-12'>
+					<div className='img-zoom relative w-full aspect-[16/9] bg-neutral-200 mb-12'>
 						<Image
 							src={project.image}
 							alt={project.imageAlt || project.title}
 							fill
-							className='object-cover group-hover:scale-105'
+							className='object-cover'
 							priority
 						/>
 					</div>
