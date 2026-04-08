@@ -65,7 +65,8 @@
 	--letter-spacing-wide: 1px;
 
 	/* Max widths */
-	--max-width-content: 1280px;
+	--max-width-layout: 1280px;
+	--max-width-content: 1344px;
 
 	/* shadcn semantic color references */
 	--color-background: var(--background);
@@ -152,7 +153,7 @@
 	   Header navigation item. Active state: blue-500 text + 2px bottom
 	   border. Inactive: blue-900 text, no border. */
 	.nav-link {
-		@apply text-blue-900 text-nav capitalize;
+		@apply text-blue-900 text-nav capitalize transition-colors duration-200 hover:text-blue-500;
 	}
 	.nav-link[aria-current='page'],
 	.nav-link.active {
@@ -163,7 +164,7 @@
 	   Vertical sidebar contact item (Email, LinkedIn, GitHub). Text runs
 	   bottom-to-top via writing-mode + rotation. */
 	.social-link {
-		@apply flex flex-col items-center gap-2 text-blue-500 text-contact uppercase;
+		@apply flex items-center gap-2 text-blue-900 text-contact uppercase transition-colors duration-200 hover:text-blue-500;
 		writing-mode: vertical-rl;
 		transform: rotate(180deg);
 	}

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
+import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 import { TechBadge } from '@/components/TechBadge';
 
 export type SelectedProject = {
@@ -71,7 +71,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 						</div>
 					)}
 				</div>
-				<ArrowUpRight
+				<ArrowUpRightIcon
 					size={16}
 					className='text-blue-900 flex-shrink-0 mt-1 opacity-50 group-hover:opacity-100 transition-opacity duration-200'
 				/>

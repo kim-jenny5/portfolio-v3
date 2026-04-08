@@ -1,8 +1,9 @@
 import { Fragment } from 'react';
 import {
-	EnvelopeSimple,
-	LinkedinLogo,
-	GithubLogo
+	EnvelopeSimpleIcon,
+	LinkedinLogoIcon,
+	GithubLogoIcon,
+	FileTextIcon
 } from '@phosphor-icons/react/dist/ssr';
 
 // Set your social links via environment variables:
@@ -13,39 +14,44 @@ const contactLinks = [
 			? `mailto:${process.env.NEXT_PUBLIC_EMAIL}`
 			: 'mailto:hello@jennykim.design',
 		label: 'Email',
-		Icon: EnvelopeSimple,
+		Icon: EnvelopeSimpleIcon,
 		external: false
 	},
 	{
-		href: process.env.NEXT_PUBLIC_LINKEDIN_URL ?? 'https://linkedin.com/in/jennykim',
+		href: process.env.NEXT_PUBLIC_LINKEDIN_URL,
 		label: 'LinkedIn',
-		Icon: LinkedinLogo,
+		Icon: LinkedinLogoIcon,
 		external: true
 	},
 	{
-		href: process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/jennykim',
+		href: process.env.NEXT_PUBLIC_GITHUB_URL,
 		label: 'GitHub',
-		Icon: GithubLogo,
+		Icon: GithubLogoIcon,
 		external: true
+	},
+	{
+		href: '/resume',
+		label: 'Resume',
+		Icon: FileTextIcon,
+		external: false
 	}
 ];
 
 export function Sidebar() {
 	return (
-		<aside className='hidden lg:flex fixed left-0 top-0 h-screen w-16 z-40 bg-[#f8f8fb] border-r border-neutral-200 flex-col items-center justify-center gap-8'>
+		<aside className='hidden lg:flex fixed left-0 top-0 h-screen w-16 z-40 bg-neutral-50 border-r border-neutral-200 flex-col items-center justify-center gap-8'>
 			{contactLinks.map(({ href, label, Icon, external }, i) => (
-				<Fragment key={href}>
-					{/* Divider between Email and LinkedIn */}
-					{i === 1 && <div className='w-px h-12 bg-neutral-200' />}
+				<Fragment key={label}>
+					{(i === 1 || i === 3) && <div className='w-px h-12 bg-neutral-200' />}
 					<a
 						href={href}
-						className='social-link hover:text-blue-900 transition-colors duration-200'
+						className='social-link'
 						{...(external
 							? { target: '_blank', rel: 'noopener noreferrer' }
 							: {})}
 					>
-						<Icon size={14} weight='bold' />
 						{label}
+						<Icon size={14} weight='bold' className='rotate-180' />
 					</a>
 				</Fragment>
 			))}

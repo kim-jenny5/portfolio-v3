@@ -41,7 +41,7 @@ export default async function RootLayout({
 			<body className='min-h-full flex flex-col bg-neutral-50'>
 				<Header />
 				<Sidebar />
-				<main className='pt-[68px] flex-1'>{children}</main>
+				<main className='pt-[68px] flex-1 lg:ml-16'>{children}</main>
 				<Footer />
 				<SanityLive />
 				{isEnabled && <VisualEditing />}

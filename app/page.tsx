@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
+import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 import { sanityFetch } from '@/sanity/lib/live';
 import { SELECTED_PROJECTS_QUERY, SIDE_PROJECTS_QUERY } from '@/sanity/queries';
 import { ProjectCard, type SelectedProject } from '@/components/ProjectCard';
@@ -28,28 +28,21 @@ const GRID_CONFIG: Record<number, string> = {
 function HeroSection() {
 	return (
 		<section className='w-full bg-neutral-50'>
-			<div className='max-w-content mx-auto px-16 max-md:px-8 max-sm:px-6 pt-20 max-md:pt-14 max-sm:pt-10'>
+			{/* <div className='max-w-content mx-auto px-6 md:px-8 2xl:px-0 pt-20 max-md:pt-14 max-sm:pt-10'> */}
+			<div className='max-w-content mx-auto px-6 md:px-8 pt-20 max-md:pt-14 max-sm:pt-10 text-red-500'>
 				<div className='max-w-[916px] relative'>
-					{/* Decorative rectangles — desktop only, behind h1 text */}
-					<span
-						aria-hidden='true'
-						className='hidden md:block absolute top-[2px] left-0 w-[444px] h-[60px] bg-lavender-50 -z-10'
-					/>
-					<span
-						aria-hidden='true'
-						className='hidden md:block absolute top-[60px] left-[220px] w-[260px] h-[60px] bg-lavender-50 -z-10'
-					/>
-
 					<h1 className='relative font-manrope font-[800] text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] tracking-[-2px] lg:tracking-[-3.6px] text-blue-900'>
 						Hi, I&apos;m Jenny.
-						<br />
-						I design and build interfaces that make things easier to understand.
+						<br />I design and build interfaces that{' '}
+						<span className='[background:linear-gradient(transparent_0.2em,var(--color-lavender-50)_0.2em)] [box-decoration-break:clone]'>
+							make things easier to understand.
+						</span>
 					</h1>
 				</div>
 
 				<p className='mt-[30px] pb-20 max-md:pb-16 max-sm:pb-12 font-inter text-base leading-[1.6] text-blue-800 max-w-[768px]'>
-					Building thoughtful, high-fidelity interfaces shaped by usability, structure, and
-					collaboration.
+					Building thoughtful, high-fidelity interfaces shaped by usability,
+					structure, and collaboration.
 				</p>
 			</div>
 		</section>
@@ -58,11 +51,14 @@ function HeroSection() {
 
 // ── Selected Projects ──────────────────────────────────────────────────────
 
-function SelectedProjectsSection({ projects }: { projects: SelectedProject[] }) {
+function SelectedProjectsSection({
+	projects
+}: {
+	projects: SelectedProject[];
+}) {
 	return (
 		<section className='w-full bg-neutral-100'>
-			<div className='max-w-content mx-auto px-16 max-md:px-8 max-sm:px-6 py-24 max-md:py-16 max-sm:py-12'>
-				{/* Header */}
+			<div className='max-w-content mx-auto px-6 md:px-8 py-24 max-md:py-16 max-sm:py-12'>
 				<div className='flex justify-between items-baseline mb-12'>
 					<h2 className='font-manrope font-bold text-[32px] tracking-tighter text-blue-900'>
 						Selected Projects
@@ -81,10 +77,7 @@ function SelectedProjectsSection({ projects }: { projects: SelectedProject[] }) 
 					className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 lg:grid-cols-12 lg:gap-8'
 				>
 					{projects.map((project) => (
-						<div
-							key={project._id}
-							className={GRID_CONFIG[project.order] ?? ''}
-						>
+						<div key={project._id} className={GRID_CONFIG[project.order] ?? ''}>
 							<ProjectCard project={project} />
 						</div>
 					))}
@@ -135,7 +128,7 @@ function SideProjectRow({ project }: { project: SideProject }) {
 
 				{/* Arrow */}
 				<div className='ml-auto shrink-0 pl-6 opacity-50 group-hover:opacity-100 transition-opacity duration-200'>
-					<ArrowUpRight size={14} className='text-blue-900' />
+					<ArrowUpRightIcon size={14} className='text-blue-900' />
 				</div>
 			</a>
 		</li>
@@ -143,11 +136,12 @@ function SideProjectRow({ project }: { project: SideProject }) {
 }
 
 function OtherThingsSection({ projects }: { projects: SideProject[] }) {
-	const githubUrl = process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/jennykim';
+	const githubUrl =
+		process.env.NEXT_PUBLIC_GITHUB_URL ?? 'https://github.com/jennykim';
 
 	return (
 		<section className='w-full bg-neutral-50'>
-			<div className='max-w-content mx-auto px-16 max-md:px-8 max-sm:px-6 py-24 max-md:py-16 max-sm:py-12'>
+			<div className='max-w-content mx-auto px-6 md:px-8 py-24 max-md:py-16 max-sm:py-12'>
 				{/* Header */}
 				<div className='flex flex-col gap-2 mb-12'>
 					<span className='font-inter font-bold text-xs uppercase tracking-wide text-blue-500'>
@@ -184,13 +178,19 @@ function OtherThingsSection({ projects }: { projects: SideProject[] }) {
 // ── Page ───────────────────────────────────────────────────────────────────
 
 export default async function Home() {
-	const { data: selectedProjects } = await sanityFetch({ query: SELECTED_PROJECTS_QUERY });
-	const { data: sideProjects } = await sanityFetch({ query: SIDE_PROJECTS_QUERY });
+	const { data: selectedProjects } = await sanityFetch({
+		query: SELECTED_PROJECTS_QUERY
+	});
+	const { data: sideProjects } = await sanityFetch({
+		query: SIDE_PROJECTS_QUERY
+	});
 
 	return (
 		<>
 			<HeroSection />
-			<SelectedProjectsSection projects={(selectedProjects as SelectedProject[]) ?? []} />
+			<SelectedProjectsSection
+				projects={(selectedProjects as SelectedProject[]) ?? []}
+			/>
 			<div className='border-t border-[#e0e0e9]' />
 			<OtherThingsSection projects={(sideProjects as SideProject[]) ?? []} />
 		</>

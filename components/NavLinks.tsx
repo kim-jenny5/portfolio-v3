@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
+import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 
 const links = [
 	{ href: '/', label: 'Work' },
@@ -22,7 +22,9 @@ const socials = [
 	},
 	{
 		label: 'LinkedIn',
-		href: process.env.NEXT_PUBLIC_LINKEDIN_URL ?? 'https://linkedin.com/in/jennykim',
+		href:
+			process.env.NEXT_PUBLIC_LINKEDIN_URL ??
+			'https://linkedin.com/in/jennykim',
 		external: true
 	},
 	{
@@ -34,7 +36,13 @@ const socials = [
 
 // ── Mobile menu ────────────────────────────────────────────────────────────
 
-function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+function MobileMenu({
+	isOpen,
+	onClose
+}: {
+	isOpen: boolean;
+	onClose: () => void;
+}) {
 	const pathname = usePathname();
 	const [animating, setAnimating] = useState(false);
 	const [visible, setVisible] = useState(false);
@@ -140,7 +148,7 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 								>
 									{label}
 								</span>
-								<ArrowUpRight
+								<ArrowUpRightIcon
 									size={20}
 									className='text-blue-900 opacity-40 group-hover:opacity-100 transition-opacity duration-200'
 								/>
