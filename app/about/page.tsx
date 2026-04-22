@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Fragment } from 'react';
 import { sanityFetch } from '@/sanity/lib/live';
 import { ABOUT_PAGE_QUERY } from '@/sanity/queries';
+import { urlFor } from '@/sanity/lib/image';
 import { TechBadge } from '@/components/TechBadge';
 
 type PtBlock = {
@@ -33,8 +34,10 @@ function renderHeadingBlocks(
 }
 
 export default async function AboutPage() {
-	const profilePicUrl = process.env.PROFILE_PIC_URL ? '/api/profile-pic' : null;
 	const { data } = await sanityFetch({ query: ABOUT_PAGE_QUERY });
+	const profileImage = data?.profileImage
+		? urlFor(data.profileImage).width(552).height(690).fit('crop').url()
+		: null;
 
 	const headline = data?.hero?.headline;
 	const subline = data?.hero?.subline;
@@ -91,11 +94,11 @@ export default async function AboutPage() {
 						</div>
 
 						{/* Right: profile photo */}
-						{profilePicUrl && (
+						{profileImage && (
 							<div className="img-zoom mt-8 w-full shrink-0 self-end md:max-w-sm lg:mt-0 lg:w-auto lg:max-w-none lg:self-start">
 								<Image
-									src={profilePicUrl}
-									alt="Jenny Kim"
+									src={profileImage}
+									alt={data.profileImage?.alt ?? 'Jenny Kim'}
 									width={276}
 									height={345}
 									className="aspect-4/3 w-full object-cover"
