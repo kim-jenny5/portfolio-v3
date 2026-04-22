@@ -17,7 +17,16 @@
       "Bash(source ~/.nvm/nvm.sh)",
       "Bash(nvm ls:*)",
       "Bash(nvm use:*)",
-      "Bash(npx sanity:*)"
+      "Bash(npx sanity:*)",
+      "mcp__Sanity__get_schema",
+      "mcp__Sanity__query_documents",
+      "mcp__Sanity__create_documents_from_json",
+      "Bash(grep -r uploadSchema node_modules/.pnpm/@sanity+cli*/node_modules/@sanity/cli/)",
+      "Bash(find node_modules/.pnpm -path *@sanity+cli* -name *.js)",
+      "Bash(grep -o uploadSchema[^]* node_modules/.pnpm/@sanity+cli@4.22.0_@types+node@20.19.37_lightningcss@1.32.0_react@19.2.4_typescript@5.9.3_yaml@2.8.3/node_modules/@sanity/cli/lib/_chunks-cjs/cli.js)",
+      "Bash(node:*)",
+      "Bash(find node_modules -path */sanity/_internal*)",
+      "Bash(find node_modules/.pnpm -path */sanity/lib/_internal*)"
     ]
   }
 }

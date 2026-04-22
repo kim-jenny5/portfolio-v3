@@ -5,26 +5,62 @@ export const projectType = defineType({
 	title: 'Project',
 	type: 'document',
 	fields: [
-		// ── Homepage card ──────────────────────────────────────────────────────
+		// ── Identity ────────────────────────────────────────────────────────────
 		defineField({
 			name: 'title',
 			title: 'Title',
 			type: 'string',
-			validation: (rule) => rule.required(),
+			validation: (r) => r.required(),
 		}),
+
 		defineField({
 			name: 'slug',
 			title: 'Slug',
 			type: 'slug',
 			options: { source: 'title' },
-			validation: (rule) => rule.required(),
+			validation: (r) => r.required(),
 		}),
+
+		defineField({
+			name: 'projectNumber',
+			title: 'Project Number',
+			type: 'string',
+		}),
+
+		defineField({
+			name: 'status',
+			title: 'Status',
+			type: 'string',
+			options: {
+				list: ['shipped', 'unshipped', 'in-progress', 'speculative'],
+				layout: 'radio',
+			},
+		}),
+
+		defineField({
+			name: 'projectType',
+			title: 'Project Type',
+			type: 'string',
+			options: {
+				list: [
+					'professional',
+					'freelance',
+					'personal',
+					'open-source',
+					'speculative',
+				],
+				layout: 'radio',
+			},
+		}),
+
+		// ── Card / listing ──────────────────────────────────────────────────────
 		defineField({
 			name: 'description',
 			title: 'Short Description',
 			type: 'string',
-			validation: (rule) => rule.required().max(160),
+			validation: (r) => r.required().max(160),
 		}),
+
 		defineField({
 			name: 'tags',
 			title: 'Tags',
@@ -32,6 +68,7 @@ export const projectType = defineType({
 			of: [{ type: 'string' }],
 			options: { layout: 'tags' },
 		}),
+
 		defineField({
 			name: 'coverImage',
 			title: 'Cover Image',
@@ -39,37 +76,46 @@ export const projectType = defineType({
 			options: { hotspot: true },
 		}),
 
-		// ── Project hero ───────────────────────────────────────────────────────
-		defineField({
-			name: 'projectNumber',
-			title: 'Project Number',
-			type: 'string',
-		}),
-		defineField({
-			name: 'category',
-			title: 'Category',
-			type: 'string',
-		}),
+		// ── Hero ────────────────────────────────────────────────────────────────
+		defineField({ name: 'category', title: 'Category', type: 'string' }),
+
 		defineField({
 			name: 'subtitle',
-			title: 'Subtitle',
+			title: 'Subtitle / Lede',
 			type: 'text',
 			rows: 3,
 		}),
-		// ── Overview bar ───────────────────────────────────────────────────────
+
 		defineField({
-			name: 'overview',
-			title: 'Overview',
+			name: 'demonstrates',
+			title: 'What This Project Demonstrates',
+			description:
+				'1–3 short phrases — e.g. "Component architecture", "Interaction design under constraints"',
+			type: 'array',
+			of: [{ type: 'string' }],
+			options: { layout: 'tags' },
+		}),
+
+		// ── Snapshot metadata ───────────────────────────────────────────────────
+		defineField({
+			name: 'snapshot',
+			title: 'Project Snapshot',
 			type: 'object',
 			fields: [
+				defineField({ name: 'role', title: 'My Role', type: 'string' }),
+				defineField({ name: 'timeline', title: 'Timeline', type: 'string' }),
 				defineField({
-					name: 'timeline',
-					title: 'Timeline',
-					type: 'string',
+					name: 'stack',
+					title: 'Stack / Technologies',
+					description: 'Frameworks, libraries, languages — the actual tech',
+					type: 'array',
+					of: [{ type: 'string' }],
+					options: { layout: 'tags' },
 				}),
 				defineField({
 					name: 'tools',
 					title: 'Tools',
+					description: 'Design, dev, CMS, and workflow tools',
 					type: 'array',
 					of: [{ type: 'string' }],
 					options: { layout: 'tags' },
@@ -99,22 +145,77 @@ export const projectType = defineType({
 			],
 		}),
 
-		// ── Case study body ────────────────────────────────────────────────────
+		// ── Structured case study sections ──────────────────────────────────────
+		// These are the opinionated sections for engineering case studies.
+		// Keeping them as typed top-level fields (not just freeform sections)
+		// means the content stays consistent across projects.
+
+		defineField({
+			name: 'problem',
+			title: 'The Problem',
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		defineField({
+			name: 'constraints',
+			title: 'Constraints',
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		defineField({
+			name: 'approach',
+			title: 'My Approach',
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		defineField({
+			name: 'interactionAndUI',
+			title: 'Interaction and UI Decisions',
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		defineField({
+			name: 'implementation',
+			title: 'Implementation Details',
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		defineField({
+			name: 'outcome',
+			title: 'Outcome / Impact',
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		defineField({
+			name: 'reflection',
+			title: "What I'd Improve Next",
+			type: 'array',
+			of: [{ type: 'block' }],
+		}),
+
+		// ── Optional overflow ────────────────────────────────────────────────────
+		// For supplemental content, media callouts, code snippets, etc.
+		// that don't fit neatly into the structured sections above.
 		defineField({
 			name: 'sections',
-			title: 'Case Study Sections',
+			title: 'Additional Sections',
 			type: 'array',
 			of: [
 				{
 					type: 'object',
 					name: 'section',
-					title: 'Section',
 					fields: [
 						defineField({
 							name: 'title',
 							title: 'Section Title',
 							type: 'string',
-							validation: (rule) => rule.required(),
+							validation: (r) => r.required(),
 						}),
 						defineField({
 							name: 'body',
