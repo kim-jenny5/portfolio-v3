@@ -78,6 +78,13 @@ export const selectedProject = defineType({
 			group: 'detail',
 		}),
 		defineField({
+			name: 'company',
+			title: 'Company',
+			type: 'string',
+			description: 'The company this project was done for, if applicable.',
+			group: 'detail',
+		}),
+		defineField({
 			name: 'status',
 			title: 'Status',
 			type: 'string',
@@ -124,6 +131,7 @@ export const selectedProject = defineType({
 			fields: [
 				defineField({ name: 'role', title: 'My Role', type: 'string' }),
 				defineField({ name: 'timeline', title: 'Timeline', type: 'string' }),
+				defineField({ name: 'platform', title: 'Platform', type: 'string' }),
 				defineField({
 					name: 'stack',
 					title: 'Stack',
@@ -149,80 +157,53 @@ export const selectedProject = defineType({
 				}),
 			],
 		}),
+
+		// ── Unified content array ─────────────────────────────────────────────────
+		// Items are either a contentSection (numbered, titled section) or a top-level imageBlock
 		defineField({
-			name: 'problem',
-			title: 'The Problem',
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'constraints',
-			title: 'Constraints',
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'approach',
-			title: 'My Approach',
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'interactionAndUI',
-			title: 'Interaction and UI Decisions',
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'implementation',
-			title: 'Implementation Details',
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'outcome',
-			title: 'Outcome / Impact',
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'reflection',
-			title: "What I'd Improve Next",
-			type: 'array',
-			of: [{ type: 'block' }],
-			group: 'detail',
-		}),
-		defineField({
-			name: 'sections',
-			title: 'Additional Sections',
+			name: 'content',
+			title: 'Content',
 			type: 'array',
 			group: 'detail',
 			of: [
 				{
 					type: 'object',
-					name: 'section',
+					name: 'contentSection',
+					title: 'Content Section',
 					fields: [
 						defineField({
 							name: 'title',
 							title: 'Section Title',
 							type: 'string',
+							options: {
+								list: [
+									{ title: 'The Problem', value: 'The Problem' },
+									{ title: 'Constraints', value: 'Constraints' },
+									{ title: 'My Approach', value: 'My Approach' },
+									{ title: 'Interaction & UI Decisions', value: 'Interaction & UI Decisions' },
+									{ title: 'Implementation Details', value: 'Implementation Details' },
+									{ title: 'Outcome', value: 'Outcome' },
+									{ title: 'Reflections', value: 'Reflections' },
+								],
+							},
 							validation: (r) => r.required(),
 						}),
 						defineField({
-							name: 'body',
-							title: 'Body',
+							name: 'content',
+							title: 'Content',
 							type: 'array',
-							of: [{ type: 'block' }],
+							of: [
+								{ type: 'block' },
+								{ type: 'accentCardGroup' },
+								{ type: 'titleCardGroup' },
+								{ type: 'statCardGroup' },
+								{ type: 'inlineImage' },
+							],
 						}),
 					],
 					preview: { select: { title: 'title' } },
 				},
+				{ type: 'imageBlock' },
 			],
 		}),
 	],

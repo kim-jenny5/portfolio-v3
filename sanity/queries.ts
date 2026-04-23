@@ -15,7 +15,47 @@ export const WORK_PROJECT_QUERY = groq`
     tags,
     "image": image.asset->url,
     "imageAlt": image.alt,
-    order
+    order,
+    projectNumber,
+    company,
+    status,
+    projectType,
+    description,
+    category,
+    snapshot {
+      role,
+      timeline,
+      platform,
+      stack,
+      links[] { label, url }
+    },
+    content[] {
+      ...,
+      _type == 'contentSection' => {
+        _type,
+        _key,
+        title,
+        content[] {
+          ...,
+          _type == 'inlineImage' => {
+            _type,
+            _key,
+            caption,
+            image { ..., asset-> }
+          }
+        }
+      },
+      _type == 'imageBlock' => {
+        _type,
+        _key,
+        layout,
+        bg,
+        heading,
+        headingBody,
+        imageBody,
+        image { ..., asset-> }
+      }
+    }
   }
 `;
 

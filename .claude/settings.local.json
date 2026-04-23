@@ -34,7 +34,13 @@
       "Bash(sed -i '' 's/export const homePageType/export const homePage/' /Users/yunjeonk/Development/personal/portfolio-v3/sanity/schema/homePage.tsx)",
       "Bash(sed -i '' 's/export const aboutPageType/export const aboutPage/' /Users/yunjeonk/Development/personal/portfolio-v3/sanity/schema/aboutPage.ts)",
       "Bash(sed -i '' 's/export const selectedProjectType/export const selectedProject/' /Users/yunjeonk/Development/personal/portfolio-v3/sanity/schema/selectedProject.ts)",
-      "Bash(sed -i '' 's/export const sideProjectType/export const sideProject/' /Users/yunjeonk/Development/personal/portfolio-v3/sanity/schema/sideProject.ts)"
+      "Bash(sed -i '' 's/export const sideProjectType/export const sideProject/' /Users/yunjeonk/Development/personal/portfolio-v3/sanity/schema/sideProject.ts)",
+      "Bash(grep -E \"\\\\.\\(json|js|ts|yml|yaml\\)$\")",
+      "Bash(xargs ls:*)",
+      "Bash(xargs cat:*)",
+      "mcp__claude_ai_Figma__get_design_context",
+      "Bash(npx tsc:*)",
+      "Bash(cat -A /Users/yunjeonk/Development/personal/portfolio-v3/app/work/[slug]/page.tsx)"
     ]
   }
 }
