@@ -40,7 +40,9 @@
       "Bash(xargs cat:*)",
       "mcp__claude_ai_Figma__get_design_context",
       "Bash(npx tsc:*)",
-      "Bash(cat -A /Users/yunjeonk/Development/personal/portfolio-v3/app/work/[slug]/page.tsx)"
+      "Bash(cat -A /Users/yunjeonk/Development/personal/portfolio-v3/app/work/[slug]/page.tsx)",
+      "mcp__claude_ai_Figma__get_screenshot",
+      "mcp__claude_ai_Figma__get_metadata"
     ]
   }
 }

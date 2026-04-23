@@ -124,6 +124,14 @@ export const SELECTED_PROJECTS_QUERY = groq`
   }
 `;
 
+export const ALL_PROJECTS_NAV_QUERY = groq`
+  *[_type == "selectedProject"] | order(projectNumber asc) {
+    "slug": slug.current,
+    title,
+    projectNumber
+  }
+`;
+
 export const SIDE_PROJECTS_QUERY = groq`
   *[_type == "sideProject"] | order(publishedAt desc) {
     _id,

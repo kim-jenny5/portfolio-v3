@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { sanityFetch } from '@/sanity/lib/live';
-import { WORK_PROJECT_QUERY } from '@/sanity/queries';
+import { WORK_PROJECT_QUERY, ALL_PROJECTS_NAV_QUERY } from '@/sanity/queries';
 import { urlFor } from '@/sanity/lib/image';
 import { AccentCard } from '@/components/cards/AccentCard';
 import { TitleCard } from '@/components/cards/TitleCard';
 import { StatCard } from '@/components/cards/StatCard';
 import { ImageBlock } from '@/components/ImageBlock';
+import { ProjectNav } from '@/components/ProjectNav';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -288,12 +289,21 @@ type ContentItem =
 
 export default async function WorkPage({ params }: Props) {
 	const { slug } = await params;
-	const { data: p } = await sanityFetch({
-		query: WORK_PROJECT_QUERY,
-		params: { slug },
-	});
+	const [{ data: p }, { data: allProjects }] = await Promise.all([
+		sanityFetch({ query: WORK_PROJECT_QUERY, params: { slug } }),
+		sanityFetch({ query: ALL_PROJECTS_NAV_QUERY }),
+	]);
 
 	if (!p) notFound();
+
+	const currentIndex = allProjects?.findIndex(
+		(proj: { slug: string }) => proj.slug === slug,
+	) ?? -1;
+	const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+	const nextProject =
+		currentIndex !== -1 && currentIndex < allProjects.length - 1
+			? allProjects[currentIndex + 1]
+			: null;
 
 	const typeLabel = p.projectType
 		? p.projectType.charAt(0).toUpperCase() + p.projectType.slice(1)
@@ -454,6 +464,9 @@ export default async function WorkPage({ params }: Props) {
 
 				return null;
 			})}
+
+			{/* ── Project navigation ────────────────────────────────────────── */}
+			<ProjectNav prev={prevProject} next={nextProject} />
 		</>
 	);
 }
