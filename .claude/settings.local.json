@@ -42,7 +42,9 @@
       "Bash(npx tsc:*)",
       "Bash(cat -A /Users/yunjeonk/Development/personal/portfolio-v3/app/work/[slug]/page.tsx)",
       "mcp__claude_ai_Figma__get_screenshot",
-      "mcp__claude_ai_Figma__get_metadata"
+      "mcp__claude_ai_Figma__get_metadata",
+      "Bash(find /Users/yunjeonk/Development/personal/portfolio-v3/public -name *.html)",
+      "Bash(grep:*)"
     ]
   }
 }

@@ -8,6 +8,7 @@ import { TitleCard } from '@/components/cards/TitleCard';
 import { StatCard } from '@/components/cards/StatCard';
 import { ImageBlock } from '@/components/ImageBlock';
 import { ProjectNav } from '@/components/ProjectNav';
+import { NewsletterPreview } from '@/components/NewsletterPreview';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -43,6 +44,8 @@ type PtBlock = {
 		alt?: string;
 		hotspot?: unknown;
 	};
+	// newsletterPreview shape
+	brands?: import('@/components/NewsletterPreview').NewsletterBrand[];
 };
 
 // ── Portable Text renderer ────────────────────────────────────────────────────
@@ -183,6 +186,11 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 					);
 				}
 
+				// ── Newsletter preview ────────────────────────────────────────
+				if (block._type === 'newsletterPreview') {
+					return <NewsletterPreview key={block._key ?? i} brands={block.brands} />;
+				}
+
 				// ── Standard blocks ──────────────────────────────────────────
 				if (block._type !== 'block') return null;
 
@@ -285,7 +293,8 @@ type ContentItem =
 			heading?: string;
 			headingBody?: string;
 			imageBody?: string;
-	  };
+	  }
+	| { _type: 'newsletterPreview'; _key?: string; brands?: import('@/components/NewsletterPreview').NewsletterBrand[] };
 
 export default async function WorkPage({ params }: Props) {
 	const { slug } = await params;
@@ -296,9 +305,9 @@ export default async function WorkPage({ params }: Props) {
 
 	if (!p) notFound();
 
-	const currentIndex = allProjects?.findIndex(
-		(proj: { slug: string }) => proj.slug === slug,
-	) ?? -1;
+	const currentIndex =
+		allProjects?.findIndex((proj: { slug: string }) => proj.slug === slug) ??
+		-1;
 	const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
 	const nextProject =
 		currentIndex !== -1 && currentIndex < allProjects.length - 1
@@ -421,6 +430,16 @@ export default async function WorkPage({ params }: Props) {
 
 			{/* ── Content ───────────────────────────────────────────────────────── */}
 			{contentItems.map((item, i) => {
+				if (item._type === 'newsletterPreview') {
+					return (
+						<div key={item._key ?? i} className="bg-white">
+							<div className="mx-auto max-w-content px-6 py-10 sm:py-16 md:px-8">
+								<NewsletterPreview brands={item.brands} />
+							</div>
+						</div>
+					);
+				}
+
 				if (item._type === 'imageBlock') {
 					return (
 						<div

@@ -44,7 +44,6 @@ export function ImageBlock({
 			width={0}
 			height={0}
 			sizes="100vw"
-			// className="m-auto h-auto w-full max-w-3/4"
 			className="m-auto h-auto w-full xl:max-w-3/4"
 		/>
 	);

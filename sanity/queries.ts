@@ -42,6 +42,15 @@ export const WORK_PROJECT_QUERY = groq`
             _key,
             caption,
             image { ..., asset-> }
+          },
+          _type == 'newsletterPreview' => {
+            _type,
+            _key,
+            brands[] {
+              _key,
+              name,
+              "fileUrl": file.asset->url
+            }
           }
         }
       },
@@ -54,6 +63,15 @@ export const WORK_PROJECT_QUERY = groq`
         headingBody,
         imageBody,
         image { ..., asset-> }
+      },
+      _type == 'newsletterPreview' => {
+        _type,
+        _key,
+        brands[] {
+          _key,
+          name,
+          "fileUrl": file.asset->url
+        }
       }
     }
   }
