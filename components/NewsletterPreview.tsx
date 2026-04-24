@@ -8,6 +8,36 @@ export type NewsletterBrand = {
 	fileUrl?: string;
 };
 
+function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
+	return (
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 16 16"
+			fill="none"
+			aria-hidden="true"
+		>
+			{direction === 'left' ? (
+				<path
+					d="M10 3L5 8L10 13"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			) : (
+				<path
+					d="M6 3L11 8L6 13"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			)}
+		</svg>
+	);
+}
+
 export function NewsletterPreview({
 	brands = [],
 }: {
@@ -21,6 +51,7 @@ export function NewsletterPreview({
 	const iframeRef = useRef<HTMLIFrameElement>(null);
 
 	const active = brands.find((b) => b._key === activeKey) ?? brands[0];
+	const currentIndex = brands.findIndex((b) => b._key === activeKey);
 
 	// Fetch HTML whenever the active brand changes
 	useEffect(() => {
@@ -51,7 +82,7 @@ export function NewsletterPreview({
 			const doc = iframeRef.current?.contentDocument;
 			if (doc) setIframeHeight(doc.documentElement.scrollHeight);
 		} catch {
-			// cross-origin fallback — won't happen with srcdoc but guard anyway
+			// guard against cross-origin edge cases
 		}
 	};
 
@@ -60,14 +91,50 @@ export function NewsletterPreview({
 		setIframeHeight(undefined);
 	};
 
+	const goTo = (index: number) => {
+		const wrapped = ((index % brands.length) + brands.length) % brands.length;
+		handleSwitch(brands[wrapped]._key);
+	};
+
 	if (!brands.length) return null;
 
 	const currentHtml = active ? htmlCache[active._key] : undefined;
 
 	return (
-		<div className="flex w-full gap-x-4 overflow-hidden bg-white md:flex-row">
-			{/* ── Tab sidebar ─────────────────────────────────────────────────── */}
-			<div className="flex h-fit shrink-0 flex-col border border-neutral-200 bg-white py-2 md:w-[200px]">
+		<div className="flex h-full w-full flex-col gap-4 overflow-hidden bg-white lg:flex-row">
+			{/* ── Mobile/tablet carousel (hidden on lg+) ──────────────────────── */}
+			<div className="flex items-center border border-neutral-200 bg-white lg:hidden">
+				<button
+					onClick={() => goTo(currentIndex - 1)}
+					aria-label="Previous brand"
+					className="flex h-14 w-14 shrink-0 items-center justify-center text-blue-900/50 transition-colors hover:bg-neutral-100 hover:text-blue-900"
+				>
+					<ChevronIcon direction="left" />
+				</button>
+
+				<div className="flex flex-1 flex-col items-center gap-1 py-3">
+					<span
+						key={activeKey}
+						className="font-inter text-[11px] font-bold tracking-[1px] text-blue-700 uppercase"
+					>
+						{active?.name}
+					</span>
+					<span className="font-inter text-[10px] text-blue-900/40">
+						{currentIndex + 1} / {brands.length}
+					</span>
+				</div>
+
+				<button
+					onClick={() => goTo(currentIndex + 1)}
+					aria-label="Next brand"
+					className="flex h-14 w-14 shrink-0 items-center justify-center text-blue-900/50 transition-colors hover:bg-neutral-100 hover:text-blue-900"
+				>
+					<ChevronIcon direction="right" />
+				</button>
+			</div>
+
+			{/* ── Desktop sidebar (hidden below lg) ───────────────────────────── */}
+			<div className="hidden h-fit w-[200px] shrink-0 flex-col border border-neutral-200 bg-white lg:flex">
 				{brands.map((brand) => {
 					const isActive = brand._key === activeKey;
 					return (
@@ -88,9 +155,8 @@ export function NewsletterPreview({
 			</div>
 
 			{/* ── Preview pane ─────────────────────────────────────────────────── */}
-			<div className="flex h-screen flex-1 flex-col border">
+			<div className="flex max-h-screen flex-1 flex-col border">
 				<div className="flex flex-col overflow-hidden bg-white">
-					{/* Content */}
 					{currentHtml !== undefined ? (
 						<iframe
 							key={activeKey}

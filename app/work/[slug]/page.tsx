@@ -188,7 +188,9 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 
 				// ── Newsletter preview ────────────────────────────────────────
 				if (block._type === 'newsletterPreview') {
-					return <NewsletterPreview key={block._key ?? i} brands={block.brands} />;
+					return (
+						<NewsletterPreview key={block._key ?? i} brands={block.brands} />
+					);
 				}
 
 				// ── Standard blocks ──────────────────────────────────────────
@@ -258,7 +260,7 @@ function Section({
 }) {
 	return (
 		<div className={bg === 'white' ? 'bg-white' : 'bg-neutral-50'}>
-			<div className="mx-auto max-w-content px-6 py-10 sm:py-16 md:px-8">
+			<div className="mx-auto max-w-content px-6 py-10 md:px-8">
 				<div className="mb-10 h-px w-full bg-blue-900 opacity-10" />
 				<div className="flex flex-col lg:flex-row lg:gap-10">
 					<div className="mb-5 shrink-0 lg:mb-0 lg:w-[248px]">
@@ -294,7 +296,11 @@ type ContentItem =
 			headingBody?: string;
 			imageBody?: string;
 	  }
-	| { _type: 'newsletterPreview'; _key?: string; brands?: import('@/components/NewsletterPreview').NewsletterBrand[] };
+	| {
+			_type: 'newsletterPreview';
+			_key?: string;
+			brands?: import('@/components/NewsletterPreview').NewsletterBrand[];
+	  };
 
 export default async function WorkPage({ params }: Props) {
 	const { slug } = await params;
@@ -433,7 +439,8 @@ export default async function WorkPage({ params }: Props) {
 				if (item._type === 'newsletterPreview') {
 					return (
 						<div key={item._key ?? i} className="bg-white">
-							<div className="mx-auto max-w-content px-6 py-10 sm:py-16 md:px-8">
+							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
+								<div className="mb-10 h-px w-full bg-blue-900 opacity-10" />
 								<NewsletterPreview brands={item.brands} />
 							</div>
 						</div>
@@ -452,7 +459,7 @@ export default async function WorkPage({ params }: Props) {
 										: 'bg-neutral-50'
 							}
 						>
-							<div className="mx-auto max-w-content px-6 py-10 sm:py-16 md:px-8">
+							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
 								<ImageBlock
 									layout={item.layout ?? 'imageFull'}
 									image={item.image}
