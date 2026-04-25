@@ -156,7 +156,7 @@ function SideProjectRow({ project }: { project: SideProject }) {
 						{project.description}
 					</p>
 					<div className="flex flex-wrap gap-2">
-						{project.tags.map((tag) => (
+						{project.tags?.map((tag) => (
 							<TechBadge key={tag} label={tag} />
 						))}
 					</div>

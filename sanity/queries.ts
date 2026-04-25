@@ -19,7 +19,7 @@ export const WORK_PROJECT_QUERY = groq`
     projectNumber,
     company,
     status,
-    projectType,
+    "projectType": coalesce(projectType, snapshot.projectType),
     description,
     category,
     snapshot {
