@@ -18,14 +18,12 @@ export const WORK_PROJECT_QUERY = groq`
     order,
     projectNumber,
     company,
-    status,
-    projectType,
     description,
     category,
     snapshot {
       role,
       timeline,
-      platform,
+      projectType,
       stack,
       links[] { label, url }
     },
@@ -155,9 +153,8 @@ export const SIDE_PROJECTS_QUERY = groq`
     _id,
     name,
     description,
-    tags,
     "thumbnail": thumbnail.asset->url,
     "thumbnailAlt": thumbnail.alt,
-    url
+    links[] { label, url }
   }
 `;
