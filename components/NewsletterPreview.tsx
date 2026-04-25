@@ -107,7 +107,7 @@ export function NewsletterPreview({
 				<button
 					onClick={() => goTo(currentIndex - 1)}
 					aria-label="Previous brand"
-					className="flex h-14 w-14 shrink-0 items-center justify-center text-blue-900/50 transition-colors hover:bg-neutral-100 hover:text-blue-900"
+					className="flex h-15 w-15 shrink-0 cursor-pointer items-center justify-center text-blue-900/50 transition-colors hover:bg-neutral-50 hover:text-blue-900"
 				>
 					<ChevronIcon direction="left" />
 				</button>
@@ -127,7 +127,7 @@ export function NewsletterPreview({
 				<button
 					onClick={() => goTo(currentIndex + 1)}
 					aria-label="Next brand"
-					className="flex h-14 w-14 shrink-0 items-center justify-center text-blue-900/50 transition-colors hover:bg-neutral-100 hover:text-blue-900"
+					className="flex h-15 w-15 shrink-0 cursor-pointer items-center justify-center text-blue-900/50 transition-colors hover:bg-neutral-50 hover:text-blue-900"
 				>
 					<ChevronIcon direction="right" />
 				</button>
