@@ -15,13 +15,72 @@ export const WORK_PROJECT_QUERY = groq`
     tags,
     "image": image.asset->url,
     "imageAlt": image.alt,
-    order
+    order,
+    projectNumber,
+    company,
+    status,
+    projectType,
+    description,
+    category,
+    snapshot {
+      role,
+      timeline,
+      platform,
+      stack,
+      links[] { label, url }
+    },
+    content[] {
+      ...,
+      _type == 'contentSection' => {
+        _type,
+        _key,
+        title,
+        content[] {
+          ...,
+          _type == 'inlineImage' => {
+            _type,
+            _key,
+            caption,
+            image { ..., asset-> }
+          },
+          _type == 'newsletterPreview' => {
+            _type,
+            _key,
+            brands[] {
+              _key,
+              name,
+              "fileUrl": file.asset->url
+            }
+          }
+        }
+      },
+      _type == 'imageBlock' => {
+        _type,
+        _key,
+        layout,
+        bg,
+        heading,
+        headingBody,
+        imageBody,
+        image { ..., asset-> }
+      },
+      _type == 'newsletterPreview' => {
+        _type,
+        _key,
+        brands[] {
+          _key,
+          name,
+          "fileUrl": file.asset->url
+        }
+      }
+    }
   }
 `;
 
 export const ABOUT_PAGE_QUERY = groq`
   *[_type == "aboutPage" && _id == "aboutPage"][0] {
     hero { headline, subline, stats },
+    profileImage,
     storyHeading,
     story,
     skillsHeading,
@@ -80,6 +139,14 @@ export const SELECTED_PROJECTS_QUERY = groq`
     "image": image.asset->url,
     "imageAlt": image.alt,
     order
+  }
+`;
+
+export const ALL_PROJECTS_NAV_QUERY = groq`
+  *[_type == "selectedProject"] | order(projectNumber asc) {
+    "slug": slug.current,
+    title,
+    projectNumber
   }
 `;
 
