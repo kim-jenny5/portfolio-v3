@@ -18,14 +18,12 @@ export const WORK_PROJECT_QUERY = groq`
     order,
     projectNumber,
     company,
-    status,
-    projectType,
     description,
     category,
     snapshot {
       role,
       timeline,
-      platform,
+      projectType,
       stack,
       links[] { label, url }
     },

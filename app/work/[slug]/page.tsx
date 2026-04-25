@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 import { sanityFetch } from '@/sanity/lib/live';
 import { WORK_PROJECT_QUERY, ALL_PROJECTS_NAV_QUERY } from '@/sanity/queries';
 import { urlFor } from '@/sanity/lib/image';
@@ -320,8 +321,9 @@ export default async function WorkPage({ params }: Props) {
 			? allProjects[currentIndex + 1]
 			: null;
 
-	const typeLabel = p.projectType
-		? p.projectType.charAt(0).toUpperCase() + p.projectType.slice(1)
+	const typeLabel = p.snapshot?.projectType
+		? p.snapshot.projectType.charAt(0).toUpperCase() +
+			p.snapshot.projectType.slice(1)
 		: null;
 	const stackStr = p.snapshot?.stack?.join(', ') ?? null;
 
@@ -416,9 +418,10 @@ export default async function WorkPage({ params }: Props) {
 													href={l.url}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="tag"
+													className="tag inline-flex items-center gap-1"
 												>
-													{l.label} ↗
+													{l.label}
+													<ArrowUpRightIcon size={11} />
 												</a>
 											))}
 										</div>

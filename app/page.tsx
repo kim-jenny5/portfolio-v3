@@ -131,7 +131,7 @@ function LinkBadge({ label, url }: { label: string; url: string }) {
 			rel="noopener noreferrer"
 			className="inline-flex items-center gap-1 border border-neutral-200 bg-white px-2 py-1.5 text-blue-900 transition-colors duration-200 hover:bg-lavender-50 hover:text-blue-500"
 		>
-			<span className="font-inter text-[11px] font-bold tracking-wide uppercase">
+			<span className="font-inter text-xs font-bold tracking-wide uppercase">
 				{label}
 			</span>
 			<ArrowUpRightIcon size={11} />

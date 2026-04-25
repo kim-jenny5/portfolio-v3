@@ -85,32 +85,6 @@ export const selectedProject = defineType({
 			group: 'detail',
 		}),
 		defineField({
-			name: 'status',
-			title: 'Status',
-			type: 'string',
-			options: {
-				list: ['shipped', 'unshipped', 'in-progress', 'speculative'],
-				layout: 'radio',
-			},
-			group: 'detail',
-		}),
-		defineField({
-			name: 'projectType',
-			title: 'Project Type',
-			type: 'string',
-			options: {
-				list: [
-					'professional',
-					'freelance',
-					'personal',
-					'open-source',
-					'speculative',
-				],
-				layout: 'radio',
-			},
-			group: 'detail',
-		}),
-		defineField({
 			name: 'description',
 			title: 'Short Description',
 			type: 'string',
@@ -131,7 +105,15 @@ export const selectedProject = defineType({
 			fields: [
 				defineField({ name: 'role', title: 'My Role', type: 'string' }),
 				defineField({ name: 'timeline', title: 'Timeline', type: 'string' }),
-				defineField({ name: 'platform', title: 'Platform', type: 'string' }),
+				defineField({
+					name: 'projectType',
+					title: 'Project Type',
+					type: 'string',
+					options: {
+						list: ['professional', 'freelance', 'personal', 'open-source', 'speculative'],
+						layout: 'radio',
+					},
+				}),
 				defineField({
 					name: 'stack',
 					title: 'Stack',
