@@ -155,9 +155,8 @@ export const SIDE_PROJECTS_QUERY = groq`
     _id,
     name,
     description,
-    tags,
     "thumbnail": thumbnail.asset->url,
     "thumbnailAlt": thumbnail.alt,
-    url
+    links[] { label, url }
   }
 `;

@@ -9,16 +9,14 @@ import {
 	SIDE_PROJECTS_QUERY,
 } from '@/sanity/queries';
 import { ProjectCard, type SelectedProject } from '@/components/ProjectCard';
-import { TechBadge } from '@/components/TechBadge';
 
 type SideProject = {
 	_id: string;
 	name: string;
 	description: string;
-	tags: string[];
 	thumbnail?: string;
 	thumbnailAlt?: string;
-	url: string;
+	links: { label: string; url: string }[];
 };
 
 const GRID_CONFIG: Record<number, string> = {
@@ -125,48 +123,58 @@ function SelectedProjectsSection({
 
 // ── Other Things ───────────────────────────────────────────────────────────
 
+function LinkBadge({ label, url }: { label: string; url: string }) {
+	return (
+		<a
+			href={url}
+			target="_blank"
+			rel="noopener noreferrer"
+			className="inline-flex items-center gap-1 border border-neutral-200 bg-white px-2 py-1.5 text-blue-900 transition-colors duration-200 hover:bg-lavender-50 hover:text-blue-500"
+		>
+			<span className="font-inter text-[11px] font-bold tracking-wide uppercase">
+				{label}
+			</span>
+			<ArrowUpRightIcon size={11} />
+		</a>
+	);
+}
+
 function SideProjectRow({ project }: { project: SideProject }) {
 	return (
-		<li className="border-b border-[#e0e0e9] first:border-t first:border-[#e0e0e9]">
-			<a
-				href={project.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				className="group flex items-center gap-8 py-7 max-md:gap-6 max-md:py-6 max-sm:gap-4 max-sm:py-5"
-			>
+		<li className="border-b border-neutral-200 first:border-t first:border-neutral-200">
+			<div className="flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:gap-6 sm:py-6 md:gap-8 md:py-7">
 				{/* Thumbnail */}
-				<div className="img-zoom h-[110px] w-40 shrink-0 bg-neutral-200 max-md:h-20 max-md:w-[120px] max-sm:h-[60px] max-sm:w-[88px] md:w-40 lg:w-40">
+				<div className="aspect-[3/2] w-full shrink-0 bg-neutral-200 sm:w-[160px] md:w-1/3 md:max-w-[280px]">
 					{project.thumbnail ? (
 						<Image
 							src={project.thumbnail}
 							alt={project.thumbnailAlt || project.name}
-							width={160}
-							height={110}
-							className="h-full w-full object-cover grayscale"
+							width={280}
+							height={187}
+							className="h-full w-full rounded object-cover grayscale"
 						/>
 					) : null}
 				</div>
 
 				{/* Details */}
-				<div className="flex min-w-0 flex-1 flex-col gap-1.5">
-					<p className="font-manrope text-[18px] font-bold tracking-[-0.5px] text-blue-900 uppercase transition-colors duration-200 group-hover:text-blue-500">
-						{project.name}
-					</p>
-					<p className="truncate font-inter text-base text-blue-800">
-						{project.description}
-					</p>
-					<div className="flex flex-wrap gap-2">
-						{project.tags.map((tag) => (
-							<TechBadge key={tag} label={tag} />
-						))}
+				<div className="flex min-w-0 flex-1 flex-col gap-3 xl:max-w-1/2">
+					<div className="flex flex-col gap-1.5">
+						<p className="font-manrope text-[18px] font-bold tracking-[-0.5px] text-blue-900 uppercase">
+							{project.name}
+						</p>
+						<p className="font-inter text-base leading-relaxed text-blue-800">
+							{project.description}
+						</p>
 					</div>
+					{project.links?.length > 0 && (
+						<div className="flex flex-wrap gap-2">
+							{project.links.map((link) => (
+								<LinkBadge key={link.label} label={link.label} url={link.url} />
+							))}
+						</div>
+					)}
 				</div>
-
-				{/* Arrow */}
-				<div className="ml-auto shrink-0 pl-6 opacity-50 transition-opacity duration-200 group-hover:opacity-100">
-					<ArrowUpRightIcon size={14} className="text-blue-900" />
-				</div>
-			</a>
+			</div>
 		</li>
 	);
 }
@@ -227,7 +235,7 @@ export default async function Home() {
 			<SelectedProjectsSection
 				projects={(selectedProjects as SelectedProject[]) ?? []}
 			/>
-			<div className="border-t border-[#e0e0e9]" />
+			<div className="border-t border-neutral-200" />
 			<OtherThingsSection projects={(sideProjects as SideProject[]) ?? []} />
 		</>
 	);

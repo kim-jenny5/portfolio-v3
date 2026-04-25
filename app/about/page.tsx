@@ -36,7 +36,7 @@ function renderHeadingBlocks(
 export default async function AboutPage() {
 	const { data } = await sanityFetch({ query: ABOUT_PAGE_QUERY });
 	const profileImage = data?.profileImage
-		? urlFor(data.profileImage).width(552).height(690).fit('crop').url()
+		? urlFor(data.profileImage).width(768).height(576).fit('crop').url()
 		: null;
 
 	const headline = data?.hero?.headline;
@@ -99,8 +99,8 @@ export default async function AboutPage() {
 								<Image
 									src={profileImage}
 									alt={data.profileImage?.alt ?? 'Jenny Kim'}
-									width={276}
-									height={345}
+									width={384}
+									height={288}
 									className="aspect-4/3 w-full object-cover"
 									priority
 								/>

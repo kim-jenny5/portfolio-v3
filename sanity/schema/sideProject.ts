@@ -18,14 +18,6 @@ export const sideProject = defineType({
 			validation: (rule) => rule.required(),
 		}),
 		defineField({
-			name: 'tags',
-			title: 'Tags',
-			type: 'array',
-			of: [{ type: 'string' }],
-			options: { layout: 'tags' },
-			validation: (rule) => rule.required().min(1).max(3),
-		}),
-		defineField({
 			name: 'thumbnail',
 			title: 'Thumbnail',
 			type: 'image',
@@ -39,22 +31,32 @@ export const sideProject = defineType({
 			],
 		}),
 		defineField({
-			name: 'url',
-			title: 'URL',
-			type: 'url',
-			validation: (rule) => rule.required(),
-		}),
-		defineField({
 			name: 'publishedAt',
 			title: 'Published Date',
 			type: 'date',
 			validation: (rule) => rule.required(),
 		}),
+		defineField({
+			name: 'links',
+			title: 'Links',
+			type: 'array',
+			of: [
+				{
+					type: 'object',
+					fields: [
+						defineField({ name: 'label', title: 'Label', type: 'string' }),
+						defineField({ name: 'url', title: 'URL', type: 'url' }),
+					],
+					preview: {
+						select: { title: 'label', subtitle: 'url' },
+					},
+				},
+			],
+		}),
 	],
 	preview: {
 		select: {
 			title: 'name',
-			subtitle: 'publishedAt',
 			media: 'thumbnail',
 		},
 	},
