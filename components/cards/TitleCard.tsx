@@ -1,3 +1,5 @@
+import { parseInlineCode } from './parseInlineCode';
+
 const bgClass: Record<string, string> = {
 	white: 'bg-white',
 	'neutral-50': 'bg-neutral-50',
@@ -40,7 +42,7 @@ export function TitleCard({
 					titleTextClass[accentColor] ?? 'text-blue-900',
 				].join(' ')}
 			>
-				{title}
+				{parseInlineCode(title)}
 			</p>
 			{description && (
 				<p

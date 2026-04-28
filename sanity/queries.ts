@@ -16,6 +16,8 @@ export const WORK_PROJECT_QUERY = groq`
     "image": image.asset->url,
     "imageAlt": image.alt,
     order,
+    "heroImageUrl": heroImage.asset->url,
+    "heroImageAlt": heroImage.alt,
     projectNumber,
     company,
     status,
@@ -40,8 +42,10 @@ export const WORK_PROJECT_QUERY = groq`
           _type == 'inlineImage' => {
             _type,
             _key,
+            size,
+            displaySize,
             caption,
-            image { ..., asset-> }
+            image { alt, hotspot, asset-> }
           },
           _type == 'newsletterPreview' => {
             _type,
@@ -58,11 +62,23 @@ export const WORK_PROJECT_QUERY = groq`
         _type,
         _key,
         layout,
-        bg,
+        size,
+        accent,
         heading,
         headingBody,
         imageBody,
-        image { ..., asset-> }
+        image { ..., asset-> },
+        images[] { ..., asset-> }
+      },
+      _type == 'videoBlock' => {
+        _type,
+        _key,
+        "videoUrl": video.asset->url,
+        size,
+        heading,
+        headingBody,
+        caption,
+        accent
       },
       _type == 'newsletterPreview' => {
         _type,

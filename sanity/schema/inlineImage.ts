@@ -16,6 +16,37 @@ export const inlineImage = defineType({
 			validation: (r) => r.required(),
 		}),
 		defineField({
+			name: 'size',
+			title: 'Layout',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Full', value: 'imageFull' },
+					{ title: 'Image Left', value: 'imageLeft' },
+					{ title: 'Image Right', value: 'imageRight' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: 'imageFull',
+		}),
+		defineField({
+			name: 'displaySize',
+			title: 'Size',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Small', value: 'sm' },
+					{ title: 'Medium', value: 'md' },
+					{ title: 'Large', value: 'lg' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: 'lg',
+			hidden: ({ parent }) => parent?.size !== 'imageFull',
+		}),
+		defineField({
 			name: 'caption',
 			title: 'Caption',
 			type: 'string',

@@ -9,6 +9,16 @@ export const selectedProject = defineType({
 		{ name: 'detail', title: 'Project Page' },
 	],
 	fields: [
+		defineField({
+			name: 'heroImage',
+			title: 'Hero Image',
+			type: 'image',
+			description:
+				'Optional. Displayed to the right of the project title in the hero.',
+			options: { hotspot: true },
+			fields: [defineField({ name: 'alt', title: 'Alt Text', type: 'string' })],
+			group: 'detail',
+		}),
 		// ── Shared ──────────────────────────────────────────────────────────────
 		defineField({
 			name: 'title',
@@ -110,7 +120,13 @@ export const selectedProject = defineType({
 					title: 'Project Type',
 					type: 'string',
 					options: {
-						list: ['professional', 'freelance', 'personal', 'open-source', 'speculative'],
+						list: [
+							'professional',
+							'freelance',
+							'personal',
+							'open-source',
+							'speculative',
+						],
 						layout: 'radio',
 					},
 				}),
@@ -162,8 +178,14 @@ export const selectedProject = defineType({
 									{ title: 'The Problem', value: 'The Problem' },
 									{ title: 'Constraints', value: 'Constraints' },
 									{ title: 'My Approach', value: 'My Approach' },
-									{ title: 'Interaction & UI Decisions', value: 'Interaction & UI Decisions' },
-									{ title: 'Implementation Details', value: 'Implementation Details' },
+									{
+										title: 'Interaction & UI Decisions',
+										value: 'Interaction & UI Decisions',
+									},
+									{
+										title: 'Implementation Details',
+										value: 'Implementation Details',
+									},
 									{ title: 'Outcome', value: 'Outcome' },
 									{ title: 'Reflections', value: 'Reflections' },
 								],
@@ -187,6 +209,7 @@ export const selectedProject = defineType({
 					preview: { select: { title: 'title' } },
 				},
 				{ type: 'imageBlock' },
+				{ type: 'videoBlock' },
 				{ type: 'newsletterPreview' },
 			],
 		}),
