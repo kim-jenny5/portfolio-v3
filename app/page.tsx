@@ -17,6 +17,7 @@ type SideProject = {
 	thumbnail?: string;
 	thumbnailAlt?: string;
 	links: { label: string; url: string }[];
+	tags?: string[];
 };
 
 const GRID_CONFIG: Record<number, string> = {
