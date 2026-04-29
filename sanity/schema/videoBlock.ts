@@ -27,6 +27,21 @@ export const videoBlock = defineType({
 			initialValue: 'md',
 		}),
 		defineField({
+			name: 'textAlign',
+			title: 'Text Alignment',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Left', value: 'left' },
+					{ title: 'Center', value: 'center' },
+					{ title: 'Right', value: 'right' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: 'left',
+		}),
+		defineField({
 			name: 'heading',
 			title: 'Heading',
 			type: 'string',

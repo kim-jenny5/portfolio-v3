@@ -10,6 +10,7 @@ type SanityImage = {
 interface ImageBlockProps {
 	layout: 'imageLeft' | 'imageRight' | 'imageFull' | 'imageRow';
 	size?: 'sm' | 'md' | 'lg';
+	textAlign?: 'left' | 'center' | 'right';
 	image?: SanityImage;
 	images?: SanityImage[];
 	heading?: string;
@@ -30,9 +31,16 @@ const fullSizeClass: Record<string, string> = {
 	lg: 'w-full',
 };
 
+const textAlignClass: Record<string, string> = {
+	left: 'text-left',
+	center: 'text-center',
+	right: 'text-right',
+};
+
 export function ImageBlock({
 	layout,
 	size = 'md',
+	textAlign = 'left',
 	image,
 	images,
 	heading,
@@ -125,8 +133,9 @@ export function ImageBlock({
 	}
 
 	if (layout === 'imageFull') {
+		const alignCls = textAlignClass[textAlign];
 		return (
-			<div className="flex flex-col gap-4">
+			<div className={`flex flex-col gap-4 ${alignCls}`}>
 				{headingEl}
 				{imageEl}
 				{imageBodyEl}

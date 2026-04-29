@@ -9,9 +9,16 @@ const fullSizeClass: Record<string, string> = {
 	lg: 'w-full',
 };
 
+const textAlignClass: Record<string, string> = {
+	left: 'text-left',
+	center: 'text-center',
+	right: 'text-right',
+};
+
 interface VideoBlockProps {
 	videoUrl: string;
 	size?: 'sm' | 'md' | 'lg';
+	textAlign?: 'left' | 'center' | 'right';
 	heading?: string;
 	headingBody?: string;
 	caption?: string;
@@ -21,6 +28,7 @@ interface VideoBlockProps {
 export function VideoBlock({
 	videoUrl,
 	size = 'md',
+	textAlign = 'left',
 	heading,
 	headingBody,
 	caption,
@@ -41,7 +49,7 @@ export function VideoBlock({
 	const bodyColor = accent ? 'text-neutral-50' : 'text-blue-900';
 
 	return (
-		<div className="flex flex-col gap-4 rounded">
+		<div className={`flex flex-col gap-4 rounded ${textAlignClass[textAlign]}`}>
 			{(heading || headingBody) && (
 				<div className="flex flex-col gap-2">
 					{heading && (

@@ -69,6 +69,22 @@ export const imageBlock = defineType({
 			hidden: ({ parent }) => parent?.layout !== 'imageFull',
 		}),
 		defineField({
+			name: 'textAlign',
+			title: 'Text Alignment',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Left', value: 'left' },
+					{ title: 'Center', value: 'center' },
+					{ title: 'Right', value: 'right' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: 'left',
+			hidden: ({ parent }) => parent?.layout !== 'imageFull',
+		}),
+		defineField({
 			name: 'heading',
 			title: 'Heading',
 			type: 'string',

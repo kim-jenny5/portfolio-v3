@@ -237,7 +237,7 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 								/>
 							</div>
 							{block.caption && (
-								<p className="font-inter text-xs leading-[1.5] text-blue-900/70">
+								<p className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
 									{block.caption}
 								</p>
 							)}
@@ -263,7 +263,7 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 						/>
 					</div>
 					{block.caption && (
-						<figcaption className="font-inter text-xs leading-[1.5] text-blue-900/70">
+						<figcaption className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
 							{block.caption}
 						</figcaption>
 					)}
@@ -319,7 +319,7 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 								/>
 							</div>
 							{next.caption && (
-								<p className="font-inter text-xs leading-[1.5] text-blue-900/70">
+								<p className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
 									{next.caption}
 								</p>
 							)}
@@ -393,6 +393,7 @@ type ContentItem =
 			_key?: string;
 			layout: 'imageLeft' | 'imageRight' | 'imageFull' | 'imageRow';
 			size?: 'sm' | 'md' | 'lg';
+			textAlign?: 'left' | 'center' | 'right';
 			accent?: boolean;
 			image?: {
 				asset: { url?: string; _ref?: string; _type: string };
@@ -413,6 +414,7 @@ type ContentItem =
 			_key?: string;
 			videoUrl?: string;
 			size?: 'sm' | 'md' | 'lg';
+			textAlign?: 'left' | 'center' | 'right';
 			heading?: string;
 			headingBody?: string;
 			caption?: string;
@@ -471,17 +473,30 @@ export default async function WorkPage({ params }: Props) {
 
 	return (
 		<>
-			{/* ── Hero + Overview wrapper (shared viewport height when hero image present) */}
-			<div className={p.heroImageUrl ? 'lg:flex lg:h-[calc(100dvh-68px)] lg:flex-col' : ''}>
-			{/* ── Hero ──────────────────────────────────────────────────────────── */}
-			<div className={`overflow-hidden bg-blue-900${p.heroImageUrl ? ' flex flex-col lg:flex-1 lg:flex-row' : ''}`}>
-				{/* Title block */}
-				<div className={p.heroImageUrl ? 'flex flex-col overflow-hidden lg:w-1/2 lg:shrink-0 lg:justify-end' : ''}>
-					<div className={`flex flex-col gap-4 pb-7 pt-10${p.heroImageUrl ? ' px-6 md:px-8 lg:ml-auto lg:w-full lg:max-w-[672px] lg:pb-12 lg:pr-10 lg:pt-12' : ' mx-auto max-w-content px-6 md:px-8 lg:py-12'}`}>
+			{/* ── Hero + snapshot wrapper ───────────────────────────────────────── */}
+			<div
+				className={p.heroImageUrl ? 'flex h-[calc(100dvh-68px)] flex-col' : ''}
+			>
+				{/* ── Hero ──────────────────────────────────────────────────────────── */}
+				<div
+					className={`relative overflow-hidden bg-blue-900 ${p.heroImageUrl ? 'flex flex-1 flex-col justify-end' : ''}`}
+				>
+					{p.heroImageUrl && (
+						<Image
+							src={`${p.heroImageUrl}?w=1800`}
+							alt=""
+							aria-hidden="true"
+							fill
+							className="object-cover object-center opacity-20"
+							sizes="100vw"
+							priority
+						/>
+					)}
+					<div className="relative mx-auto w-full max-w-content px-6 py-10 md:px-8 lg:py-12">
 						{p.projectNumber && (
 							<p
 								aria-hidden="true"
-								className="-mb-2 font-manrope text-[64px] leading-none font-[800] tracking-[-4px] text-white opacity-15 select-none lg:-mb-4 lg:text-[96px] lg:tracking-[-7px]"
+								className="font-manrope text-[64px] leading-none font-[800] tracking-[-4px] text-white opacity-30 select-none lg:text-[96px] lg:tracking-[-7px]"
 							>
 								{p.projectNumber.padStart(2, '0')}
 							</p>
@@ -509,69 +524,57 @@ export default async function WorkPage({ params }: Props) {
 						</div>
 					</div>
 				</div>
-				{/* Hero image: right side, full bleed to screen edge */}
-				{p.heroImageUrl && (
-					<div className="relative aspect-[3/2] w-full overflow-hidden lg:aspect-auto lg:flex-1">
-						<Image
-							src={`${p.heroImageUrl}?w=1300`}
-							alt={p.heroImageAlt ?? ''}
-							fill
-							className="object-cover object-center"
-							sizes="(max-width: 1024px) 100vw, 50vw"
-							priority
-						/>
+				{/* end hero */}
+
+				{/* ── Overview bar ──────────────────────────────────────────────────── */}
+				{overviewItems.length > 0 && (
+					<div className="border-b border-neutral-200 bg-neutral-100">
+						<div className="mx-auto max-w-content px-6 md:px-8">
+							<div className="grid grid-cols-1 md:auto-cols-fr md:grid-flow-col">
+								{overviewItems.map((col, i) => (
+									<div
+										key={col.label}
+										className={[
+											'flex flex-col gap-1 py-4 lg:py-5',
+											i < overviewItems.length - 1
+												? 'border-b border-neutral-200 md:border-r md:border-b-0 md:pr-4 lg:pr-6'
+												: '',
+											i > 0 ? 'md:pl-4 lg:pl-6' : '',
+										]
+											.filter(Boolean)
+											.join(' ')}
+									>
+										<p className="font-inter text-xs font-bold tracking-[1px] text-blue-500 uppercase">
+											{col.label}
+										</p>
+										{col.links ? (
+											<div className="mt-0.5 flex flex-wrap gap-1.5">
+												{col.links.map((l) => (
+													<a
+														key={l.label}
+														href={l.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="tag inline-flex items-center gap-1"
+													>
+														{l.label}
+														<ArrowUpRightIcon size={11} />
+													</a>
+												))}
+											</div>
+										) : (
+											<p className="font-inter text-[13px] font-bold tracking-[-0.4px] text-blue-900">
+												{col.value}
+											</p>
+										)}
+									</div>
+								))}
+							</div>
+						</div>
 					</div>
 				)}
 			</div>
-
-			{/* ── Overview bar ──────────────────────────────────────────────────── */}
-			{overviewItems.length > 0 && (
-				<div className="border-b border-neutral-200 bg-neutral-100">
-					<div className="mx-auto max-w-content px-6 md:px-8">
-						<div className="grid grid-cols-1 md:auto-cols-fr md:grid-flow-col">
-							{overviewItems.map((col, i) => (
-								<div
-									key={col.label}
-									className={[
-										'flex flex-col gap-1 py-4 lg:py-5',
-										i < overviewItems.length - 1
-											? 'border-b border-neutral-200 md:border-r md:border-b-0 md:pr-4 lg:pr-6'
-											: '',
-										i > 0 ? 'md:pl-4 lg:pl-6' : '',
-									]
-										.filter(Boolean)
-										.join(' ')}
-								>
-									<p className="font-inter text-xs font-bold tracking-[1px] text-blue-500 uppercase">
-										{col.label}
-									</p>
-									{col.links ? (
-										<div className="mt-0.5 flex flex-wrap gap-1.5">
-											{col.links.map((l) => (
-												<a
-													key={l.label}
-													href={l.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="tag inline-flex items-center gap-1"
-												>
-													{l.label}
-													<ArrowUpRightIcon size={11} />
-												</a>
-											))}
-										</div>
-									) : (
-										<p className="font-inter text-[13px] font-bold tracking-[-0.4px] text-blue-900">
-											{col.value}
-										</p>
-									)}
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
-			)}
-			</div>{/* end hero+overview wrapper */}
+			{/* end hero+snapshot wrapper */}
 
 			{/* ── Content ───────────────────────────────────────────────────────── */}
 			{contentItems.map((item, i) => {
@@ -599,6 +602,7 @@ export default async function WorkPage({ params }: Props) {
 								<ImageBlock
 									layout={item.layout ?? 'imageFull'}
 									size={item.size}
+									textAlign={item.textAlign}
 									image={item.image}
 									images={item.images}
 									heading={item.heading}
@@ -624,6 +628,7 @@ export default async function WorkPage({ params }: Props) {
 								<VideoBlock
 									videoUrl={item.videoUrl}
 									size={item.size}
+									textAlign={item.textAlign}
 									heading={item.heading}
 									headingBody={item.headingBody}
 									caption={item.caption}
