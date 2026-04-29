@@ -9,6 +9,7 @@ import {
 	SIDE_PROJECTS_QUERY,
 } from '@/sanity/queries';
 import { ProjectCard, type SelectedProject } from '@/components/ProjectCard';
+import { TechBadge } from '@/components/TechBadge';
 
 type SideProject = {
 	_id: string;
