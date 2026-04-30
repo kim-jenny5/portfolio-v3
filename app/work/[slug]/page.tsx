@@ -11,6 +11,7 @@ import { ImageBlock } from '@/components/ImageBlock';
 import { VideoBlock } from '@/components/VideoBlock';
 import { ProjectNav } from '@/components/ProjectNav';
 import { NewsletterPreview } from '@/components/NewsletterPreview';
+import { Marquee } from '@/components/Marquee';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -40,7 +41,7 @@ type PtBlock = {
 		description?: string;
 	}[];
 	// inlineImage shape
-	size?: 'imageFull' | 'imageLeft' | 'imageRight';
+	size?: 'imageFull' | 'imageLeft' | 'imageRight' | 'imageRow';
 	displaySize?: 'sm' | 'md' | 'lg';
 	caption?: string;
 	image?: {
@@ -48,6 +49,11 @@ type PtBlock = {
 		alt?: string;
 		hotspot?: unknown;
 	};
+	images?: {
+		asset: { _ref?: string; _type: string; url?: string };
+		alt?: string;
+		hotspot?: unknown;
+	}[];
 	// newsletterPreview shape
 	brands?: import('@/components/NewsletterPreview').NewsletterBrand[];
 };
@@ -164,15 +170,16 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 		if (block._type === 'titleCardGroup') {
 			const cards = block.cards ?? [];
 			elements.push(
-				<div key={key} className="flex flex-col gap-4 lg:flex-row">
+				<div key={key} className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
 					{cards.map((card, ci) => (
-						<TitleCard
-							key={card._key ?? ci}
-							title={card.title ?? ''}
-							description={card.description}
-							bg={block.bg}
-							accentColor={block.accentColor}
-						/>
+						<div key={card._key ?? ci} className="flex lg:flex-1 lg:basis-[30%]">
+							<TitleCard
+								title={card.title ?? ''}
+								description={card.description}
+								bg={block.bg}
+								accentColor={block.accentColor}
+							/>
+						</div>
 					))}
 				</div>,
 			);
@@ -203,6 +210,38 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 		}
 
 		// ── Inline image ──────────────────────────────────────────────
+		if (block._type === 'inlineImage' && block.size === 'imageRow' && block.images?.length) {
+			elements.push(
+				<figure key={key} className="flex flex-col gap-2">
+					<div className="flex flex-col gap-3 sm:flex-row">
+						{block.images.map((img, ii) => {
+							const imgSrc = img.asset?.url
+								? `${img.asset.url}?w=1600&fit=max`
+								: urlFor(img as Parameters<typeof urlFor>[0]).width(1600).fit('max').url();
+							return (
+								<div key={ii} className="relative aspect-[4/3] w-full overflow-hidden rounded sm:flex-1">
+									<Image
+										src={imgSrc}
+										alt={img.alt ?? ''}
+										fill
+										className="object-cover"
+										sizes={`(max-width: 640px) 100vw, ${Math.round(100 / block.images!.length)}vw`}
+									/>
+								</div>
+							);
+						})}
+					</div>
+					{block.caption && (
+						<figcaption className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
+							{block.caption}
+						</figcaption>
+					)}
+				</figure>,
+			);
+			i++;
+			continue;
+		}
+
 		if (block._type === 'inlineImage' && block.image) {
 			const layout = block.size ?? 'imageFull';
 			const src = block.image.asset?.url
@@ -391,7 +430,7 @@ type ContentItem =
 	| {
 			_type: 'imageBlock';
 			_key?: string;
-			layout: 'imageLeft' | 'imageRight' | 'imageFull' | 'imageRow';
+			layout: 'imageFull' | 'imageRow';
 			size?: 'sm' | 'md' | 'lg';
 			textAlign?: 'left' | 'center' | 'right';
 			accent?: boolean;
@@ -418,7 +457,15 @@ type ContentItem =
 			heading?: string;
 			headingBody?: string;
 			caption?: string;
+			hasAudio?: boolean;
 			accent?: boolean;
+	  }
+	| {
+			_type: 'marquee';
+			_key?: string;
+			label?: string;
+			accent?: boolean;
+			images?: { url?: string; alt?: string }[];
 	  }
 	| {
 			_type: 'newsletterPreview';
@@ -448,7 +495,7 @@ export default async function WorkPage({ params }: Props) {
 		? p.snapshot.projectType.charAt(0).toUpperCase() +
 			p.snapshot.projectType.slice(1)
 		: null;
-	const stackStr = p.snapshot?.stack?.join(', ') ?? null;
+	const stackStr = p.tags?.join(', ') ?? null;
 
 	type OverviewCol =
 		| { label: string; value: string; links?: never }
@@ -578,6 +625,26 @@ export default async function WorkPage({ params }: Props) {
 
 			{/* ── Content ───────────────────────────────────────────────────────── */}
 			{contentItems.map((item, i) => {
+				if (item._type === 'marquee' && item.images?.length) {
+					const isAccent = item.accent === true;
+					const bgClass = isAccent
+						? 'bg-blue-900'
+						: blockIndex++ % 2 === 0
+							? 'bg-white'
+							: 'bg-neutral-50';
+					return (
+						<div key={item._key ?? i} className={bgClass}>
+							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
+								<Marquee
+									label={item.label}
+									images={item.images.filter((img) => img.url).map((img) => ({ url: img.url!, alt: img.alt }))}
+									accent={isAccent}
+								/>
+							</div>
+						</div>
+					);
+				}
+
 				if (item._type === 'newsletterPreview') {
 					return (
 						<div key={item._key ?? i} className="bg-white">
@@ -632,6 +699,7 @@ export default async function WorkPage({ params }: Props) {
 									heading={item.heading}
 									headingBody={item.headingBody}
 									caption={item.caption}
+									hasAudio={item.hasAudio ?? true}
 									accent={isAccent}
 								/>
 							</div>

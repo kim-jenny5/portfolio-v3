@@ -58,6 +58,13 @@ export const videoBlock = defineType({
 			type: 'string',
 		}),
 		defineField({
+			name: 'hasAudio',
+			title: 'Has audio',
+			description: 'Show the mute/unmute button. Disable for silent videos.',
+			type: 'boolean',
+			initialValue: true,
+		}),
+		defineField({
 			name: 'accent',
 			title: 'Accent background',
 			description: 'Use the dark accent (blue-900) background instead of the auto-alternating white/neutral.',

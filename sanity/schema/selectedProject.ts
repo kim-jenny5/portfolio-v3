@@ -42,7 +42,7 @@ export const selectedProject = defineType({
 			title: 'Tags',
 			type: 'array',
 			of: [{ type: 'string' }],
-			options: { layout: 'tags' },
+			options: { sortable: true },
 			group: ['overview', 'detail'],
 			validation: (rule) => rule.required().min(1),
 		}),
@@ -130,15 +130,7 @@ export const selectedProject = defineType({
 						layout: 'radio',
 					},
 				}),
-				defineField({
-					name: 'stack',
-					title: 'Stack',
-					description: 'Frameworks, libraries, languages — the actual tech',
-					type: 'array',
-					of: [{ type: 'string' }],
-					options: { layout: 'tags' },
-				}),
-				defineField({
+defineField({
 					name: 'links',
 					title: 'Links',
 					type: 'array',
@@ -210,6 +202,7 @@ export const selectedProject = defineType({
 				},
 				{ type: 'imageBlock' },
 				{ type: 'videoBlock' },
+				{ type: 'marquee' },
 				{ type: 'newsletterPreview' },
 			],
 		}),

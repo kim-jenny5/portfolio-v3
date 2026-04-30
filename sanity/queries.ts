@@ -28,7 +28,6 @@ export const WORK_PROJECT_QUERY = groq`
       role,
       timeline,
       projectType,
-      stack,
       links[] { label, url }
     },
     content[] {
@@ -45,7 +44,8 @@ export const WORK_PROJECT_QUERY = groq`
             size,
             displaySize,
             caption,
-            image { alt, hotspot, asset-> }
+            image { alt, hotspot, asset-> },
+            images[] { alt, hotspot, asset-> }
           },
           _type == 'newsletterPreview' => {
             _type,
@@ -80,7 +80,15 @@ export const WORK_PROJECT_QUERY = groq`
         heading,
         headingBody,
         caption,
+        hasAudio,
         accent
+      },
+      _type == 'marquee' => {
+        _type,
+        _key,
+        label,
+        accent,
+        images[] { alt, "url": asset->url }
       },
       _type == 'newsletterPreview' => {
         _type,

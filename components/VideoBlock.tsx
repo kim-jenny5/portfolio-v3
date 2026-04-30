@@ -22,6 +22,7 @@ interface VideoBlockProps {
 	heading?: string;
 	headingBody?: string;
 	caption?: string;
+	hasAudio?: boolean;
 	accent?: boolean;
 }
 
@@ -32,6 +33,7 @@ export function VideoBlock({
 	heading,
 	headingBody,
 	caption,
+	hasAudio = true,
 	accent = false,
 }: VideoBlockProps) {
 	const videoRef = useRef<HTMLVideoElement>(null);
@@ -80,26 +82,28 @@ export function VideoBlock({
 					playsInline
 					className="h-auto w-full"
 				/>
-				<button
-					onClick={toggleMute}
-					aria-label={muted ? 'Unmute video' : 'Mute video'}
-					className={[
-						'absolute right-3 bottom-3 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 font-inter text-xs font-bold text-white backdrop-blur-sm transition-opacity duration-150',
-						hovered ? 'opacity-100' : 'opacity-0',
-					].join(' ')}
-				>
-					{muted ? (
-						<>
-							<SpeakerSimpleSlash size={13} weight="bold" />
-							Unmute
-						</>
-					) : (
-						<>
-							<SpeakerSimpleHigh size={13} weight="bold" />
-							Mute
-						</>
-					)}
-				</button>
+				{hasAudio && (
+					<button
+						onClick={toggleMute}
+						aria-label={muted ? 'Unmute video' : 'Mute video'}
+						className={[
+							'absolute right-3 bottom-3 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 font-inter text-xs font-bold text-white backdrop-blur-sm transition-opacity duration-150',
+							hovered ? 'opacity-100' : 'opacity-0',
+						].join(' ')}
+					>
+						{muted ? (
+							<>
+								<SpeakerSimpleSlash size={13} weight="bold" />
+								Unmute
+							</>
+						) : (
+							<>
+								<SpeakerSimpleHigh size={13} weight="bold" />
+								Mute
+							</>
+						)}
+					</button>
+				)}
 			</div>
 			{caption && (
 				<p

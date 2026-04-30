@@ -11,8 +11,6 @@ export const imageBlock = defineType({
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Image - Left', value: 'imageLeft' },
-					{ title: 'Image - Right', value: 'imageRight' },
 					{ title: 'Image - Full', value: 'imageFull' },
 					{ title: 'Image - Row', value: 'imageRow' },
 				],

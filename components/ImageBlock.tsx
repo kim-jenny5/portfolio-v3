@@ -8,7 +8,7 @@ type SanityImage = {
 };
 
 interface ImageBlockProps {
-	layout: 'imageLeft' | 'imageRight' | 'imageFull' | 'imageRow';
+	layout: 'imageFull' | 'imageRow';
 	size?: 'sm' | 'md' | 'lg';
 	textAlign?: 'left' | 'center' | 'right';
 	image?: SanityImage;
@@ -21,8 +21,8 @@ interface ImageBlockProps {
 
 function imgSrc(image: SanityImage, w: number) {
 	return image.asset.url
-		? `${image.asset.url}?w=${w}`
-		: urlFor(image as Parameters<typeof urlFor>[0]).width(w).url();
+		? `${image.asset.url}?w=${w}&fit=max`
+		: urlFor(image as Parameters<typeof urlFor>[0]).width(w).fit('max').url();
 }
 
 const fullSizeClass: Record<string, string> = {
@@ -48,20 +48,9 @@ export function ImageBlock({
 	imageBody,
 	accent = false,
 }: ImageBlockProps) {
-	const isRow = layout === 'imageLeft' || layout === 'imageRight';
 	const src = image ? imgSrc(image, 1440) : '';
 
-	const imageEl = isRow && image ? (
-		<div className="relative aspect-[4/3] w-full overflow-hidden md:w-1/2 md:shrink-0">
-			<Image
-				src={src}
-				alt={image.alt ?? ''}
-				fill
-				className="object-cover"
-				sizes="(max-width: 768px) 100vw, 50vw"
-			/>
-		</div>
-	) : image ? (
+	const imageEl = image ? (
 		<Image
 			src={src}
 			alt={image.alt ?? ''}
@@ -77,7 +66,7 @@ export function ImageBlock({
 
 	const headingEl =
 		heading || headingBody ? (
-			<div className={['flex flex-col gap-2', isRow ? 'flex-1' : ''].join(' ')}>
+			<div className="flex flex-col gap-2">
 				{heading && (
 					<h3 className={`font-manrope text-lg leading-[1.3] font-bold tracking-tight ${headingColor}`}>
 						{heading}
@@ -116,11 +105,11 @@ export function ImageBlock({
 					{images.map((img, i) => (
 						<div key={i} className="relative aspect-[4/3] w-full overflow-hidden rounded sm:flex-1">
 							<Image
-								src={imgSrc(img, 800)}
+								src={imgSrc(img, 1600)}
 								alt={img.alt ?? ''}
 								fill
 								className="object-cover"
-								sizes="(max-width: 640px) 100vw, 25vw"
+								sizes={`(max-width: 640px) 100vw, ${Math.round(100 / images.length)}vw`}
 							/>
 						</div>
 					))}
@@ -143,21 +132,4 @@ export function ImageBlock({
 		);
 	}
 
-	// image-left / image-right: heading+headingBody in text column, imageBody full-width below
-	return (
-		<div className="flex flex-col gap-4">
-			<div
-				className={[
-					'flex flex-col gap-5 md:flex-row md:items-start md:gap-8',
-					layout === 'imageRight' ? 'md:flex-row-reverse' : '',
-				]
-					.filter(Boolean)
-					.join(' ')}
-			>
-				{imageEl}
-				{headingEl}
-			</div>
-			{imageBodyEl}
-		</div>
-	);
 }

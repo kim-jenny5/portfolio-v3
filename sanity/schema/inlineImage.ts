@@ -13,7 +13,13 @@ export const inlineImage = defineType({
 			fields: [
 				defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
 			],
-			validation: (r) => r.required(),
+			hidden: ({ parent }) => parent?.size === 'imageRow',
+			validation: (r) =>
+				r.custom((val, ctx) => {
+					if ((ctx.parent as { size?: string })?.size === 'imageRow') return true;
+					if (!val) return 'Required';
+					return true;
+				}),
 		}),
 		defineField({
 			name: 'size',
@@ -24,6 +30,7 @@ export const inlineImage = defineType({
 					{ title: 'Full', value: 'imageFull' },
 					{ title: 'Image Left', value: 'imageLeft' },
 					{ title: 'Image Right', value: 'imageRight' },
+					{ title: 'Image Row', value: 'imageRow' },
 				],
 				layout: 'radio',
 				direction: 'horizontal',
@@ -45,6 +52,26 @@ export const inlineImage = defineType({
 			},
 			initialValue: 'lg',
 			hidden: ({ parent }) => parent?.size !== 'imageFull',
+		}),
+		defineField({
+			name: 'images',
+			title: 'Images',
+			type: 'array',
+			hidden: ({ parent }) => parent?.size !== 'imageRow',
+			of: [
+				{
+					type: 'image',
+					options: { hotspot: true },
+					fields: [defineField({ name: 'alt', title: 'Alt Text', type: 'string' })],
+				},
+			],
+			validation: (r) =>
+				r.custom((val, ctx) => {
+					if ((ctx.parent as { size?: string })?.size !== 'imageRow') return true;
+					if (!val || (val as unknown[]).length < 2) return 'Add at least 2 images';
+					if ((val as unknown[]).length > 4) return 'Maximum 4 images';
+					return true;
+				}),
 		}),
 		defineField({
 			name: 'caption',
