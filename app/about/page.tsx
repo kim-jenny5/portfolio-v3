@@ -57,7 +57,7 @@ export default async function AboutPage() {
 			<section className="w-full bg-neutral-50">
 				<div className="mx-auto max-w-content px-6 pt-20 pb-12 max-md:pb-16 max-sm:pb-12 md:px-8 lg:px-8">
 					<span className="mb-6 block font-inter text-xs font-bold tracking-wide text-blue-500 uppercase">
-						About
+						About Jenny
 					</span>
 
 					<div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
