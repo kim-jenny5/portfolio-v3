@@ -144,7 +144,7 @@ export default async function AboutPage() {
 					<h2 className="mb-12 font-manrope text-[32px] leading-[1.5] font-bold tracking-tighter text-white">
 						{skillsHeading}
 					</h2>
-					<div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+					<div className="grid grid-cols-1 gap-10 md:grid-cols-2">
 						{skills.map((cat) => (
 							<div
 								key={cat.name}

@@ -8,8 +8,10 @@ import { AccentCard } from '@/components/cards/AccentCard';
 import { TitleCard } from '@/components/cards/TitleCard';
 import { StatCard } from '@/components/cards/StatCard';
 import { ImageBlock } from '@/components/ImageBlock';
+import { VideoBlock } from '@/components/VideoBlock';
 import { ProjectNav } from '@/components/ProjectNav';
 import { NewsletterPreview } from '@/components/NewsletterPreview';
+import { Marquee } from '@/components/Marquee';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,12 +41,19 @@ type PtBlock = {
 		description?: string;
 	}[];
 	// inlineImage shape
+	size?: 'imageFull' | 'imageLeft' | 'imageRight' | 'imageRow';
+	displaySize?: 'sm' | 'md' | 'lg';
 	caption?: string;
 	image?: {
 		asset: { _ref?: string; _type: string; url?: string };
 		alt?: string;
 		hotspot?: unknown;
 	};
+	images?: {
+		asset: { _ref?: string; _type: string; url?: string };
+		alt?: string;
+		hotspot?: unknown;
+	}[];
 	// newsletterPreview shape
 	brands?: import('@/components/NewsletterPreview').NewsletterBrand[];
 };
@@ -93,144 +102,279 @@ function renderSpan(span: PtSpan, defs: PtBlock['markDefs'], i: number) {
 	return el;
 }
 
+function renderStandardBlock(block: PtBlock, key: string | number) {
+	const children = block.children?.map((span, si) =>
+		renderSpan(span, block.markDefs, si),
+	);
+	const style = block.style ?? 'normal';
+	if (style === 'h2')
+		return (
+			<h2
+				key={key}
+				className="font-manrope text-[22px] leading-[1.4] font-bold tracking-[-1.2px] text-blue-900 sm:text-[32px] sm:tracking-[-2.4px]"
+			>
+				{children}
+			</h2>
+		);
+	if (style === 'h3')
+		return (
+			<h3
+				key={key}
+				className="font-manrope text-lg leading-[1.3] font-bold tracking-tight text-blue-900"
+			>
+				{children}
+			</h3>
+		);
+	return (
+		<p key={key} className="font-inter text-base leading-[1.65] text-blue-900">
+			{children}
+		</p>
+	);
+}
+
+const inlineFullSizeClass: Record<string, string> = {
+	sm: 'mx-auto w-full md:max-w-1/2',
+	md: 'mx-auto w-full xl:max-w-3/4',
+	lg: 'w-full',
+};
+
 function Blocks({ value }: { value: PtBlock[] | undefined }) {
 	if (!value?.length) return null;
-	return (
-		<div className="flex flex-col gap-4">
-			{value.map((block, i) => {
-				// ── Card groups ──────────────────────────────────────────────
-				if (block._type === 'accentCardGroup') {
-					const cards = block.cards ?? [];
-					return (
-						<div
-							key={block._key ?? i}
-							className="grid grid-cols-1 gap-4 sm:grid-cols-2"
-						>
-							{cards.map((card, ci) => (
-								<AccentCard
-									key={card._key ?? ci}
-									label={card.label ?? ''}
-									description={card.description}
-									bg={block.bg}
-									accentColor={block.accentColor}
-								/>
-							))}
-						</div>
-					);
-				}
+	const elements: React.ReactNode[] = [];
+	let i = 0;
 
-				if (block._type === 'titleCardGroup') {
-					const cards = block.cards ?? [];
-					return (
-						<div
-							key={block._key ?? i}
-							className="flex flex-col gap-4 lg:flex-row"
-						>
-							{cards.map((card, ci) => (
-								<TitleCard
-									key={card._key ?? ci}
-									title={card.title ?? ''}
-									description={card.description}
-									bg={block.bg}
-									accentColor={block.accentColor}
-								/>
-							))}
-						</div>
-					);
-				}
+	while (i < value.length) {
+		const block = value[i];
+		const key = block._key ?? i;
 
-				if (block._type === 'statCardGroup') {
-					const cards = block.cards ?? [];
-					return (
-						<div
-							key={block._key ?? i}
-							className="grid grid-cols-1 gap-px bg-neutral-200 sm:grid-cols-3"
-						>
-							{cards.map((card, ci) => (
-								<StatCard
-									key={card._key ?? ci}
-									value={card.value ?? ''}
-									label={card.label ?? ''}
-									bg={block.bg}
-									accentColor={block.accentColor}
-								/>
-							))}
-						</div>
-					);
-				}
+		// ── Card groups ──────────────────────────────────────────────
+		if (block._type === 'accentCardGroup') {
+			const cards = block.cards ?? [];
+			elements.push(
+				<div key={key} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+					{cards.map((card, ci) => (
+						<AccentCard
+							key={card._key ?? ci}
+							label={card.label ?? ''}
+							description={card.description}
+							bg={block.bg}
+							accentColor={block.accentColor}
+						/>
+					))}
+				</div>,
+			);
+			i++;
+			continue;
+		}
 
-				// ── Inline image ──────────────────────────────────────────────
-				if (block._type === 'inlineImage' && block.image) {
-					const src = block.image.asset?.url
-						? `${block.image.asset.url}?w=1200`
-						: urlFor(block.image as Parameters<typeof urlFor>[0])
-								.width(1200)
-								.url();
-					return (
-						<figure key={block._key ?? i} className="flex flex-col gap-2">
-							<div className="relative w-full overflow-hidden rounded">
+		if (block._type === 'titleCardGroup') {
+			const cards = block.cards ?? [];
+			elements.push(
+				<div key={key} className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+					{cards.map((card, ci) => (
+						<div key={card._key ?? ci} className="flex lg:flex-1 lg:basis-[30%]">
+							<TitleCard
+								title={card.title ?? ''}
+								description={card.description}
+								bg={block.bg}
+								accentColor={block.accentColor}
+							/>
+						</div>
+					))}
+				</div>,
+			);
+			i++;
+			continue;
+		}
+
+		if (block._type === 'statCardGroup') {
+			const cards = block.cards ?? [];
+			elements.push(
+				<div
+					key={key}
+					className="grid grid-cols-1 gap-px bg-neutral-200 sm:grid-cols-3"
+				>
+					{cards.map((card, ci) => (
+						<StatCard
+							key={card._key ?? ci}
+							value={card.value ?? ''}
+							label={card.label ?? ''}
+							bg={block.bg}
+							accentColor={block.accentColor}
+						/>
+					))}
+				</div>,
+			);
+			i++;
+			continue;
+		}
+
+		// ── Inline image ──────────────────────────────────────────────
+		if (block._type === 'inlineImage' && block.size === 'imageRow' && block.images?.length) {
+			elements.push(
+				<figure key={key} className="flex flex-col gap-2">
+					<div className="flex flex-col gap-3 sm:flex-row">
+						{block.images.map((img, ii) => {
+							const imgSrc = img.asset?.url
+								? `${img.asset.url}?w=1600&fit=max`
+								: urlFor(img as Parameters<typeof urlFor>[0]).width(1600).fit('max').url();
+							return (
+								<div key={ii} className="relative aspect-[4/3] w-full overflow-hidden rounded sm:flex-1">
+									<Image
+										src={imgSrc}
+										alt={img.alt ?? ''}
+										fill
+										className="object-cover"
+										sizes={`(max-width: 640px) 100vw, ${Math.round(100 / block.images!.length)}vw`}
+									/>
+								</div>
+							);
+						})}
+					</div>
+					{block.caption && (
+						<figcaption className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
+							{block.caption}
+						</figcaption>
+					)}
+				</figure>,
+			);
+			i++;
+			continue;
+		}
+
+		if (block._type === 'inlineImage' && block.image) {
+			const layout = block.size ?? 'imageFull';
+			const src = block.image.asset?.url
+				? `${block.image.asset.url}?w=1200`
+				: urlFor(block.image as Parameters<typeof urlFor>[0])
+						.width(1200)
+						.url();
+
+			if (layout === 'imageLeft' || layout === 'imageRight') {
+				// Paired block is handled by the standard-block look-ahead below.
+				// If we reach here, the image has no preceding paragraph — render solo.
+				const isLeft = layout === 'imageLeft';
+				elements.push(
+					<div
+						key={key}
+						className={[
+							'flex flex-col gap-5 md:flex-row md:items-start md:gap-8',
+							isLeft ? '' : 'md:flex-row-reverse',
+						]
+							.filter(Boolean)
+							.join(' ')}
+					>
+						<div className="flex flex-col gap-2 md:w-1/2 md:shrink-0">
+							<div className="overflow-hidden rounded">
 								<Image
 									src={src}
 									alt={block.image.alt ?? ''}
-									width={1200}
-									height={800}
-									className="mt-4 h-auto w-full object-cover"
-									sizes="(max-width: 1024px) 100vw, 800px"
+									width={800}
+									height={600}
+									className="h-auto w-full object-cover"
+									sizes="(max-width: 768px) 100vw, 50vw"
 								/>
 							</div>
 							{block.caption && (
-								<figcaption className="font-inter text-xs leading-[1.5] text-blue-900/50">
+								<p className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
 									{block.caption}
-								</figcaption>
+								</p>
 							)}
-						</figure>
-					);
-				}
-
-				// ── Newsletter preview ────────────────────────────────────────
-				if (block._type === 'newsletterPreview') {
-					return (
-						<NewsletterPreview key={block._key ?? i} brands={block.brands} />
-					);
-				}
-
-				// ── Standard blocks ──────────────────────────────────────────
-				if (block._type !== 'block') return null;
-
-				const children = block.children?.map((span, si) =>
-					renderSpan(span, block.markDefs, si),
+						</div>
+					</div>,
 				);
-				const style = block.style ?? 'normal';
+				i++;
+				continue;
+			}
 
-				if (style === 'h2')
-					return (
-						<h2
-							key={block._key ?? i}
-							className="font-manrope text-[22px] leading-[1.4] font-bold tracking-[-1.2px] text-blue-900 sm:text-[32px] sm:tracking-[-2.4px]"
-						>
-							{children}
-						</h2>
-					);
-				if (style === 'h3')
-					return (
-						<h3
-							key={block._key ?? i}
-							className="font-manrope text-lg leading-[1.3] font-bold tracking-tight text-blue-900"
-						>
-							{children}
-						</h3>
-					);
-				return (
-					<p
-						key={block._key ?? i}
-						className="font-inter text-base leading-[1.65] text-blue-900"
+			// imageFull
+			const inlineSizeCls = inlineFullSizeClass[block.displaySize ?? 'lg'];
+			elements.push(
+				<figure key={key} className={`flex flex-col gap-2 ${inlineSizeCls}`}>
+					<div className="overflow-hidden rounded">
+						<Image
+							src={src}
+							alt={block.image.alt ?? ''}
+							width={1200}
+							height={800}
+							className="h-auto w-full"
+							sizes="(max-width: 1024px) 100vw, 800px"
+						/>
+					</div>
+					{block.caption && (
+						<figcaption className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
+							{block.caption}
+						</figcaption>
+					)}
+				</figure>,
+			);
+			i++;
+			continue;
+		}
+
+		// ── Newsletter preview ────────────────────────────────────────
+		if (block._type === 'newsletterPreview') {
+			elements.push(<NewsletterPreview key={key} brands={block.brands} />);
+			i++;
+			continue;
+		}
+
+		// ── Standard blocks ──────────────────────────────────────────
+		if (block._type === 'block') {
+			const next = value[i + 1];
+			if (
+				next?._type === 'inlineImage' &&
+				next.image &&
+				(next.size === 'imageLeft' || next.size === 'imageRight')
+			) {
+				const isLeft = next.size === 'imageLeft';
+				const src = next.image.asset?.url
+					? `${next.image.asset.url}?w=1200`
+					: urlFor(next.image as Parameters<typeof urlFor>[0])
+							.width(1200)
+							.url();
+				// Text is first in DOM so mobile (flex-col) shows paragraph before image.
+				// On desktop, flip row direction to restore image-left/image-right positioning.
+				elements.push(
+					<div
+						key={key}
+						className={[
+							'flex flex-col gap-5 md:flex-row md:items-start md:gap-8',
+							isLeft ? 'md:flex-row-reverse' : '',
+						]
+							.filter(Boolean)
+							.join(' ')}
 					>
-						{children}
-					</p>
+						<div className="flex-1">{renderStandardBlock(block, key)}</div>
+						<div className="flex flex-col gap-2 md:w-1/2 md:shrink-0">
+							<div className="overflow-hidden rounded">
+								<Image
+									src={src}
+									alt={next.image.alt ?? ''}
+									width={800}
+									height={600}
+									className="h-auto w-full object-cover"
+									sizes="(max-width: 768px) 100vw, 50vw"
+								/>
+							</div>
+							{next.caption && (
+								<p className="text-center font-inter text-xs leading-[1.5] text-blue-900/70">
+									{next.caption}
+								</p>
+							)}
+						</div>
+					</div>,
 				);
-			})}
-		</div>
-	);
+				i += 2;
+				continue;
+			}
+			elements.push(renderStandardBlock(block, key));
+		}
+
+		i++;
+	}
+
+	return <div className="flex flex-col gap-4">{elements}</div>;
 }
 
 // ── Layout ────────────────────────────────────────────────────────────────────
@@ -286,16 +430,42 @@ type ContentItem =
 	| {
 			_type: 'imageBlock';
 			_key?: string;
-			layout: 'imageLeft' | 'imageRight' | 'imageFull';
-			bg?: 'white' | 'neutral' | 'accent';
-			image: {
+			layout: 'imageFull' | 'imageRow';
+			size?: 'sm' | 'md' | 'lg';
+			textAlign?: 'left' | 'center' | 'right';
+			accent?: boolean;
+			image?: {
 				asset: { url?: string; _ref?: string; _type: string };
 				alt?: string;
 				hotspot?: unknown;
 			};
+			images?: {
+				asset: { url?: string; _ref?: string; _type: string };
+				alt?: string;
+				hotspot?: unknown;
+			}[];
 			heading?: string;
 			headingBody?: string;
 			imageBody?: string;
+	  }
+	| {
+			_type: 'videoBlock';
+			_key?: string;
+			videoUrl?: string;
+			size?: 'sm' | 'md' | 'lg';
+			textAlign?: 'left' | 'center' | 'right';
+			heading?: string;
+			headingBody?: string;
+			caption?: string;
+			hasAudio?: boolean;
+			accent?: boolean;
+	  }
+	| {
+			_type: 'marquee';
+			_key?: string;
+			label?: string;
+			accent?: boolean;
+			images?: { url?: string; alt?: string }[];
 	  }
 	| {
 			_type: 'newsletterPreview';
@@ -325,7 +495,7 @@ export default async function WorkPage({ params }: Props) {
 		? p.snapshot.projectType.charAt(0).toUpperCase() +
 			p.snapshot.projectType.slice(1)
 		: null;
-	const stackStr = p.snapshot?.stack?.join(', ') ?? null;
+	const stackStr = p.tags?.join(', ') ?? null;
 
 	type OverviewCol =
 		| { label: string; value: string; links?: never }
@@ -346,99 +516,135 @@ export default async function WorkPage({ params }: Props) {
 	// Build numbered sections from unified content[]
 	const contentItems: ContentItem[] = p.content ?? [];
 	let sectionCount = 0;
+	let blockIndex = 0; // counts all non-newsletterPreview blocks for bg alternation
 
 	return (
 		<>
-			{/* ── Hero ──────────────────────────────────────────────────────────── */}
-			<div className="overflow-hidden bg-blue-900">
-				<div className="mx-auto max-w-content px-6 md:px-8">
-					<div className="flex flex-col lg:flex-row lg:items-end lg:justify-between">
-						{/* Title block */}
-						<div className="flex flex-1 flex-col gap-4 pt-10 pb-7 lg:py-12">
-							{p.projectNumber && (
-								<p
-									aria-hidden="true"
-									className="-mb-2 font-manrope text-[64px] leading-none font-[800] tracking-[-4px] text-white opacity-15 select-none lg:-mb-4 lg:text-[96px] lg:tracking-[-7px]"
-								>
-									{p.projectNumber.padStart(2, '0')}
+			{/* ── Hero + snapshot wrapper ───────────────────────────────────────── */}
+			<div
+				className={p.heroImageUrl ? 'flex h-[calc(100dvh-68px)] flex-col' : ''}
+			>
+				{/* ── Hero ──────────────────────────────────────────────────────────── */}
+				<div
+					className={`relative overflow-hidden bg-blue-900 ${p.heroImageUrl ? 'flex flex-1 flex-col justify-end' : ''}`}
+				>
+					{p.heroImageUrl && (
+						<Image
+							src={`${p.heroImageUrl}?w=1800`}
+							alt=""
+							aria-hidden="true"
+							fill
+							className="object-cover object-center opacity-20"
+							sizes="100vw"
+							priority
+						/>
+					)}
+					<div className="relative mx-auto w-full max-w-content px-6 py-10 md:px-8 lg:py-12">
+						{p.projectNumber && (
+							<p
+								aria-hidden="true"
+								className="font-manrope text-[64px] leading-none font-[800] tracking-[-4px] text-white opacity-30 select-none lg:text-[96px] lg:tracking-[-7px]"
+							>
+								{p.projectNumber.padStart(2, '0')}
+							</p>
+						)}
+						<div>
+							<div className="mb-5 h-px w-full bg-white opacity-[0.12]" />
+							{p.category && (
+								<p className="mb-2.5 font-inter text-xs font-bold tracking-[1px] text-lavender-50 uppercase">
+									{p.category}
 								</p>
 							)}
-							<div>
-								<div className="mb-5 h-px w-full bg-white opacity-[0.12]" />
-								{p.category && (
-									<p className="mb-2.5 font-inter text-xs font-bold tracking-[1px] text-lavender-50 uppercase">
-										{p.category}
-									</p>
+							<h1 className="mb-4 font-manrope text-[30px] leading-[1.1] font-[800] tracking-[-1.5px] text-white sm:text-[40px] lg:text-[48px] lg:tracking-[-3.6px]">
+								{p.title}
+								{p.company && (
+									<span className="ml-2.5 font-inter text-base font-bold tracking-normal text-white/40 lg:text-xl">
+										{p.company}
+									</span>
 								)}
-								<h1 className="mb-4 font-manrope text-[30px] leading-[1.1] font-[800] tracking-[-1.5px] text-white sm:text-[40px] lg:text-[48px] lg:tracking-[-3.6px]">
-									{p.title}
-									{p.company && (
-										<span className="ml-2.5 font-inter text-base font-bold tracking-normal text-white/40 lg:text-xl">
-											{p.company}
-										</span>
-									)}
-								</h1>
-								{p.description && (
-									<p className="max-w-[640px] font-inter text-sm leading-[1.55] text-neutral-100 lg:text-base">
-										{p.description}
-									</p>
-								)}
+							</h1>
+							{p.description && (
+								<p className="max-w-[640px] font-inter text-sm leading-[1.55] text-neutral-100 lg:text-base">
+									{p.description}
+								</p>
+							)}
+						</div>
+					</div>
+				</div>
+				{/* end hero */}
+
+				{/* ── Overview bar ──────────────────────────────────────────────────── */}
+				{overviewItems.length > 0 && (
+					<div className="border-b border-neutral-200 bg-neutral-100">
+						<div className="mx-auto max-w-content px-6 md:px-8">
+							<div className="grid grid-cols-1 md:auto-cols-fr md:grid-flow-col">
+								{overviewItems.map((col, i) => (
+									<div
+										key={col.label}
+										className={[
+											'flex flex-col gap-1 py-4 lg:py-5',
+											i < overviewItems.length - 1
+												? 'border-b border-neutral-200 md:border-r md:border-b-0 md:pr-4 lg:pr-6'
+												: '',
+											i > 0 ? 'md:pl-4 lg:pl-6' : '',
+										]
+											.filter(Boolean)
+											.join(' ')}
+									>
+										<p className="font-inter text-xs font-bold tracking-[1px] text-blue-500 uppercase">
+											{col.label}
+										</p>
+										{col.links ? (
+											<div className="mt-0.5 flex flex-wrap gap-1.5">
+												{col.links.map((l) => (
+													<a
+														key={l.label}
+														href={l.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="tag inline-flex items-center gap-1"
+													>
+														{l.label}
+														<ArrowUpRightIcon size={11} />
+													</a>
+												))}
+											</div>
+										) : (
+											<p className="font-inter text-[13px] font-bold tracking-[-0.4px] text-blue-900">
+												{col.value}
+											</p>
+										)}
+									</div>
+								))}
 							</div>
 						</div>
 					</div>
-				</div>
+				)}
 			</div>
-
-			{/* ── Overview bar ──────────────────────────────────────────────────── */}
-			{overviewItems.length > 0 && (
-				<div className="border-b border-neutral-200 bg-neutral-100">
-					<div className="mx-auto max-w-content px-6 md:px-8">
-						<div className="grid grid-cols-1 md:auto-cols-fr md:grid-flow-col">
-							{overviewItems.map((col, i) => (
-								<div
-									key={col.label}
-									className={[
-										'flex flex-col gap-1 py-4 lg:py-5',
-										i < overviewItems.length - 1
-											? 'border-b border-neutral-200 md:border-r md:border-b-0 md:pr-4 lg:pr-6'
-											: '',
-										i > 0 ? 'md:pl-4 lg:pl-6' : '',
-									]
-										.filter(Boolean)
-										.join(' ')}
-								>
-									<p className="font-inter text-xs font-bold tracking-[1px] text-blue-500 uppercase">
-										{col.label}
-									</p>
-									{col.links ? (
-										<div className="mt-0.5 flex flex-wrap gap-1.5">
-											{col.links.map((l) => (
-												<a
-													key={l.label}
-													href={l.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="tag inline-flex items-center gap-1"
-												>
-													{l.label}
-													<ArrowUpRightIcon size={11} />
-												</a>
-											))}
-										</div>
-									) : (
-										<p className="font-inter text-[13px] font-bold tracking-[-0.4px] text-blue-900">
-											{col.value}
-										</p>
-									)}
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
-			)}
+			{/* end hero+snapshot wrapper */}
 
 			{/* ── Content ───────────────────────────────────────────────────────── */}
 			{contentItems.map((item, i) => {
+				if (item._type === 'marquee' && item.images?.length) {
+					const isAccent = item.accent === true;
+					const bgClass = isAccent
+						? 'bg-blue-900'
+						: blockIndex++ % 2 === 0
+							? 'bg-white'
+							: 'bg-neutral-50';
+					return (
+						<div key={item._key ?? i} className={bgClass}>
+							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
+								<Marquee
+									label={item.label}
+									images={item.images.filter((img) => img.url).map((img) => ({ url: img.url!, alt: img.alt }))}
+									accent={isAccent}
+								/>
+							</div>
+						</div>
+					);
+				}
+
 				if (item._type === 'newsletterPreview') {
 					return (
 						<div key={item._key ?? i} className="bg-white">
@@ -451,24 +657,50 @@ export default async function WorkPage({ params }: Props) {
 				}
 
 				if (item._type === 'imageBlock') {
+					const isAccent = item.accent === true;
+					const bgClass = isAccent
+						? 'bg-blue-900'
+						: blockIndex++ % 2 === 0
+							? 'bg-white'
+							: 'bg-neutral-50';
 					return (
-						<div
-							key={item._key ?? i}
-							className={
-								item.bg === 'white'
-									? 'bg-white'
-									: item.bg === 'accent'
-										? 'bg-blue-900'
-										: 'bg-neutral-50'
-							}
-						>
+						<div key={item._key ?? i} className={bgClass}>
 							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
 								<ImageBlock
 									layout={item.layout ?? 'imageFull'}
+									size={item.size}
+									textAlign={item.textAlign}
 									image={item.image}
+									images={item.images}
 									heading={item.heading}
 									headingBody={item.headingBody}
 									imageBody={item.imageBody}
+									accent={isAccent}
+								/>
+							</div>
+						</div>
+					);
+				}
+
+				if (item._type === 'videoBlock' && item.videoUrl) {
+					const isAccent = item.accent === true;
+					const bgClass = isAccent
+						? 'bg-blue-900'
+						: blockIndex++ % 2 === 0
+							? 'bg-white'
+							: 'bg-neutral-50';
+					return (
+						<div key={item._key ?? i} className={bgClass}>
+							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
+								<VideoBlock
+									videoUrl={item.videoUrl}
+									size={item.size}
+									textAlign={item.textAlign}
+									heading={item.heading}
+									headingBody={item.headingBody}
+									caption={item.caption}
+									hasAudio={item.hasAudio ?? true}
+									accent={isAccent}
 								/>
 							</div>
 						</div>
@@ -477,8 +709,9 @@ export default async function WorkPage({ params }: Props) {
 
 				if (item._type === 'contentSection') {
 					sectionCount += 1;
+					blockIndex++;
 					const number = String(sectionCount).padStart(2, '0');
-					const bg = sectionCount % 2 === 0 ? 'neutral' : 'white';
+					const bg = blockIndex % 2 === 0 ? 'neutral' : 'white';
 					return (
 						<Section
 							key={item._key ?? i}

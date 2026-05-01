@@ -30,7 +30,7 @@ export const aboutPage = defineType({
 						'Short labels displayed below the subline (e.g. "5+ years experience")',
 					type: 'array',
 					of: [{ type: 'string' }],
-					options: { layout: 'tags' },
+					options: { sortable: true },
 				}),
 			],
 		}),
@@ -102,6 +102,7 @@ export const aboutPage = defineType({
 							options: {
 								list: [
 									{ title: 'Frontend', value: 'Frontend' },
+									{ title: 'UI Libraries', value: 'UI Libraries' },
 									{ title: 'Design', value: 'Design' },
 									{ title: 'Backend', value: 'Backend' },
 									{ title: 'Tools', value: 'Tools' },
@@ -115,7 +116,7 @@ export const aboutPage = defineType({
 							title: 'Tags',
 							type: 'array',
 							of: [{ type: 'string' }],
-							options: { layout: 'tags' },
+							options: { sortable: true },
 						}),
 					],
 					preview: { select: { title: 'name' } },

@@ -1,16 +1,4 @@
-function parseInlineCode(text: string): React.ReactNode {
-	const parts = text.split(/(`[^`]+`)/g);
-	if (parts.length === 1) return text;
-	return parts.map((part, i) =>
-		part.startsWith('`') && part.endsWith('`') ? (
-			<code key={i} className="rounded bg-neutral-200 px-1 py-px font-mono text-[0.85em]">
-				{part.slice(1, -1)}
-			</code>
-		) : (
-			part
-		),
-	);
-}
+import { parseInlineCode } from './parseInlineCode';
 
 const bgClass: Record<string, string> = {
 	white: 'bg-white',
@@ -58,7 +46,7 @@ export function AccentCard({
 					accentTextClass[accentColor] ?? 'text-blue-500',
 				].join(' ')}
 			>
-				{label}
+				{parseInlineCode(label)}
 			</p>
 			{description && (
 				<p className="font-inter text-sm leading-[1.6] text-blue-900">{parseInlineCode(description)}</p>

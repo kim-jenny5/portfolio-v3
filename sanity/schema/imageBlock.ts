@@ -11,9 +11,8 @@ export const imageBlock = defineType({
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Image - Left', value: 'imageLeft' },
-					{ title: 'Image - Right', value: 'imageRight' },
 					{ title: 'Image - Full', value: 'imageFull' },
+					{ title: 'Image - Row', value: 'imageRow' },
 				],
 				layout: 'radio',
 			},
@@ -26,7 +25,62 @@ export const imageBlock = defineType({
 			type: 'image',
 			options: { hotspot: true },
 			fields: [defineField({ name: 'alt', title: 'Alt Text', type: 'string' })],
-			validation: (r) => r.required(),
+			hidden: ({ parent }) => parent?.layout === 'imageRow',
+			validation: (r) => r.custom((val, ctx) => {
+				if ((ctx.parent as { layout?: string })?.layout !== 'imageRow' && !val) return 'Required';
+				return true;
+			}),
+		}),
+		defineField({
+			name: 'images',
+			title: 'Images',
+			type: 'array',
+			hidden: ({ parent }) => parent?.layout !== 'imageRow',
+			of: [
+				{
+					type: 'image',
+					options: { hotspot: true },
+					fields: [defineField({ name: 'alt', title: 'Alt Text', type: 'string' })],
+				},
+			],
+			validation: (r) =>
+				r.custom((val, ctx) => {
+					if ((ctx.parent as { layout?: string })?.layout !== 'imageRow') return true;
+					if (!val || (val as unknown[]).length < 2) return 'Add at least 2 images';
+					if ((val as unknown[]).length > 4) return 'Maximum 4 images';
+					return true;
+				}),
+		}),
+		defineField({
+			name: 'size',
+			title: 'Size',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Small', value: 'sm' },
+					{ title: 'Medium', value: 'md' },
+					{ title: 'Large', value: 'lg' },
+				],
+				layout: 'radio',
+			},
+			initialValue: 'md',
+			hidden: ({ parent }) => parent?.layout !== 'imageFull',
+		}),
+		defineField({
+			name: 'textAlign',
+			title: 'Text Alignment',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Left', value: 'left' },
+					{ title: 'Center', value: 'center' },
+					{ title: 'Right', value: 'right' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: 'left',
+			hidden: ({ parent }) => parent?.layout !== 'imageFull',
 		}),
 		defineField({
 			name: 'heading',
@@ -48,18 +102,11 @@ export const imageBlock = defineType({
 			rows: 3,
 		}),
 		defineField({
-			name: 'bg',
-			title: 'Background',
-			type: 'string',
-			options: {
-				list: [
-					{ title: 'White', value: 'white' },
-					{ title: 'Neutral', value: 'neutral' },
-					{ title: 'Accent', value: 'accent' },
-				],
-				layout: 'radio',
-			},
-			initialValue: 'neutral',
+			name: 'accent',
+			title: 'Accent background',
+			description: 'Use the dark accent (blue-900) background instead of the auto-alternating white/neutral.',
+			type: 'boolean',
+			initialValue: false,
 		}),
 	],
 	preview: {

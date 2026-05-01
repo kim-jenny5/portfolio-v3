@@ -16,15 +16,18 @@ export const WORK_PROJECT_QUERY = groq`
     "image": image.asset->url,
     "imageAlt": image.alt,
     order,
+    "heroImageUrl": heroImage.asset->url,
+    "heroImageAlt": heroImage.alt,
     projectNumber,
     company,
+    status,
+    "projectType": coalesce(projectType, snapshot.projectType),
     description,
     category,
     snapshot {
       role,
       timeline,
       projectType,
-      stack,
       links[] { label, url }
     },
     content[] {
@@ -38,8 +41,11 @@ export const WORK_PROJECT_QUERY = groq`
           _type == 'inlineImage' => {
             _type,
             _key,
+            size,
+            displaySize,
             caption,
-            image { ..., asset-> }
+            image { alt, hotspot, asset-> },
+            images[] { alt, hotspot, asset-> }
           },
           _type == 'newsletterPreview' => {
             _type,
@@ -56,11 +62,33 @@ export const WORK_PROJECT_QUERY = groq`
         _type,
         _key,
         layout,
-        bg,
+        size,
+        accent,
+        textAlign,
         heading,
         headingBody,
         imageBody,
-        image { ..., asset-> }
+        image { ..., asset-> },
+        images[] { ..., asset-> }
+      },
+      _type == 'videoBlock' => {
+        _type,
+        _key,
+        "videoUrl": video.asset->url,
+        size,
+        textAlign,
+        heading,
+        headingBody,
+        caption,
+        hasAudio,
+        accent
+      },
+      _type == 'marquee' => {
+        _type,
+        _key,
+        label,
+        accent,
+        images[] { alt, "url": asset->url }
       },
       _type == 'newsletterPreview' => {
         _type,
