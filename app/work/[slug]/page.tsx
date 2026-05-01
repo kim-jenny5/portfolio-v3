@@ -517,6 +517,7 @@ export default async function WorkPage({ params }: Props) {
 	const contentItems: ContentItem[] = p.content ?? [];
 	let sectionCount = 0;
 	let blockIndex = 0; // counts all non-newsletterPreview blocks for bg alternation
+	let lastBg = 'bg-white'; // tracks previous block's bg for marquee inheritance
 
 	return (
 		<>
@@ -627,11 +628,7 @@ export default async function WorkPage({ params }: Props) {
 			{contentItems.map((item, i) => {
 				if (item._type === 'marquee' && item.images?.length) {
 					const isAccent = item.accent === true;
-					const bgClass = isAccent
-						? 'bg-blue-900'
-						: blockIndex++ % 2 === 0
-							? 'bg-white'
-							: 'bg-neutral-50';
+					const bgClass = isAccent ? 'bg-blue-900' : lastBg;
 					return (
 						<div key={item._key ?? i} className={bgClass}>
 							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
@@ -663,6 +660,7 @@ export default async function WorkPage({ params }: Props) {
 						: blockIndex++ % 2 === 0
 							? 'bg-white'
 							: 'bg-neutral-50';
+					lastBg = bgClass;
 					return (
 						<div key={item._key ?? i} className={bgClass}>
 							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
@@ -689,6 +687,7 @@ export default async function WorkPage({ params }: Props) {
 						: blockIndex++ % 2 === 0
 							? 'bg-white'
 							: 'bg-neutral-50';
+					lastBg = bgClass;
 					return (
 						<div key={item._key ?? i} className={bgClass}>
 							<div className="mx-auto max-w-content px-6 py-10 md:px-8">
@@ -712,6 +711,7 @@ export default async function WorkPage({ params }: Props) {
 					blockIndex++;
 					const number = String(sectionCount).padStart(2, '0');
 					const bg = blockIndex % 2 === 0 ? 'neutral' : 'white';
+					lastBg = bg === 'neutral' ? 'bg-neutral-50' : 'bg-white';
 					return (
 						<Section
 							key={item._key ?? i}
