@@ -9,7 +9,8 @@ import { videoBlock } from './videoBlock';
 import { inlineImage } from './inlineImage';
 import { newsletterPreview } from './newsletterPreview';
 import { marquee } from './marquee';
+import { paragraphBlock } from './paragraphBlock';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-	types: [homePage, aboutPage, selectedProject, sideProject, accentCardGroup, titleCardGroup, statCardGroup, imageBlock, videoBlock, inlineImage, newsletterPreview, marquee],
+	types: [homePage, aboutPage, selectedProject, sideProject, accentCardGroup, titleCardGroup, statCardGroup, imageBlock, videoBlock, inlineImage, newsletterPreview, marquee, paragraphBlock],
 };

@@ -165,23 +165,6 @@ defineField({
 							name: 'title',
 							title: 'Section Title',
 							type: 'string',
-							options: {
-								list: [
-									{ title: 'The Problem', value: 'The Problem' },
-									{ title: 'Constraints', value: 'Constraints' },
-									{ title: 'My Approach', value: 'My Approach' },
-									{
-										title: 'Interaction & UI Decisions',
-										value: 'Interaction & UI Decisions',
-									},
-									{
-										title: 'Implementation Details',
-										value: 'Implementation Details',
-									},
-									{ title: 'Outcome', value: 'Outcome' },
-									{ title: 'Reflections', value: 'Reflections' },
-								],
-							},
 							validation: (r) => r.required(),
 						}),
 						defineField({
@@ -200,6 +183,7 @@ defineField({
 					],
 					preview: { select: { title: 'title' } },
 				},
+				{ type: 'paragraphBlock' },
 				{ type: 'imageBlock' },
 				{ type: 'videoBlock' },
 				{ type: 'marquee' },

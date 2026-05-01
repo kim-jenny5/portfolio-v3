@@ -99,12 +99,6 @@ function SelectedProjectsSection({
 					<h2 className="font-manrope text-[32px] font-bold tracking-tighter text-blue-900">
 						Selected Projects
 					</h2>
-					<Link
-						href="/#projects"
-						className="hidden font-inter text-sm font-bold tracking-[-0.4px] text-blue-500 transition-colors duration-200 hover:underline sm:block"
-					>
-						View all →
-					</Link>
 				</div>
 
 				{/* Bento grid */}

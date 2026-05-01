@@ -98,6 +98,12 @@ export const WORK_PROJECT_QUERY = groq`
           name,
           "fileUrl": file.asset->url
         }
+      },
+      _type == 'paragraphBlock' => {
+        _type,
+        _key,
+        textAlign,
+        content[]
       }
     }
   }

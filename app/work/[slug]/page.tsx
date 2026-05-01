@@ -138,7 +138,17 @@ const inlineFullSizeClass: Record<string, string> = {
 	lg: 'w-full',
 };
 
-function Blocks({ value }: { value: PtBlock[] | undefined }) {
+function blockPlainText(block: PtBlock): string {
+	return block.children?.map((s) => s.text ?? '').join('') ?? '';
+}
+
+function Blocks({
+	value,
+	textAlign = 'left',
+}: {
+	value: PtBlock[] | undefined;
+	textAlign?: 'left' | 'center' | 'right';
+}) {
 	if (!value?.length) return null;
 	const elements: React.ReactNode[] = [];
 	let i = 0;
@@ -224,8 +234,9 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 										src={imgSrc}
 										alt={img.alt ?? ''}
 										fill
+										quality={90}
 										className="object-cover"
-										sizes={`(max-width: 640px) 100vw, ${Math.round(100 / block.images!.length)}vw`}
+										sizes={`(max-width: 640px) calc(100vw - 48px), calc((min(992px, 100vw - 64px) - ${(block.images!.length - 1) * 12}px) / ${block.images!.length})`}
 									/>
 								</div>
 							);
@@ -321,6 +332,34 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 
 		// ── Standard blocks ──────────────────────────────────────────
 		if (block._type === 'block') {
+			// Detect triple-backtick fenced code blocks
+			if (blockPlainText(block).trim() === '```') {
+				const codeLines: string[] = [];
+				let j = i + 1;
+				while (j < value.length) {
+					const inner = value[j];
+					if (
+						inner._type === 'block' &&
+						blockPlainText(inner).trim() === '```'
+					) {
+						j++;
+						break;
+					}
+					codeLines.push(blockPlainText(inner));
+					j++;
+				}
+				elements.push(
+					<pre
+						key={key}
+						className="overflow-x-auto rounded bg-neutral-100 px-5 py-4 font-mono text-[13px] leading-relaxed text-blue-900"
+					>
+						<code>{codeLines.join('\n')}</code>
+					</pre>,
+				);
+				i = j;
+				continue;
+			}
+
 			const next = value[i + 1];
 			if (
 				next?._type === 'inlineImage' &&
@@ -374,7 +413,13 @@ function Blocks({ value }: { value: PtBlock[] | undefined }) {
 		i++;
 	}
 
-	return <div className="flex flex-col gap-4">{elements}</div>;
+	const alignClass =
+		textAlign === 'center'
+			? 'text-center'
+			: textAlign === 'right'
+				? 'text-right'
+				: 'text-left';
+	return <div className={`flex flex-col gap-4 ${alignClass}`}>{elements}</div>;
 }
 
 // ── Layout ────────────────────────────────────────────────────────────────────
@@ -418,6 +463,23 @@ function Section({
 	);
 }
 
+function ParagraphSection({
+	bg = 'white',
+	children,
+}: {
+	bg?: 'white' | 'neutral';
+	children: React.ReactNode;
+}) {
+	return (
+		<div className={bg === 'white' ? 'bg-white' : 'bg-neutral-50'}>
+			<div className="mx-auto max-w-content px-6 py-10 md:px-8">
+				<div className="mb-10 h-px w-full bg-blue-900 opacity-10" />
+				{children}
+			</div>
+		</div>
+	);
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 type ContentItem =
@@ -425,6 +487,12 @@ type ContentItem =
 			_type: 'contentSection';
 			_key?: string;
 			title: string;
+			content: PtBlock[];
+	  }
+	| {
+			_type: 'paragraphBlock';
+			_key?: string;
+			textAlign?: 'left' | 'center' | 'right';
 			content: PtBlock[];
 	  }
 	| {
@@ -703,6 +771,17 @@ export default async function WorkPage({ params }: Props) {
 								/>
 							</div>
 						</div>
+					);
+				}
+
+				if (item._type === 'paragraphBlock') {
+					blockIndex++;
+					const bg = blockIndex % 2 === 0 ? 'neutral' : 'white';
+					lastBg = bg === 'neutral' ? 'bg-neutral-50' : 'bg-white';
+					return (
+						<ParagraphSection key={item._key ?? i} bg={bg}>
+							<Blocks value={item.content} textAlign={item.textAlign} />
+						</ParagraphSection>
 					);
 				}
 
