@@ -19,7 +19,8 @@ interface ImageBlockProps {
 	accent?: boolean;
 }
 
-function imgSrc(image: SanityImage, w: number) {
+function imgSrc(image: SanityImage, w: number): string | null {
+	if (!image.asset) return null;
 	return image.asset.url
 		? `${image.asset.url}?w=${w}&fit=max`
 		: urlFor(image as Parameters<typeof urlFor>[0]).width(w).fit('max').url();
@@ -48,12 +49,12 @@ export function ImageBlock({
 	imageBody,
 	accent = false,
 }: ImageBlockProps) {
-	const src = image ? imgSrc(image, 1440) : '';
+	const src = image ? imgSrc(image, 1440) : null;
 
-	const imageEl = image ? (
+	const imageEl = src ? (
 		<Image
 			src={src}
-			alt={image.alt ?? ''}
+			alt={image?.alt ?? ''}
 			width={0}
 			height={0}
 			sizes="100vw"
@@ -102,17 +103,21 @@ export function ImageBlock({
 					</div>
 				)}
 				<div className="flex flex-col gap-3 sm:flex-row">
-					{images.map((img, i) => (
-						<div key={i} className="relative aspect-[4/3] w-full overflow-hidden rounded sm:flex-1">
-							<Image
-								src={imgSrc(img, 1600)}
-								alt={img.alt ?? ''}
-								fill
-								className="object-cover"
-								sizes={`(max-width: 640px) 100vw, ${Math.round(100 / images.length)}vw`}
-							/>
-						</div>
-					))}
+					{images.map((img, i) => {
+						const s = imgSrc(img, 1600);
+						if (!s) return null;
+						return (
+							<div key={i} className="relative aspect-[4/3] w-full overflow-hidden rounded sm:flex-1">
+								<Image
+									src={s}
+									alt={img.alt ?? ''}
+									fill
+									className="object-cover"
+									sizes={`(max-width: 640px) 100vw, ${Math.round(100 / images.length)}vw`}
+								/>
+							</div>
+						);
+					})}
 				</div>
 				{imageBody && (
 					<p className={`font-inter text-sm leading-[1.65] ${bodyColor}`}>{imageBody}</p>

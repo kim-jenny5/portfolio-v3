@@ -225,7 +225,8 @@ function Blocks({
 				<figure key={key} className="flex flex-col gap-2">
 					<div className="flex flex-col gap-3 sm:flex-row">
 						{block.images.map((img, ii) => {
-							const imgSrc = img.asset?.url
+							if (!img.asset) return null;
+							const imgSrc = img.asset.url
 								? `${img.asset.url}?w=1600&fit=max`
 								: urlFor(img as Parameters<typeof urlFor>[0]).width(1600).fit('max').url();
 							return (
@@ -255,7 +256,8 @@ function Blocks({
 
 		if (block._type === 'inlineImage' && block.image) {
 			const layout = block.size ?? 'imageFull';
-			const src = block.image.asset?.url
+			if (!block.image.asset) { i++; continue; }
+			const src = block.image.asset.url
 				? `${block.image.asset.url}?w=1200`
 				: urlFor(block.image as Parameters<typeof urlFor>[0])
 						.width(1200)
@@ -364,10 +366,11 @@ function Blocks({
 			if (
 				next?._type === 'inlineImage' &&
 				next.image &&
+				next.image.asset &&
 				(next.size === 'imageLeft' || next.size === 'imageRight')
 			) {
 				const isLeft = next.size === 'imageLeft';
-				const src = next.image.asset?.url
+				const src = next.image.asset.url
 					? `${next.image.asset.url}?w=1200`
 					: urlFor(next.image as Parameters<typeof urlFor>[0])
 							.width(1200)
