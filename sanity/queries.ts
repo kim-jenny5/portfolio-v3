@@ -116,7 +116,7 @@ export const ABOUT_PAGE_QUERY = groq`
     storyHeading,
     story,
     skillsSection { label, heading, skills[] { name, tags } },
-    siteSection { heading, body }
+    siteSection { heading, body, links[] { label, url } }
   }
 `;
 
