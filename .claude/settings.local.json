@@ -44,7 +44,14 @@
       "mcp__claude_ai_Figma__get_screenshot",
       "mcp__claude_ai_Figma__get_metadata",
       "Bash(find /Users/yunjeonk/Development/personal/portfolio-v3/public -name *.html)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(pnpm dev *)",
+      "Bash(echo \"Server PID: $!\")",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__098fsda._.css\")",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -s --max-time 5 http://localhost:3000/)",
+      "Bash(pnpm run *)"
     ]
   }
 }

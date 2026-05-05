@@ -71,56 +71,96 @@ export const aboutPage = defineType({
 			rows: 10,
 		}),
 		defineField({
-			name: 'skillsHeading',
-			title: 'Skills Heading',
-			type: 'array',
-			of: [
-				{
-					type: 'block',
-					styles: [{ title: 'Normal', value: 'normal' }],
-					lists: [],
-					marks: {
-						decorators: [{ title: 'Code', value: 'code' }],
-						annotations: [],
-					},
-				},
+			name: 'skillsSection',
+			title: 'Tools I Reach For',
+			type: 'object',
+			fields: [
+				defineField({
+					name: 'label',
+					title: 'Label',
+					description: 'Eyebrow label shown above the heading (e.g. "Stack").',
+					type: 'string',
+				}),
+				defineField({
+					name: 'heading',
+					title: 'Heading',
+					type: 'array',
+					of: [
+						{
+							type: 'block',
+							styles: [{ title: 'Normal', value: 'normal' }],
+							lists: [],
+							marks: {
+								decorators: [{ title: 'Code', value: 'code' }],
+								annotations: [],
+							},
+						},
+					],
+				}),
+				defineField({
+					name: 'skills',
+					title: 'Tech Stack',
+					description: 'Skill categories shown in the section.',
+					type: 'array',
+					of: [
+						{
+							type: 'object',
+							fields: [
+								defineField({
+									name: 'name',
+									title: 'Category',
+									type: 'string',
+									options: {
+										list: [
+											{ title: 'Frontend', value: 'Frontend' },
+											{ title: 'Design', value: 'Design' },
+											{ title: 'Backend', value: 'Backend' },
+											{ title: 'Tools', value: 'Tools' },
+										],
+										layout: 'dropdown',
+									},
+									validation: (rule) => rule.required(),
+								}),
+								defineField({
+									name: 'tags',
+									title: 'Tags',
+									type: 'array',
+									of: [{ type: 'string' }],
+									options: { sortable: true },
+								}),
+							],
+							preview: { select: { title: 'name' } },
+						},
+					],
+				}),
 			],
 		}),
 		defineField({
-			name: 'skills',
-			title: 'Tech Stack',
-			description: 'Skill categories shown in the "Tools I reach for" section.',
-			type: 'array',
-			of: [
-				{
-					type: 'object',
-					fields: [
-						defineField({
-							name: 'name',
-							title: 'Category',
-							type: 'string',
-							options: {
-								list: [
-									{ title: 'Frontend', value: 'Frontend' },
-									{ title: 'UI Libraries', value: 'UI Libraries' },
-									{ title: 'Design', value: 'Design' },
-									{ title: 'Backend', value: 'Backend' },
-									{ title: 'Tools', value: 'Tools' },
-								],
-								layout: 'dropdown',
+			name: 'siteSection',
+			title: 'This Site',
+			type: 'object',
+			fields: [
+				defineField({
+					name: 'heading',
+					title: 'Heading',
+					type: 'string',
+				}),
+				defineField({
+					name: 'body',
+					title: 'Body',
+					type: 'array',
+					of: [
+						{
+							type: 'block',
+							styles: [{ title: 'Normal', value: 'normal' }],
+							lists: [],
+							marks: {
+								decorators: [{ title: 'Code', value: 'code' }],
+								annotations: [],
 							},
-							validation: (rule) => rule.required(),
-						}),
-						defineField({
-							name: 'tags',
-							title: 'Tags',
-							type: 'array',
-							of: [{ type: 'string' }],
-							options: { sortable: true },
-						}),
+						},
 					],
-					preview: { select: { title: 'name' } },
-				},
+				}),
 			],
 		}),
 	],

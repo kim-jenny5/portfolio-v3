@@ -153,11 +153,11 @@ function SideProjectRow({ project }: { project: SideProject }) {
 				</div>
 
 				{/* Details */}
-				<div className="flex min-w-0 flex-1 flex-col gap-1.5">
+				<div className="flex min-w-0 flex-1 flex-col gap-1.5 lg:max-w-1/2">
 					<p className="font-manrope text-[18px] font-bold tracking-[-0.5px] text-blue-900 uppercase transition-colors duration-200 group-hover:text-blue-500">
 						{project.name}
 					</p>
-					<p className="truncate font-inter text-base text-blue-800">
+					<p className="font-inter text-base text-blue-800">
 						{project.description}
 					</p>
 					<div className="flex flex-wrap gap-2">
