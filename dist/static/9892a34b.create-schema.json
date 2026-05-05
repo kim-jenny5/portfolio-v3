@@ -162,105 +162,148 @@
         "type": "text"
       },
       {
-        "of": [
+        "fields": [
           {
-            "marks": {
-              "annotations": [],
-              "decorators": [
-                {
-                  "value": "code",
-                  "title": "Code"
-                }
-              ]
-            },
-            "of": [],
-            "styles": [
+            "description": "Eyebrow label shown above the heading (e.g. \"Stack\").",
+            "name": "label",
+            "type": "string"
+          },
+          {
+            "of": [
               {
-                "value": "normal",
-                "title": "Normal"
+                "marks": {
+                  "annotations": [],
+                  "decorators": [
+                    {
+                      "value": "code",
+                      "title": "Code"
+                    }
+                  ]
+                },
+                "of": [],
+                "styles": [
+                  {
+                    "value": "normal",
+                    "title": "Normal"
+                  }
+                ],
+                "type": "block"
               }
             ],
-            "type": "block"
+            "name": "heading",
+            "type": "array"
+          },
+          {
+            "description": "Skill categories shown in the section.",
+            "of": [
+              {
+                "fields": [
+                  {
+                    "options": {
+                      "list": [
+                        {
+                          "title": "Frontend",
+                          "value": "Frontend"
+                        },
+                        {
+                          "title": "Design",
+                          "value": "Design"
+                        },
+                        {
+                          "title": "Backend",
+                          "value": "Backend"
+                        },
+                        {
+                          "title": "Tools",
+                          "value": "Tools"
+                        }
+                      ],
+                      "layout": "dropdown"
+                    },
+                    "validation": [
+                      {
+                        "level": "error",
+                        "rules": [
+                          {
+                            "flag": "valid",
+                            "constraint": [
+                              "Frontend",
+                              "Design",
+                              "Backend",
+                              "Tools"
+                            ]
+                          },
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "name",
+                    "type": "string",
+                    "title": "Category"
+                  },
+                  {
+                    "options": {
+                      "sortable": true
+                    },
+                    "of": [
+                      {
+                        "type": "string"
+                      }
+                    ],
+                    "name": "tags",
+                    "type": "array"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "name": "skills",
+            "type": "array",
+            "title": "Tech Stack"
           }
         ],
-        "name": "skillsHeading",
-        "type": "array"
+        "name": "skillsSection",
+        "type": "object",
+        "title": "Tools I Reach For"
       },
       {
-        "description": "Skill categories shown in the \"Tools I reach for\" section.",
-        "of": [
+        "fields": [
           {
-            "fields": [
+            "name": "heading",
+            "type": "string"
+          },
+          {
+            "of": [
               {
-                "options": {
-                  "list": [
+                "marks": {
+                  "annotations": [],
+                  "decorators": [
                     {
-                      "title": "Frontend",
-                      "value": "Frontend"
-                    },
-                    {
-                      "title": "UI Libraries",
-                      "value": "UI Libraries"
-                    },
-                    {
-                      "title": "Design",
-                      "value": "Design"
-                    },
-                    {
-                      "title": "Backend",
-                      "value": "Backend"
-                    },
-                    {
-                      "title": "Tools",
-                      "value": "Tools"
+                      "value": "code",
+                      "title": "Code"
                     }
-                  ],
-                  "layout": "dropdown"
+                  ]
                 },
-                "validation": [
+                "of": [],
+                "styles": [
                   {
-                    "level": "error",
-                    "rules": [
-                      {
-                        "flag": "valid",
-                        "constraint": [
-                          "Frontend",
-                          "UI Libraries",
-                          "Design",
-                          "Backend",
-                          "Tools"
-                        ]
-                      },
-                      {
-                        "flag": "presence",
-                        "constraint": "required"
-                      }
-                    ]
+                    "value": "normal",
+                    "title": "Normal"
                   }
                 ],
-                "name": "name",
-                "type": "string",
-                "title": "Category"
-              },
-              {
-                "options": {
-                  "sortable": true
-                },
-                "of": [
-                  {
-                    "type": "string"
-                  }
-                ],
-                "name": "tags",
-                "type": "array"
+                "type": "block"
               }
             ],
-            "type": "object"
+            "name": "body",
+            "type": "array"
           }
         ],
-        "name": "skills",
-        "type": "array",
-        "title": "Tech Stack"
+        "name": "siteSection",
+        "type": "object",
+        "title": "This Site"
       }
     ],
     "name": "aboutPage",
