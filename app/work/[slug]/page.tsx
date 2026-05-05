@@ -594,7 +594,7 @@ export default async function WorkPage({ params }: Props) {
 		<>
 			{/* ── Hero + snapshot wrapper ───────────────────────────────────────── */}
 			<div
-				className={p.heroImageUrl ? 'flex h-[calc(100dvh-68px)] flex-col' : ''}
+				className={p.heroImageUrl ? 'flex md:h-[calc(100dvh-68px)] flex-col' : ''}
 			>
 				{/* ── Hero ──────────────────────────────────────────────────────────── */}
 				<div

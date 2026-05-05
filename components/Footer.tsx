@@ -7,9 +7,14 @@ export function Footer() {
 				<span className="font-manrope text-xs font-bold tracking-[-0.023em] text-blue-900 lowercase">
 					jennykim.
 				</span>
-				<span className="font-manrope text-xs font-bold tracking-[-0.023em] text-blue-900 uppercase">
-					©{year}
-				</span>
+				<div className="flex items-center gap-6">
+					<span className="hidden font-inter text-xs font-bold text-blue-900/60 md:block">
+						Custom built with Next.js + Sanity.
+					</span>
+					<span className="font-manrope text-xs font-bold tracking-[-0.023em] text-blue-900 uppercase">
+						©{year}
+					</span>
+				</div>
 			</div>
 		</footer>
 	);

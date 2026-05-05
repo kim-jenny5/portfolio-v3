@@ -8,6 +8,7 @@ import { TechBadge } from '@/components/TechBadge';
 type PtBlock = {
 	_key?: string;
 	children?: { _key?: string; text?: string; marks?: string[] }[];
+	markDefs?: { _key: string; _type: string; href?: string }[];
 };
 
 function renderHeadingBlocks(
@@ -48,8 +49,11 @@ export default async function AboutPage() {
 	);
 	const story: string[] =
 		data?.story && data.story.split(/\n\n+/).filter(Boolean);
-	const skillsHeading = renderHeadingBlocks(data?.skillsHeading);
-	const skills: { name: string; tags: string[] }[] = data?.skills;
+	const skillsLabel: string = data?.skillsSection?.label;
+	const skillsHeading = renderHeadingBlocks(data?.skillsSection?.heading);
+	const skills: { name: string; tags: string[] }[] = data?.skillsSection?.skills ?? [];
+	const siteHeading: string = data?.siteSection?.heading;
+	const siteBody: PtBlock[] = data?.siteSection?.body;
 
 	return (
 		<>
@@ -138,9 +142,11 @@ export default async function AboutPage() {
 			{/* ── Section 3: Skills ───────────────────────────────────────────── */}
 			<section className="w-full bg-blue-900">
 				<div className="mx-auto max-w-content px-6 py-24 max-md:py-16 max-sm:py-12 md:px-8 lg:px-8">
-					<span className="mb-4 block font-inter text-xs font-bold tracking-wide text-lavender-50 uppercase">
-						Stack
-					</span>
+					{skillsLabel && (
+						<span className="mb-4 block font-inter text-xs font-bold tracking-wide text-lavender-50 uppercase">
+							{skillsLabel}
+						</span>
+					)}
 					<h2 className="mb-12 font-manrope text-[32px] leading-[1.5] font-bold tracking-tighter text-white">
 						{skillsHeading}
 					</h2>
@@ -163,6 +169,68 @@ export default async function AboutPage() {
 					</div>
 				</div>
 			</section>
+
+			{/* ── Section 4: This site ────────────────────────────────────────── */}
+			{(siteHeading || siteBody?.length > 0) && (
+				<section className="w-full bg-neutral-100">
+					<div className="mx-auto max-w-content px-6 py-24 max-md:py-16 max-sm:py-12 md:px-8 lg:px-8">
+						<div className="flex flex-col gap-16 lg:flex-row">
+							<div className="shrink-0 lg:w-1/3">
+								{siteHeading && (
+									<h2 className="font-manrope text-[32px] leading-[1.5] font-bold tracking-tighter text-blue-900">
+										{siteHeading}
+									</h2>
+								)}
+							</div>
+							<div className="flex flex-1 flex-col gap-6">
+								{siteBody?.map((block, i) => (
+									<p
+										key={block._key ?? i}
+										className="font-inter text-base leading-[1.7] text-blue-900"
+									>
+										{block.children?.map((span, si) => {
+											const content = span.text ?? '';
+											const marks = span.marks ?? [];
+											let el: React.ReactNode;
+											if (marks.includes('code')) {
+												el = (
+													<code
+														key={span._key ?? si}
+														className="rounded bg-neutral-200 p-1.5 font-mono text-[0.85em] tracking-tight"
+													>
+														{content}
+													</code>
+												);
+											} else {
+												el = <Fragment key={span._key ?? si}>{content}</Fragment>;
+											}
+											const linkKey = marks.find(
+												(m) => !['code'].includes(m),
+											);
+											if (linkKey) {
+												const def = block.markDefs?.find((d) => d._key === linkKey);
+												if (def?.href)
+													return (
+														<a
+															key={span._key ?? si}
+															href={def.href}
+															target="_blank"
+															rel="noopener noreferrer"
+															className="underline hover:text-blue-500"
+														>
+															{el}
+														</a>
+													);
+											}
+											return el;
+										})}
+									</p>
+								))}
+							</div>
+						</div>
+					</div>
+				</section>
+			)}
 		</>
 	);
 }

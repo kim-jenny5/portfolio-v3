@@ -58,7 +58,16 @@ export const aboutPage = defineType({
 					lists: [],
 					marks: {
 						decorators: [{ title: 'Code', value: 'code' }],
-						annotations: [],
+						annotations: [
+							{
+								name: 'link',
+								type: 'object',
+								title: 'Link',
+								fields: [
+									defineField({ name: 'href', type: 'url', title: 'URL' }),
+								],
+							},
+						],
 					},
 				},
 			],

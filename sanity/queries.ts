@@ -115,8 +115,8 @@ export const ABOUT_PAGE_QUERY = groq`
     profileImage,
     storyHeading,
     story,
-    skillsHeading,
-    skills[] { name, tags }
+    skillsSection { label, heading, skills[] { name, tags } },
+    siteSection { heading, body }
   }
 `;
 
