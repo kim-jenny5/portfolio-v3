@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { Fragment } from 'react';
+import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr';
 import { sanityFetch } from '@/sanity/lib/live';
 import { ABOUT_PAGE_QUERY } from '@/sanity/queries';
 import { urlFor } from '@/sanity/lib/image';
@@ -8,6 +9,7 @@ import { TechBadge } from '@/components/TechBadge';
 type PtBlock = {
 	_key?: string;
 	children?: { _key?: string; text?: string; marks?: string[] }[];
+	markDefs?: { _key: string; _type: string; href?: string }[];
 };
 
 function renderHeadingBlocks(
@@ -54,6 +56,7 @@ export default async function AboutPage() {
 		data?.skillsSection?.skills ?? [];
 	const siteHeading: string = data?.siteSection?.heading;
 	const siteBody: PtBlock[] = data?.siteSection?.body;
+	const siteLinks: { label: string; url: string }[] = data?.siteSection?.links ?? [];
 
 	return (
 		<>
@@ -171,7 +174,7 @@ export default async function AboutPage() {
 			</section>
 
 			{/* ── Section 4: This site ────────────────────────────────────────── */}
-			{(siteHeading || siteBody?.length > 0) && (
+			{(siteHeading || siteBody?.length > 0 || siteLinks.length > 0) && (
 				<section className="w-full bg-neutral-100">
 					<div className="mx-auto max-w-content px-6 py-24 max-md:py-16 max-sm:py-12 md:px-8 lg:px-8">
 						<div className="flex flex-col gap-16 lg:flex-row">
@@ -190,8 +193,10 @@ export default async function AboutPage() {
 									>
 										{block.children?.map((span, si) => {
 											const content = span.text ?? '';
-											if (span.marks?.includes('code')) {
-												return (
+											const marks = span.marks ?? [];
+											let el: React.ReactNode;
+											if (marks.includes('code')) {
+												el = (
 													<code
 														key={span._key ?? si}
 														className="rounded bg-neutral-200 p-1.5 font-mono text-[0.85em] tracking-tight"
@@ -199,13 +204,45 @@ export default async function AboutPage() {
 														{content}
 													</code>
 												);
+											} else {
+												el = <Fragment key={span._key ?? si}>{content}</Fragment>;
 											}
-											return (
-												<Fragment key={span._key ?? si}>{content}</Fragment>
-											);
+											const linkKey = marks.find((m) => m !== 'code');
+											if (linkKey) {
+												const def = block.markDefs?.find((d) => d._key === linkKey);
+												if (def?.href)
+													return (
+														<a
+															key={span._key ?? si}
+															href={def.href}
+															target="_blank"
+															rel="noopener noreferrer"
+															className="underline hover:text-blue-500"
+														>
+															{el}
+														</a>
+													);
+											}
+											return el;
 										})}
 									</p>
 								))}
+								{siteLinks.length > 0 && (
+									<div className="flex flex-wrap gap-1.5">
+										{siteLinks.map((l) => (
+											<a
+												key={l.label}
+												href={l.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="tag inline-flex items-center gap-1"
+											>
+												{l.label}
+												<ArrowUpRightIcon size={11} />
+											</a>
+										))}
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

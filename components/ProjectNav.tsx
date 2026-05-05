@@ -43,7 +43,7 @@ function PrevPanel({ project }: { project: NavProject | null }) {
 
 	if (!project)
 		return (
-			<div className="flex h-[120px] flex-1 items-center gap-3 bg-white pl-6 opacity-[0.33]">
+			<div className="flex h-[90px] flex-1 items-center gap-3 bg-white pl-6 opacity-[0.33] md:h-[120px]">
 				{inner}
 			</div>
 		);
@@ -51,7 +51,7 @@ function PrevPanel({ project }: { project: NavProject | null }) {
 	return (
 		<Link
 			href={`/work/${project.slug}`}
-			className="flex h-[120px] flex-1 items-center gap-3 bg-white pl-6 transition-opacity hover:opacity-70"
+			className="flex h-[90px] flex-1 items-center gap-3 bg-white pl-6 transition-opacity hover:opacity-70 md:h-[120px]"
 		>
 			{inner}
 		</Link>
@@ -77,7 +77,7 @@ function NextPanel({ project }: { project: NavProject | null }) {
 
 	if (!project)
 		return (
-			<div className="flex h-[120px] flex-1 items-center justify-end gap-3 bg-neutral-100 px-6 opacity-[0.33]">
+			<div className="flex h-[90px] flex-1 items-center justify-end gap-3 bg-neutral-100 px-6 opacity-[0.33] md:h-[120px]">
 				{inner}
 			</div>
 		);
@@ -85,7 +85,7 @@ function NextPanel({ project }: { project: NavProject | null }) {
 	return (
 		<Link
 			href={`/work/${project.slug}`}
-			className="flex h-[120px] flex-1 items-center justify-end gap-3 bg-neutral-100 px-6 transition-opacity hover:opacity-70"
+			className="flex h-[90px] flex-1 items-center justify-end gap-3 bg-neutral-100 px-6 transition-opacity hover:opacity-70 md:h-[120px]"
 		>
 			{inner}
 		</Link>
@@ -100,7 +100,7 @@ export function ProjectNav({
 	next: NavProject | null;
 }) {
 	return (
-		<div className="flex gap-px border-t border-neutral-200 bg-neutral-200">
+		<div className="flex-col gap-px border-t border-neutral-200 bg-neutral-200 md:flex-row">
 			<PrevPanel project={prev} />
 			<NextPanel project={next} />
 		</div>

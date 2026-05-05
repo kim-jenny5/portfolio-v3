@@ -134,7 +134,40 @@
         "of": [
           {
             "marks": {
-              "annotations": [],
+              "annotations": [
+                {
+                  "fields": [
+                    {
+                      "validation": [
+                        {
+                          "level": "error",
+                          "rules": [
+                            {
+                              "flag": "uri",
+                              "constraint": {
+                                "options": {
+                                  "scheme": [
+                                    "/^http$/",
+                                    "/^https$/"
+                                  ],
+                                  "allowRelative": false,
+                                  "relativeOnly": false,
+                                  "allowCredentials": false
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "href",
+                      "type": "url",
+                      "title": "URL"
+                    }
+                  ],
+                  "name": "link",
+                  "type": "object"
+                }
+              ],
               "decorators": [
                 {
                   "value": "code",
@@ -274,6 +307,50 @@
           {
             "name": "heading",
             "type": "string"
+          },
+          {
+            "options": {
+              "sortable": true
+            },
+            "of": [
+              {
+                "fields": [
+                  {
+                    "name": "label",
+                    "type": "string"
+                  },
+                  {
+                    "validation": [
+                      {
+                        "level": "error",
+                        "rules": [
+                          {
+                            "flag": "uri",
+                            "constraint": {
+                              "options": {
+                                "scheme": [
+                                  "/^http$/",
+                                  "/^https$/"
+                                ],
+                                "allowRelative": false,
+                                "relativeOnly": false,
+                                "allowCredentials": false
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "url",
+                    "type": "url",
+                    "title": "URL"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "name": "links",
+            "type": "array"
           },
           {
             "of": [
