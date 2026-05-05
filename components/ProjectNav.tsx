@@ -101,7 +101,6 @@ export function ProjectNav({
 }) {
 	return (
 		<div className="flex-col gap-px border-t border-neutral-200 bg-neutral-200 md:flex-row">
-			{/* // <div className="flex gap-px border-t border-neutral-200 bg-neutral-200"> */}
 			<PrevPanel project={prev} />
 			<NextPanel project={next} />
 		</div>
