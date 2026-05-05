@@ -220,6 +220,7 @@ export function NavLinks() {
 						key={href}
 						href={href}
 						className={`nav-link ${isActive(href) ? 'active' : ''}`}
+						aria-current={isActive(href) ? 'page' : undefined}
 					>
 						{label}
 					</Link>

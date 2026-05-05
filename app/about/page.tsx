@@ -8,7 +8,6 @@ import { TechBadge } from '@/components/TechBadge';
 type PtBlock = {
 	_key?: string;
 	children?: { _key?: string; text?: string; marks?: string[] }[];
-	markDefs?: { _key: string; _type: string; href?: string }[];
 };
 
 function renderHeadingBlocks(
@@ -51,7 +50,8 @@ export default async function AboutPage() {
 		data?.story && data.story.split(/\n\n+/).filter(Boolean);
 	const skillsLabel: string = data?.skillsSection?.label;
 	const skillsHeading = renderHeadingBlocks(data?.skillsSection?.heading);
-	const skills: { name: string; tags: string[] }[] = data?.skillsSection?.skills ?? [];
+	const skills: { name: string; tags: string[] }[] =
+		data?.skillsSection?.skills ?? [];
 	const siteHeading: string = data?.siteSection?.heading;
 	const siteBody: PtBlock[] = data?.siteSection?.body;
 
@@ -190,10 +190,8 @@ export default async function AboutPage() {
 									>
 										{block.children?.map((span, si) => {
 											const content = span.text ?? '';
-											const marks = span.marks ?? [];
-											let el: React.ReactNode;
-											if (marks.includes('code')) {
-												el = (
+											if (span.marks?.includes('code')) {
+												return (
 													<code
 														key={span._key ?? si}
 														className="rounded bg-neutral-200 p-1.5 font-mono text-[0.85em] tracking-tight"
@@ -201,28 +199,10 @@ export default async function AboutPage() {
 														{content}
 													</code>
 												);
-											} else {
-												el = <Fragment key={span._key ?? si}>{content}</Fragment>;
 											}
-											const linkKey = marks.find(
-												(m) => !['code'].includes(m),
+											return (
+												<Fragment key={span._key ?? si}>{content}</Fragment>
 											);
-											if (linkKey) {
-												const def = block.markDefs?.find((d) => d._key === linkKey);
-												if (def?.href)
-													return (
-														<a
-															key={span._key ?? si}
-															href={def.href}
-															target="_blank"
-															rel="noopener noreferrer"
-															className="underline hover:text-blue-500"
-														>
-															{el}
-														</a>
-													);
-											}
-											return el;
 										})}
 									</p>
 								))}

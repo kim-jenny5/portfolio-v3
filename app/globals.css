@@ -66,33 +66,6 @@
 	/* Max widths */
 	--max-width-layout: 1280px;
 	--max-width-content: 1344px;
-
-	/* shadcn semantic color references */
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--color-card: var(--card);
-	--color-card-foreground: var(--card-foreground);
-	--color-popover: var(--popover);
-	--color-popover-foreground: var(--popover-foreground);
-	--color-primary: var(--primary);
-	--color-primary-foreground: var(--primary-foreground);
-	--color-secondary: var(--secondary);
-	--color-secondary-foreground: var(--secondary-foreground);
-	--color-muted: var(--muted);
-	--color-muted-foreground: var(--muted-foreground);
-	--color-accent: var(--accent);
-	--color-accent-foreground: var(--accent-foreground);
-	--color-destructive: var(--destructive);
-	--color-border: var(--border);
-	--color-input: var(--input);
-	--color-ring: var(--ring);
-	--radius-sm: calc(var(--radius) * 0.6);
-	--radius-md: calc(var(--radius) * 0.8);
-	--radius-lg: var(--radius);
-	--radius-xl: calc(var(--radius) * 1.4);
-	--radius-2xl: calc(var(--radius) * 1.8);
-	--radius-3xl: calc(var(--radius) * 2.2);
-	--radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
@@ -105,35 +78,14 @@
 	--blue-800: #001d93;
 	--blue-900: #1e1b4b;
 	--lavender-50: #ffebff;
-
-	/* shadcn semantic mapping */
-	--background: var(--neutral-50);
-	--foreground: var(--blue-900);
-	--card: #ffffff;
-	--card-foreground: var(--blue-900);
-	--popover: #ffffff;
-	--popover-foreground: var(--blue-900);
-	--primary: var(--blue-500);
-	--primary-foreground: #ffffff;
-	--secondary: var(--neutral-100);
-	--secondary-foreground: var(--blue-900);
-	--muted: var(--neutral-100);
-	--muted-foreground: var(--blue-800);
-	--accent: var(--lavender-50);
-	--accent-foreground: var(--blue-700);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: var(--neutral-200);
-	--input: var(--neutral-200);
-	--ring: var(--blue-500);
-	--radius: 0.625rem;
 }
 
 @layer base {
 	* {
-		@apply border-border outline-ring/50;
+		@apply border-neutral-200 outline-blue-500/50;
 	}
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-neutral-50 text-blue-900;
 	}
 	html {
 		@apply font-inter;
@@ -156,7 +108,7 @@
 	}
 	.nav-link[aria-current='page'],
 	.nav-link.active {
-		@apply border-b-2 border-blue-500 text-blue-500;
+		@apply border-b-2 border-blue-500 text-blue-500 transition-none;
 	}
 
 	/* ── Social link ─────────────────────────────────────────────────────
