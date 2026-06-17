@@ -147,7 +147,7 @@ function SideProjectRow({ project }: { project: SideProject }) {
 							alt={project.thumbnailAlt || project.name}
 							width={280}
 							height={187}
-							className="h-full w-full rounded object-cover grayscale"
+							className="h-full w-full rounded object-cover"
 						/>
 					) : null}
 				</div>
